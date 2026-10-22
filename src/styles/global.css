@@ -1,0 +1,96 @@
+@layer base, utils;
+
+:root {
+  --ink: #0e0e0c;
+  --paper: #f1eee7;
+  --amber: #e3a83f;
+  --amber-hover: #edb956;
+  --raised: #171714;
+  --raised-2: #1a1a17;
+  --ink-soft: #2e2c28;
+  --muted: #a3a097;
+  --muted-light: #5c5850;
+  --secondary: #5a5751;
+  --stone: #cfcbc2;
+  --sand: #d9d3c6;
+  --linen: #e7e2d7;
+  --warm-1: #2b2416;
+  --warm-2: #3a3020;
+  --green: #58b67f;
+
+  --f-display: 'Archivo', sans-serif;
+  --f-body: 'Instrument Sans', system-ui, sans-serif;
+  --f-mono: 'Geist Mono', ui-monospace, monospace;
+
+  --gutter: clamp(20px, 4vw, 56px);
+  --section-pad: clamp(64px, 10vh, 120px) var(--gutter);
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+}
+
+/* The reference's page-level rules. Layered so component rules win, the way its inline styles did. */
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--f-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  * { box-sizing: border-box; }
+  a { color: inherit; text-decoration: none; transition: opacity .25s; }
+  a:hover { color: inherit; opacity: .72; }
+  ::selection { background: var(--amber); color: var(--ink); }
+  input, select, textarea, button { font: inherit; color: inherit; }
+  input[type=range] { accent-color: var(--amber); }
+  select option { background: var(--raised); color: var(--paper); }
+  [hidden] { display: none !important; }
+}
+
+@layer utils {
+  .page { background: var(--ink); color: var(--paper); overflow-x: clip; }
+
+  /* section eyebrow, e.g. "02 / Usluge" */
+  .eyebrow {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+  /* condensed display face used by every big heading and number */
+  .display { font-family: var(--f-display); font-weight: 800; font-stretch: 66%; }
+  .caps { text-transform: uppercase; }
+  .h2 { margin: 0; font-size: clamp(36px, min(4.8vw, 7.6vh), 84px); line-height: .88; }
+  .lead { margin: 0; font-size: clamp(15px, 1.1vw, 18px); line-height: 1.6; }
+
+  /* pill buttons: geometry only, colour and size per use */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    border-radius: 999px;
+  }
+
+  .section-head {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+    gap: 24px clamp(32px, 6vw, 96px);
+    align-items: end;
+  }
+  .stack-22 { display: flex; flex-direction: column; gap: 22px; }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}
