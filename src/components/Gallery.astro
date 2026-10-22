@@ -1,0 +1,172 @@
+---
+import Icon from './Icon.astro';
+import Photo from './Photo.astro';
+import { getCopy, type Locale } from '../i18n';
+import { getContent } from '../content';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = getCopy(locale).gallery;
+const { gallery } = getContent(locale);
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<section id="galerija" class="gallery" lang={locale === 'sk' ? 'sr-Latn' : undefined} data-gallery>
+  <div class="wrap">
+    <div class="head">
+      <div class="intro" data-reveal="0">
+        <span class="eyebrow amber">{c.eyebrow}</span>
+        <h2 class="display caps h2">{c.title}</h2>
+        <p class="lead stone">{c.lead}</p>
+      </div>
+      <div class="controls">
+        <span class="count"><span class="now" data-gal-now>01</span><span class="total"> / {pad(gallery.length)}</span></span>
+        <button type="button" class="nav-btn" aria-label={c.prev} data-gal-prev><Icon name="arrow-left" /></button>
+        <button type="button" class="nav-btn" aria-label={c.next} data-gal-next><Icon name="arrow" size={18} /></button>
+      </div>
+    </div>
+    <div class="track" data-gal-track>
+      {
+        gallery.map((g, i) => (
+          <div class:list={['item', { on: i === 0, near: i === 1 }]} data-reveal={i * 90} data-reveal-kind="rise" data-gal-item>
+            <Photo id={`galerija-${i + 1}`} placeholder={g.ph} sizes="(max-width: 899px) 100vw, 60vw" />
+            <div class="cover" />
+            <div class="shade" />
+            <div class="cap">
+              <span class="cap-meta">
+                {pad(i + 1)} · {g.cat}
+              </span>
+              <span class="display caps cap-title">{g.title}</span>
+              <span class="cap-sub">{g.sub}</span>
+            </div>
+            <div class="vlabel" aria-hidden="true">
+              {pad(i + 1)} - {g.title}
+            </div>
+            <button type="button" class="hit" aria-label={g.title} data-gal-hit />
+          </div>
+        ))
+      }
+    </div>
+    <div class="foot">
+      <span>{c.cats}</span>
+      <a href="#galerija" class="all">{c.all} <Icon name="arrow" /></a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .gallery { background: var(--ink); padding: var(--section-pad); }
+  .wrap { max-width: 1600px; margin: 0 auto; display: flex; flex-direction: column; gap: clamp(28px, 4.4vh, 48px); }
+  .amber { color: var(--amber); }
+  .stone { color: var(--stone); }
+
+  .head { display: flex; justify-content: space-between; align-items: flex-end; gap: 28px; flex-wrap: wrap; }
+  .intro { display: flex; flex-direction: column; gap: 22px; max-width: 900px; }
+  .controls { display: flex; align-items: center; gap: 18px; }
+  .count { font-family: var(--f-mono); font-size: 12px; letter-spacing: .12em; }
+  .now { color: var(--paper); }
+  .total { color: var(--muted); }
+  .nav-btn {
+    flex: none;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(241, 238, 231, .25);
+    background: transparent;
+    color: var(--paper);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    transition: border-color .3s, background .3s;
+  }
+  .nav-btn:hover { border-color: var(--paper); background: rgba(241, 238, 231, .06); }
+
+  .track { display: flex; gap: 12px; height: clamp(360px, 58vh, 600px); }
+  .item {
+    position: relative;
+    flex: 1 1 0%;
+    min-width: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--raised);
+    color: rgba(241, 238, 231, .5);
+    transition: flex 1.1s var(--ease-out);
+  }
+  .item.near { flex: 1.5 1 0%; }
+  .item.on { flex: 7 1 0%; }
+  .cover { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: var(--raised); opacity: .9; transition: opacity .9s; }
+  .shade {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(0deg, rgba(14, 14, 12, .88) 0%, rgba(14, 14, 12, 0) 46%);
+    opacity: 0;
+    transition: opacity .8s;
+  }
+  .cap {
+    position: absolute;
+    left: clamp(20px, 2.4vw, 32px);
+    right: clamp(20px, 2.4vw, 32px);
+    bottom: clamp(20px, 2.4vw, 30px);
+    z-index: 2;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: var(--paper);
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .7s .15s, transform .9s .15s var(--ease-out);
+  }
+  .cap-meta { font-family: var(--f-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--amber); }
+  .cap-title { font-size: clamp(28px, 2.8vw, 46px); line-height: .9; white-space: nowrap; }
+  .cap-sub { font-size: 15px; color: var(--stone); max-width: 440px; }
+  .vlabel {
+    position: absolute;
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%) rotate(180deg);
+    writing-mode: vertical-rl;
+    z-index: 2;
+    pointer-events: none;
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--stone);
+    white-space: nowrap;
+    opacity: 1;
+    transition: opacity .5s;
+  }
+  .hit { position: absolute; inset: 0; z-index: 3; background: transparent; border: 0; cursor: pointer; }
+  .item.on .cover { opacity: 0; }
+  .item.on .shade, .item.on .cap { opacity: 1; }
+  .item.on .cap { transform: none; }
+  .item.on .vlabel { opacity: 0; }
+  .item.on .hit { display: none; }
+
+  .foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .all { color: var(--paper); display: inline-flex; align-items: center; gap: 8px; }
+
+  @media (max-width: 899px) {
+    .track { gap: 6px; }
+    .item.near { flex: 1 1 0%; }
+    .item.on { flex: 14 1 0%; }
+    .vlabel { opacity: 0; }
+  }
+</style>

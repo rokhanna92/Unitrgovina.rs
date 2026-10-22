@@ -1,0 +1,123 @@
+---
+import '../styles/fonts.css';
+import '../styles/global.css';
+import { getCopy, htmlLang, ogLocale, homePath, skReady, type Locale } from '../i18n';
+import { getContent } from '../content';
+import { site } from '../site';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const copy = getCopy(locale);
+const { locations } = getContent(locale);
+const canonical = new URL(homePath[locale], site.url).href;
+const noindex = locale !== 'sr' && !skReady;
+const ogImage = new URL('/og.jpg', site.url).href;
+
+const orgId = `${site.url}/#organization`;
+const telIntl = (tel: string) => tel.replace('tel:', '').replace(/^\+381(\d{2})(\d{3})(\d+)$/, '+381 $1 $2 $3');
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': orgId,
+      name: site.name,
+      legalName: site.legalName,
+      url: `${site.url}/`,
+      email: site.email,
+      telephone: telIntl(site.tel),
+      foundingDate: site.founded,
+      founder: { '@type': 'Person', name: site.founder },
+      logo: `${site.url}/apple-touch-icon.png`,
+    },
+    // POTVRDITI: street addresses for Samoš and Jarkovac, opening hours and area served per location.
+    ...locations.map((l) => ({
+      '@type': 'HomeAndConstructionBusiness',
+      '@id': `${site.url}/#${l.name.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')}`,
+      name: `${site.name} – ${l.name}`,
+      description: l.what,
+      url: `${site.url}/#lokacije`,
+      telephone: telIntl(l.href),
+      email: site.email,
+      address: {
+        '@type': 'PostalAddress',
+        ...(l.name === 'Padina' ? { streetAddress: 'Save Kovačevića 93', postalCode: '26215' } : {}),
+        addressLocality: l.name,
+        addressCountry: 'RS',
+      },
+      geo: { '@type': 'GeoCoordinates', latitude: l.lat, longitude: l.lon },
+      openingHoursSpecification: [
+        {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+          opens: '07:00',
+          closes: '17:00',
+        },
+      ],
+      parentOrganization: { '@id': orgId },
+    })),
+  ],
+};
+---
+
+<!doctype html>
+<html lang={htmlLang[locale]}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{copy.meta.title}</title>
+    <meta name="description" content={copy.meta.description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    {
+      skReady &&
+        Object.entries(homePath).map(([l, p]) => (
+          <link rel="alternate" hreflang={htmlLang[l as Locale]} href={new URL(p, site.url).href} />
+        ))
+    }
+    {skReady && <link rel="alternate" hreflang="x-default" href={new URL('/', site.url).href} />}
+    <meta name="theme-color" content="#0e0e0c" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preload" href="/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/instrument-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/geist-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content={ogLocale[locale]} />
+    <meta property="og:title" content={copy.meta.title} />
+    <meta property="og:description" content={copy.meta.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <script is:inline>
+      // Before first paint: mark JS on, and whether the hero has room for the price card
+      // (same rule as the reference: wide enough and tall enough for card + headline).
+      (function () {
+        var d = document.documentElement;
+        d.classList.add('js');
+        function room() {
+          var w = innerWidth, h = innerHeight;
+          d.classList.toggle('room', w >= 1100 && h >= Math.min(0.18 * w, 317) + 560);
+        }
+        room();
+        addEventListener('resize', room);
+      })();
+    </script>
+  </head>
+  <body>
+    <slot />
+    <script>
+      import '../scripts/main';
+    </script>
+  </body>
+</html>

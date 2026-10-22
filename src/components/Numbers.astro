@@ -1,0 +1,39 @@
+---
+import { getCopy, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const items = getCopy(locale).numbers as { value?: string; count?: number; unit?: string; prefix?: string; label: string }[];
+---
+
+<section class="numbers" lang={locale === 'sk' ? 'sr-Latn' : undefined}>
+  <div class="grid">
+    {
+      items.map((n, i) => (
+        <div class="item" data-reveal={i * 80}>
+          <span class="display value">{n.prefix && <span class="unit pre">{n.prefix}</span>}{n.count !== undefined ? <span data-count={n.count}>{n.count}</span> : n.value}{n.unit && <span class="unit post">{n.unit}</span>}</span>
+          <span class="label">{n.label}</span>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .numbers {
+    position: relative;
+    background: var(--ink);
+    color: var(--paper);
+    border-top: 1px solid rgba(241, 238, 231, .1);
+    padding: clamp(56px, 9vh, 96px) var(--gutter);
+  }
+  .grid { max-width: 1440px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 40px 24px; }
+  .item { display: flex; flex-direction: column; gap: 14px; border-top: 1px solid rgba(241, 238, 231, .16); padding-top: 22px; }
+  .value { font-size: clamp(48px, min(5vw, 8vh), 88px); line-height: .85; }
+  .unit { color: var(--amber); font-size: .42em; }
+  .pre { margin-right: 6px; }
+  .post { margin-left: 6px; }
+  .label { font-size: 15px; color: var(--muted); }
+</style>

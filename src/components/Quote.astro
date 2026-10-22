@@ -1,0 +1,240 @@
+---
+import Icon from './Icon.astro';
+import { getCopy, type Locale } from '../i18n';
+import { getContent } from '../content';
+import { site } from '../site';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = getCopy(locale).quote;
+const { quoteTabs } = getContent(locale);
+const contacts = [
+  { label: c.contacts.padina, value: site.phone, href: site.tel },
+  { label: c.contacts.samos, value: site.samosPhone, href: site.samosTel },
+  { label: c.contacts.email, value: site.email, href: site.mailto },
+];
+---
+
+<section id="ponuda" class="quote" lang={locale === 'sk' ? 'sr-Latn' : undefined} data-quote>
+  <div class="grid">
+    <div class="side">
+      <div class="stack-22" data-reveal="0">
+        <span class="eyebrow amber">{c.eyebrow}</span>
+        <h2 class="display caps h2">{c.title}</h2>
+        <p class="lead stone intro">{c.lead}</p>
+      </div>
+      <div class="contacts" data-reveal="100">
+        {
+          contacts.map((x) => (
+            <a href={x.href} class="contact">
+              <span class="contact-label">{x.label}</span>
+              <span class="contact-value">{x.value}</span>
+            </a>
+          ))
+        }
+      </div>
+      <div class="chat" data-reveal="160">
+        <a href={site.viber} class="pill chat-btn">Viber</a>
+        <a href={site.whatsapp} class="pill chat-btn">WhatsApp</a>
+      </div>
+    </div>
+
+    <div class="panel" data-reveal="120">
+      <div class="tabs">
+        {
+          quoteTabs.map((t, i) => (
+            <button type="button" class:list={['pill tab', { on: i === 0 }]} aria-pressed={i === 0 ? 'true' : 'false'} data-tab={i}>
+              {t.name}
+            </button>
+          ))
+        }
+      </div>
+
+      <form class="form" data-quote-form>
+        <label class="field">
+          <span class="label">{c.name}</span>
+          <input required type="text" name="ime" autocomplete="name" class="input" />
+        </label>
+        <label class="field">
+          <span class="label">{c.phone}</span>
+          <input required type="tel" name="telefon" autocomplete="tel" class="input" />
+        </label>
+        <label class="field">
+          <span class="label">{c.place}</span>
+          <input required type="text" name="mesto" class="input" />
+        </label>
+        {
+          quoteTabs.map((t, ti) => (
+            <div class="group" data-group={ti} hidden={ti !== 0}>
+              {t.fields.map((f) => {
+                const name = `${t.key}.${f.k}`;
+                const id = `q-${t.key}-${f.k}`;
+                const span = f.full ? '1 / -1' : 'auto';
+                if (f.type === 'chips') {
+                  return (
+                    <div class="field" style={`grid-column:${span}`} role="group" aria-labelledby={`${id}-l`} data-chips={name}>
+                      <span class="label" id={`${id}-l`}>{f.label}</span>
+                      <span class="chips">
+                        {f.options!.map((o) => (
+                          <button type="button" class="pill chip" aria-pressed="false" data-chip={o}>
+                            {o}
+                          </button>
+                        ))}
+                      </span>
+                      <input type="hidden" name={name} value="" />
+                    </div>
+                  );
+                }
+                return (
+                  <label class="field" style={`grid-column:${span}`}>
+                    <span class="label">{f.label}</span>
+                    {f.type === 'select' ? (
+                      <select name={name} class="input select">
+                        {f.options!.map((o) => (
+                          <option value={o}>{o}</option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input type={f.type} name={name} class:list={['input', { date: f.type === 'date' }]} />
+                    )}
+                  </label>
+                );
+              })}
+            </div>
+          ))
+        }
+        <label class="field full">
+          <span class="label">{c.message}</span>
+          <textarea rows="3" name="poruka" class="input area"></textarea>
+        </label>
+        <label class="consent">
+          <input required type="checkbox" name="saglasnost" />
+          <span>{c.consent} <a href="#">{c.consentLink}</a>.</span>
+        </label>
+        <div class="trap" aria-hidden="true">
+          <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+        </div>
+        <div class="actions">
+          <button type="submit" class="pill submit">{c.submit} <Icon name="arrow" /></button>
+          <span class="urgent">{c.urgent}</span>
+        </div>
+        <p class="error" role="alert" hidden data-quote-error>{c.error}</p>
+      </form>
+
+      <div class="sent" hidden data-quote-sent tabindex="-1">
+        <span class="check"><Icon name="check" /></span>
+        <span class="display caps thanks">{c.thanks}</span>
+        <p class="thanks-text">{c.thanksText}</p>
+        <button type="button" class="again" data-quote-again>{c.again} <Icon name="arrow" /></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .quote { background: var(--ink); padding: var(--section-pad); }
+  .grid {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: 48px clamp(32px, 6vw, 96px);
+    align-items: start;
+  }
+  .amber { color: var(--amber); }
+  .stone { color: var(--stone); }
+  .side { display: flex; flex-direction: column; gap: 28px; }
+  .intro { max-width: 480px; }
+  .contacts { display: flex; flex-direction: column; border-top: 1px solid rgba(241, 238, 231, .14); }
+  .contact { display: flex; justify-content: space-between; gap: 16px; padding: 18px 0; border-bottom: 1px solid rgba(241, 238, 231, .14); }
+  .contact-label { font-size: 15px; color: var(--muted); }
+  .contact-value { font-family: var(--f-mono); font-size: 14px; }
+  .chat { display: flex; gap: 10px; flex-wrap: wrap; }
+  .chat-btn { height: 48px; padding: 0 20px; border: 1px solid rgba(241, 238, 231, .25); font-size: 14px; font-weight: 500; }
+
+  .panel {
+    background: var(--raised);
+    border: 1px solid rgba(241, 238, 231, .08);
+    border-radius: 28px;
+    padding: clamp(24px, 3vw, 44px);
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+  .tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tab {
+    height: 42px;
+    padding: 0 16px;
+    border: 1px solid rgba(241, 238, 231, .22);
+    background: transparent;
+    color: var(--paper);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background .3s, color .3s;
+  }
+  .tab.on { background: var(--amber); color: var(--ink); border-color: var(--amber); }
+
+  .form { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 26px 28px; }
+  .group { display: contents; }
+  .field { display: flex; flex-direction: column; gap: 10px; }
+  .field.full { grid-column: 1 / -1; }
+  .label { font-family: var(--f-mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .input {
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid rgba(241, 238, 231, .22);
+    padding: 8px 0 12px;
+    font-size: 17px;
+    outline: none;
+    color: var(--paper);
+    border-radius: 0;
+  }
+  .input:focus { border-bottom-color: var(--amber); }
+  .select { cursor: pointer; }
+  .date { color-scheme: dark; }
+  .area { resize: vertical; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    height: 40px;
+    padding: 0 16px;
+    border: 1px solid rgba(241, 238, 231, .22);
+    background: transparent;
+    color: var(--paper);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background .3s, color .3s;
+  }
+  .chip.on { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+
+  .consent { grid-column: 1 / -1; display: flex; gap: 12px; align-items: flex-start; font-size: 14px; line-height: 1.5; color: var(--muted); cursor: pointer; }
+  .consent input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--amber); flex: none; }
+  .consent a { color: var(--paper); text-decoration: underline; text-underline-offset: 3px; }
+  .trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+  .submit { gap: 14px; height: 54px; padding: 0 28px; background: var(--amber); color: var(--ink); font-weight: 600; font-size: 16px; border: 0; cursor: pointer; }
+  .submit:hover { background: var(--amber-hover); }
+  .urgent { font-size: 13px; color: var(--muted); }
+  .error { grid-column: 1 / -1; margin: 0; font-size: 14px; color: var(--amber); }
+
+  .sent { display: flex; flex-direction: column; gap: 20px; padding: 24px 0; outline: none; }
+  .check { flex: none; width: 56px; height: 56px; border-radius: 50%; background: var(--amber); color: var(--ink); display: grid; place-items: center; }
+  .thanks { font-size: clamp(34px, 3vw, 48px); line-height: .9; }
+  .thanks-text { margin: 0; font-size: 17px; line-height: 1.6; color: var(--stone); max-width: 460px; }
+  .again {
+    align-self: flex-start;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--amber);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+</style>

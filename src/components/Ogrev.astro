@@ -1,0 +1,106 @@
+---
+import Icon from './Icon.astro';
+import { getCopy, type Locale } from '../i18n';
+import { getContent } from '../content';
+import { seasonFor } from '../scripts/season-data';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = getCopy(locale).ogrev;
+const { seasons } = getContent(locale);
+// Rendered for the build date; the browser swaps in the current season on load.
+const s = seasonFor(seasons, new Date().getMonth());
+---
+
+<section id="ogrev" class="ogrev" lang={locale === 'sk' ? 'sr-Latn' : undefined}>
+  <div class="wrap">
+    <div class="season" data-reveal="0" data-season data-seasons={JSON.stringify(seasons)}>
+      <div class="season-copy">
+        <span class="kicker">{c.seasonKicker} · <span data-season-label>{s.label}</span></span>
+        <span class="display caps season-text" data-season-text>{s.text}</span>
+      </div>
+      <div class="season-cta">
+        <button type="button" class="pill season-btn" data-season-btn><span data-season-btn-label>{s.btn}</span> <Icon name="arrow" /></button>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="stack-22" data-reveal="0">
+        <span class="eyebrow amber">{c.eyebrow}</span>
+        <h2 class="display caps title">{c.title}</h2>
+        <p class="lead stone intro">{c.lead}</p>
+      </div>
+      <div class="fuels" data-reveal="120">
+        {
+          c.fuels.map((f) => (
+            <div class="fuel">
+              <span class="fuel-name">{f.name}</span>
+              <span class="fuel-unit">{f.unit}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="mines-wrap" data-reveal="0">
+      <span class="mines-label">{c.minesLabel}</span>
+      <div class="display caps mines">
+        {
+          c.mines.map((m, i) => (
+            <>
+              {i > 0 && <span class="amber">/</span>}
+              <span class="mine">{m}</span>
+            </>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ogrev { background: var(--ink); padding: var(--section-pad); }
+  .wrap { max-width: 1440px; margin: 0 auto; display: flex; flex-direction: column; gap: clamp(40px, 6vh, 72px); }
+  .amber { color: var(--amber); }
+  .stone { color: var(--stone); }
+
+  .season {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr));
+    gap: 28px 56px;
+    align-items: end;
+    padding: clamp(28px, 4vw, 60px);
+    border-radius: 28px;
+    background: var(--raised);
+    border: 1px solid rgba(241, 238, 231, .08);
+  }
+  .season-copy { display: flex; flex-direction: column; gap: 20px; }
+  .kicker { font-family: var(--f-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--amber); }
+  .season-text { font-size: clamp(30px, min(3.4vw, 6vh), 56px); line-height: .9; }
+  .season-cta { display: flex; justify-content: flex-start; }
+  .season-btn { gap: 14px; height: 54px; padding: 0 26px; background: var(--amber); color: var(--ink); font-weight: 600; font-size: 16px; border: 0; cursor: pointer; }
+  .season-btn:hover { background: var(--amber-hover); }
+
+  .main { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 40px clamp(32px, 6vw, 96px); }
+  .title { margin: 0; font-size: clamp(36px, min(4.4vw, 7vh), 76px); line-height: .88; }
+  .intro { max-width: 520px; }
+  .fuels { display: flex; flex-direction: column; border-top: 1px solid rgba(241, 238, 231, .14); }
+  .fuel { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 16px 0; border-bottom: 1px solid rgba(241, 238, 231, .14); }
+  .fuel-name { font-family: var(--f-display); font-weight: 700; font-stretch: 80%; text-transform: uppercase; font-size: 22px; }
+  .fuel-unit { font-family: var(--f-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+
+  .mines-wrap { display: flex; flex-direction: column; gap: 18px; }
+  .mines-label { font-family: var(--f-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .mines {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: clamp(16px, 2vw, 32px);
+    row-gap: 6px;
+    font-size: clamp(30px, min(3.8vw, 6.4vh), 64px);
+    line-height: .95;
+    color: var(--secondary);
+  }
+  .mine { color: var(--paper); }
+</style>

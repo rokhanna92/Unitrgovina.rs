@@ -1,0 +1,130 @@
+---
+import Icon from './Icon.astro';
+import Photo from './Photo.astro';
+import { getCopy, type Locale } from '../i18n';
+import { getContent } from '../content';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = getCopy(locale).services;
+const { services } = getContent(locale);
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<section id="usluge" class="services" lang={locale === 'sk' ? 'sr-Latn' : undefined} data-services>
+  <div class="wrap">
+    <div class="section-head head">
+      <div class="stack-22" data-reveal="0">
+        <span class="eyebrow ink-2">{c.eyebrow}</span>
+        <h2 class="display caps h2">{c.title}</h2>
+      </div>
+      <p class="lead ink-2 intro" data-reveal="120">{c.lead}</p>
+    </div>
+    <div class="list">
+      {
+        services.map((s, i) => (
+          <div class:list={['row', { open: i === 0 }]} data-svc>
+            <button type="button" class="toggle" aria-expanded={i === 0 ? 'true' : 'false'} aria-controls={`usluga-${i + 1}`}>
+              <span class="n">{pad(i + 1)}</span>
+              <span class="titles">
+                <span class="display caps title">{s.title}</span>
+                <span class="line">{s.line}</span>
+              </span>
+              <span class="end">
+                <span class="spec">{s.spec}</span>
+                <span class="plus"><Icon name="plus" /></span>
+              </span>
+            </button>
+            <div class="panel" id={`usluga-${i + 1}`} inert={i !== 0}>
+              <div class="clip">
+                <div class="panel-grid">
+                  <div class="offer">
+                    <span class="offer-label">{c.offer}</span>
+                    <div class="chips">
+                      {s.subs.map((x) => (
+                        <a href={s.href} class="pill chip">{x}</a>
+                      ))}
+                    </div>
+                    <a href={s.href} class="more">{s.cta} <Icon name="arrow" /></a>
+                  </div>
+                  <div class="media">
+                    <Photo id={s.img} placeholder={s.ph} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .services { background: var(--paper); color: var(--ink); padding: var(--section-pad); }
+  .wrap { max-width: 1440px; margin: 0 auto; }
+  .head { margin-bottom: clamp(32px, 5vh, 56px); }
+  .ink-2 { color: var(--muted-light); }
+  .intro { max-width: 520px; }
+
+  .list { border-top: 1px solid rgba(14, 14, 12, .16); }
+  .row { border-bottom: 1px solid rgba(14, 14, 12, .16); }
+  .toggle {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) clamp(220px, 20vw, 300px);
+    align-content: center;
+    gap: clamp(12px, 2vw, 32px);
+    align-items: center;
+    padding: clamp(16px, 1.8vw, 24px) 0;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    text-align: left;
+    color: var(--ink);
+  }
+  .n { font-family: var(--f-mono); font-size: 11px; letter-spacing: .12em; color: var(--muted-light); }
+  .titles {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    align-items: center;
+    column-gap: clamp(20px, 3vw, 48px);
+    row-gap: 6px;
+  }
+  .title { font-size: clamp(30px, min(3.4vw, 5.6vh), 58px); line-height: .9; }
+  .line { font-size: 15px; line-height: 1.5; color: var(--muted-light); max-width: 460px; text-wrap: pretty; }
+  .end { display: flex; align-items: center; justify-content: flex-end; gap: 20px; }
+  .spec { font-family: var(--f-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink); }
+  .plus {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(14, 14, 12, .25);
+    display: grid;
+    place-items: center;
+    background: transparent;
+    color: var(--ink);
+    transition: transform .5s var(--ease-out), background .4s, color .4s;
+  }
+  .open .plus { background: var(--ink); color: var(--paper); transform: rotate(45deg); }
+
+  .panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .8s var(--ease-out); }
+  .open .panel { grid-template-rows: 1fr; }
+  .clip { overflow: hidden; min-height: 0; }
+  .panel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 28px; padding: 4px 0 36px; }
+  .offer { display: flex; flex-direction: column; gap: 18px; }
+  .offer-label { font-family: var(--f-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-light); }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { height: 40px; padding: 0 16px; border: 1px solid rgba(14, 14, 12, .2); font-size: 14px; font-weight: 500; }
+  .more { margin-top: 8px; font-weight: 600; font-size: 15px; display: inline-flex; align-items: center; gap: 10px; }
+  .media { position: relative; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden; color: var(--muted-light); background: var(--linen); }
+
+  @media (max-width: 899px) {
+    .toggle { grid-template-columns: 32px minmax(0, 1fr) 44px; }
+    .titles { grid-template-columns: minmax(0, 1fr); }
+    .spec { display: none; }
+  }
+</style>

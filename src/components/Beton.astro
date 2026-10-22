@@ -1,0 +1,333 @@
+---
+import Icon from './Icon.astro';
+import { getCopy, type Locale } from '../i18n';
+import { calcConcrete, fmtNum, PUMPS, CALC_ROWS, CALC_DEFAULTS, DEFAULT_PUMP } from '../scripts/concrete';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = getCopy(locale).beton;
+const res = calcConcrete(CALC_DEFAULTS, c.calc);
+const pad = (n: number) => String(n).padStart(2, '0');
+const grid = [10, 20, 30, 40].map((m) => ({ m, b: ((m / 45) * 100).toFixed(1).replace(/\.0$/, '') }));
+---
+
+<section
+  id="beton"
+  class="beton"
+  lang={locale === 'sk' ? 'sr-Latn' : undefined}
+  data-beton
+  data-words={JSON.stringify({ tura: c.calc.tura, ture: c.calc.ture, mixers: c.calc.mixers })}>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="stack-22" data-reveal="0">
+        <span class="eyebrow amber">{c.eyebrow}</span>
+        <h2 class="display caps h2">{c.title}</h2>
+      </div>
+      <p class="lead stone intro" data-reveal="120">{c.lead}</p>
+    </div>
+
+    <div class="cards">
+      <div class="card calc" data-reveal="0">
+        <div class="card-head">
+          <h3 class="h3">{c.calc.title}</h3>
+          <span class="tag">{c.calc.tag}</span>
+        </div>
+        <div class="rows">
+          {
+            CALC_ROWS.map((r) => (
+              <label class="row">
+                <span class="row-top">
+                  <span class="tag">{c.calc.rows[r.k]}</span>
+                  <span class="row-val"><span data-shown={r.k}>{fmtNum(CALC_DEFAULTS[r.k])}</span> <span class="row-unit">{r.unit}</span></span>
+                </span>
+                <input type="range" min={r.min} max={r.max} step={r.step} value={CALC_DEFAULTS[r.k]} data-calc={r.k} />
+              </label>
+            ))
+          }
+        </div>
+        <div class="result">
+          <div class="result-main">
+            <span class="tag">{c.calc.need}</span>
+            <span class="vol-line">
+              <span class="display vol" data-vol>{res.volStr}</span>
+              <span class="vol-unit">m³</span>
+            </span>
+            <span class="trips">{c.calc.of} – <span data-trips>{res.tripsStr}</span></span>
+          </div>
+          <div class="result-bars">
+            <div class="bars" data-bars>
+              {res.bars.map((w) => (
+                <span class="bar"><span style={`width:${w}`} /></span>
+              ))}
+            </div>
+            <span class="caption">{c.calc.segment}</span>
+          </div>
+        </div>
+        <div class="calc-foot">
+          <button type="button" class="quote-btn" data-calc-quote>
+            <span>{c.calc.cta} <span data-vol>{res.volStr}</span> m³</span>
+            <Icon name="arrow" />
+          </button>
+          <span class="note">{c.calc.note}</span>
+        </div>
+      </div>
+
+      <div class="card pump" data-reveal="120">
+        <div class="card-head">
+          <h3 class="h3">{c.pump.title}</h3>
+          <span class="tag">{c.pump.tag}</span>
+        </div>
+        <p class="pump-text">{c.pump.text}</p>
+        <div class="chart">
+          {
+            grid.map((g) => (
+              <div class="gridline" style={`bottom:${g.b}%`}>
+                <span>{g.m} m</span>
+              </div>
+            ))
+          }
+          <div class="masts">
+            {
+              PUMPS.map((m) => (
+                <button type="button" class:list={['mast', { on: `${m} m` === DEFAULT_PUMP }]} aria-label={`${m} m`} data-pump={`${m} m`}>
+                  <span class="boom" style={`height:${((m / 45) * 100).toFixed(1)}%`}>
+                    <span class="tip" />
+                  </span>
+                </button>
+              ))
+            }
+          </div>
+        </div>
+        <div class="pump-labels">
+          {
+            PUMPS.map((m) => (
+              <button type="button" class:list={['pump-label', { on: `${m} m` === DEFAULT_PUMP }]} data-pump={`${m} m`}>
+                {m} m
+              </button>
+            ))
+          }
+        </div>
+        <div class="checklist">
+          <span class="tag amber">{c.pump.before}</span>
+          <div class="checks">
+            {c.pump.checklist.map((t) => <span>{t}</span>)}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="special">
+      <div class="special-head">
+        <h3 class="display caps special-title" data-reveal="0">{c.special.title}</h3>
+        <p class="special-text" data-reveal="100">{c.special.text}</p>
+      </div>
+      <div class="special-grid" data-reveal="0">
+        {
+          c.special.items.map((s, i) => (
+            <div class="cell">
+              <span class="cell-n">{pad(i + 1)}</span>
+              <span class="cell-title">{s.title}</span>
+              <span class="cell-text">{s.text}</span>
+            </div>
+          ))
+        }
+      </div>
+      <div class="floors" data-reveal="0">
+        <div class="floors-copy">
+          <span class="tag amber">{c.floors.tag}</span>
+          <span class="display caps floors-title">{c.floors.title}</span>
+          <span class="floors-text">{c.floors.text}</span>
+        </div>
+        <div class="floors-side">
+          <div class="works">
+            {c.floors.works.map((w) => <span class="work">{w}</span>)}
+          </div>
+          <button type="button" class="pill floor-btn" data-floor-quote>{c.floors.cta} <Icon name="arrow" /></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .beton { background: var(--ink); padding: var(--section-pad); }
+  .wrap { max-width: 1440px; margin: 0 auto; display: flex; flex-direction: column; gap: clamp(28px, 4.4vh, 48px); }
+  .amber { color: var(--amber); }
+  .stone { color: var(--stone); }
+  .intro { max-width: 560px; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 520px), 1fr)); gap: 16px; }
+  .card {
+    background: var(--raised);
+    border: 1px solid rgba(241, 238, 231, .08);
+    border-radius: 24px;
+    padding: clamp(24px, 3vw, 44px);
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .card.pump { gap: 28px; }
+  .card-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+  .h3 { margin: 0; font-family: var(--f-display); font-weight: 700; font-stretch: 75%; text-transform: uppercase; font-size: clamp(24px, 2vw, 32px); line-height: 1; }
+  .tag { font-family: var(--f-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .tag.amber { color: var(--amber); }
+
+  .rows { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 26px 36px; }
+  .row { display: flex; flex-direction: column; gap: 12px; }
+  .row-top { display: flex; justify-content: space-between; align-items: baseline; }
+  .row-val { font-family: var(--f-mono); font-size: 20px; }
+  .row-unit { font-size: 12px; color: var(--muted); }
+  .row input { width: 100%; margin: 0; height: 22px; cursor: pointer; }
+
+  .result {
+    border-top: 1px solid rgba(241, 238, 231, .1);
+    padding-top: 28px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    align-items: end;
+  }
+  .result-main { display: flex; flex-direction: column; gap: 8px; }
+  .vol-line { display: flex; align-items: baseline; gap: 10px; }
+  .vol { font-size: clamp(56px, min(5vw, 8vh), 88px); line-height: .85; }
+  .vol-unit { font-family: var(--f-display); font-weight: 700; font-size: 28px; color: var(--amber); }
+  .trips { font-size: 15px; color: var(--stone); }
+  .result-bars { display: flex; flex-direction: column; gap: 12px; }
+  .bars { display: flex; gap: 6px; flex-wrap: wrap; }
+  .bars :global(.bar) {
+    flex: 1 1 28px;
+    min-width: 28px;
+    max-width: 72px;
+    height: 10px;
+    border-radius: 99px;
+    background: rgba(241, 238, 231, .12);
+    overflow: hidden;
+    display: block;
+  }
+  .bars :global(.bar span) { display: block; height: 100%; background: var(--amber); border-radius: 99px; transition: width .5s; }
+  .caption { font-family: var(--f-mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+
+  .calc-foot { display: flex; flex-direction: column; gap: 14px; }
+  .quote-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    height: 54px;
+    padding: 0 24px;
+    background: var(--amber);
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 16px;
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .quote-btn:hover { background: var(--amber-hover); }
+  .note { font-size: 13px; color: var(--muted); }
+
+  .pump-text { margin: 0; font-size: 16px; line-height: 1.6; color: var(--stone); }
+  .chart { position: relative; height: 200px; margin-left: 46px; border-bottom: 1px solid rgba(241, 238, 231, .25); }
+  .gridline { position: absolute; left: 0; right: 0; border-top: 1px dashed rgba(241, 238, 231, .1); }
+  .gridline span { position: absolute; left: -46px; top: -7px; font-family: var(--f-mono); font-size: 10px; color: var(--muted); }
+  .masts { position: absolute; inset: 0; display: flex; justify-content: space-around; align-items: flex-end; }
+  .mast {
+    position: relative;
+    height: 100%;
+    width: 72px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    padding: 0;
+  }
+  .boom { position: relative; display: block; width: 2px; background: rgba(241, 238, 231, .35); transition: background .4s; }
+  .tip {
+    position: absolute;
+    top: -7px;
+    left: 50%;
+    width: 14px;
+    height: 14px;
+    margin-left: -7px;
+    border-radius: 50%;
+    background: var(--raised);
+    box-shadow: 0 0 0 2px rgba(241, 238, 231, .5);
+    transition: background .4s;
+  }
+  .mast.on .boom { background: var(--amber); }
+  .mast.on .tip { background: var(--amber); box-shadow: 0 0 0 2px var(--amber); }
+  .pump-labels { margin: -12px 0 0 46px; display: flex; justify-content: space-around; }
+  .pump-label {
+    width: 72px;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    padding: 0;
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-stretch: 80%;
+    font-size: 26px;
+    color: var(--muted);
+    transition: color .4s;
+  }
+  .pump-label.on { color: var(--paper); }
+  .checklist { border-top: 1px solid rgba(241, 238, 231, .1); padding-top: 22px; display: flex; flex-direction: column; gap: 14px; }
+  .checks { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px 24px; font-size: 15px; color: var(--stone); }
+
+  .special { display: flex; flex-direction: column; gap: 28px; }
+  .special-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
+  .special-title { margin: 0; font-size: clamp(30px, min(3.2vw, 5.4vh), 52px); line-height: .9; }
+  .special-text { margin: 0; font-size: 16px; line-height: 1.6; color: var(--muted); max-width: 520px; }
+  .special-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    border-top: 1px solid rgba(241, 238, 231, .12);
+    border-left: 1px solid rgba(241, 238, 231, .12);
+  }
+  .cell {
+    padding: 28px;
+    border-right: 1px solid rgba(241, 238, 231, .12);
+    border-bottom: 1px solid rgba(241, 238, 231, .12);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 0;
+  }
+  .cell-n { font-family: var(--f-mono); font-size: 11px; letter-spacing: .14em; color: var(--amber); }
+  .cell-title { font-family: var(--f-display); font-weight: 700; font-stretch: 80%; text-transform: uppercase; font-size: 24px; line-height: 1.05; }
+  .cell-text { font-size: 15px; line-height: 1.5; color: var(--muted); }
+
+  .floors {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: 24px 48px;
+    align-items: center;
+    padding: clamp(28px, 3vw, 44px);
+    border-radius: 24px;
+    background: var(--raised);
+    border: 1px solid rgba(241, 238, 231, .08);
+  }
+  .floors-copy { display: flex; flex-direction: column; gap: 14px; }
+  .floors-title { font-size: clamp(28px, 2.6vw, 42px); line-height: .92; }
+  .floors-text { font-size: 15px; line-height: 1.6; color: var(--muted); }
+  .floors-side { display: flex; flex-direction: column; gap: 18px; }
+  .works { display: flex; flex-wrap: wrap; gap: 8px; }
+  .work { height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid rgba(241, 238, 231, .18); display: inline-flex; align-items: center; font-size: 14px; }
+  .floor-btn {
+    align-self: flex-start;
+    gap: 14px;
+    height: 52px;
+    padding: 0 24px;
+    border: 1px solid rgba(241, 238, 231, .35);
+    background: transparent;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 15px;
+  }
+  .floor-btn:hover { border-color: var(--paper); }
+</style>

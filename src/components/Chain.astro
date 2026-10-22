@@ -1,0 +1,288 @@
+---
+// "Od reke do temelja": the sticky 3D stage with the hero and the six chain steps scrolling over it.
+import Icon from './Icon.astro';
+import { getCopy, type Locale } from '../i18n';
+import { getContent } from '../content';
+import { site } from '../site';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const copy = getCopy(locale);
+const { hero, chain } = copy;
+const { prices } = getContent(locale);
+const pad = (n: number) => String(n).padStart(2, '0');
+const sk = locale === 'sk' ? 'sk' : undefined;
+---
+
+<div id="top" class="chain" data-chain>
+  <div class="stage" data-stage>
+    <canvas class="canvas" aria-hidden="true" data-canvas></canvas>
+    <div class="shade-x"></div>
+    <div class="shade-y"></div>
+    <div class="labels" data-scene-labels></div>
+    <div class="dim" data-stage-dim></div>
+    <div class="rail" data-rail>
+      <div class="rail-grid">
+        <span class="rail-line"></span>
+        <span class="rail-fill" data-rail-fill></span>
+        {
+          chain.steps.map((s, i) => (
+            <div class="rail-item" data-rail-item>
+              <span class="rail-dot" />
+              <div class="rail-text">
+                <span class="rail-n">{pad(i + 1)}</span>
+                <span class="rail-name">{s.title}</span>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="body">
+    <section class="hero">
+      <a href="#zito" class="card">
+        <span class="card-head">
+          <span class="card-live"><span class="dot"></span>{hero.cardLabel}</span>
+          <span class="card-time">{prices.time}</span>
+        </span>
+        {
+          prices.crops.map((c) => (
+            <span class="card-row">
+              <span class="card-name">{c.name}</span>
+              <span class="card-price">
+                {c.price} <span class="card-unit">{prices.unit}</span>
+              </span>
+            </span>
+          ))
+        }
+      </a>
+      <div class="hero-inner" data-hero-inner>
+        <div class="coords">
+          <span class="square"></span>
+          <span>{hero.coords}</span>
+          <span>·</span>
+          <span>{hero.place}</span>
+          <span>·</span>
+          <span>{hero.since}</span>
+        </div>
+        <div class="display caps headline" lang={sk}>
+          <span>{hero.display[0]}</span>
+          <span class="amber">{hero.display[1]}</span>
+        </div>
+        <div class="hero-row" lang={sk}>
+          <div class="hero-copy">
+            <h1>{hero.h1}</h1>
+            <p>{hero.sub}</p>
+          </div>
+          <div class="btns">
+            <a href="#ponuda" class="pill btn btn-amber">{hero.cta} <Icon name="arrow" /></a>
+            <a href={site.tel} class="pill btn btn-line">{hero.call}</a>
+          </div>
+        </div>
+        <div class="ticker">
+          <div class="ticker-track">
+            {
+              [false, true].map((dup) => (
+                <span class="ticker-run" aria-hidden={dup ? 'true' : undefined}>
+                  {hero.ticker.map((t) => (
+                    <>
+                      <span>{t}</span>
+                      <span class="amber">/</span>
+                    </>
+                  ))}
+                </span>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {
+      chain.steps.map((s, i) => (
+        <section class="step">
+          <div class:list={['step-inner', { last: i === 5 }]} data-step>
+            <div class="eyebrow step-head">
+              <span class="amber">{pad(i + 1)} / 06</span>
+              <span class="muted">{chain.kicker}</span>
+            </div>
+            <h2 class="display caps h2">{s.title}</h2>
+            <p class="lead step-text">{s.text}</p>
+            {i < 5 ? (
+              <span class="step-meta">{s.meta}</span>
+            ) : (
+              <div class="step-btns">
+                <a href="#ponuda" class="pill btn btn-amber small">{chain.cta} <Icon name="arrow" /></a>
+                <a href="#beton" class="pill btn btn-line small">{chain.more}</a>
+              </div>
+            )}
+          </div>
+        </section>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .chain { position: relative; }
+  .amber { color: var(--amber); }
+  .muted { color: var(--muted); }
+
+  .stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--ink);
+    z-index: 0;
+    transform-origin: 50% 0%;
+    will-change: transform;
+  }
+  .canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .shade-x {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(90deg, rgba(14, 14, 12, .82) 0%, rgba(14, 14, 12, .42) 34%, rgba(14, 14, 12, 0) 60%);
+  }
+  .shade-y {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(0deg, rgba(14, 14, 12, .95) 0%, rgba(14, 14, 12, 0) 34%),
+      linear-gradient(180deg, rgba(14, 14, 12, .7) 0%, rgba(14, 14, 12, 0) 20%);
+  }
+  .labels { position: absolute; inset: 0; pointer-events: none; }
+  .dim { position: absolute; inset: 0; z-index: 3; background: var(--ink); opacity: 0; pointer-events: none; }
+
+  .rail { position: absolute; left: var(--gutter); right: var(--gutter); bottom: 36px; opacity: 0; pointer-events: none; }
+  .rail-grid { position: relative; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
+  .rail-line { position: absolute; left: 0; right: 0; top: 4px; height: 1px; background: rgba(241, 238, 231, .16); }
+  /* scaled, not resized, so the scroll loop only writes transform */
+  .rail-fill { position: absolute; left: 0; top: 4px; height: 1px; width: 83.4%; background: var(--amber); transform: scaleX(0); transform-origin: 0 50%; }
+  .rail-item { position: relative; display: flex; flex-direction: column; gap: 14px; color: rgba(241, 238, 231, .5); transition: color .5s; }
+  .rail-dot {
+    flex: none;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--ink);
+    box-shadow: 0 0 0 1px rgba(241, 238, 231, .4);
+    transition: background .5s, box-shadow .5s;
+  }
+  .rail-item.is-done { color: var(--muted); }
+  .rail-item.is-on { color: var(--paper); }
+  .rail-item:is(.is-on, .is-done) .rail-dot { background: var(--amber); box-shadow: 0 0 0 1px var(--amber); }
+  .rail-text { display: flex; gap: 10px; align-items: baseline; }
+  .rail-n { font-family: var(--f-mono); font-size: 10px; letter-spacing: .12em; }
+  .rail-name { font-size: 13px; }
+
+  .body { position: relative; z-index: 1; margin-top: -100vh; }
+
+  .hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 96px var(--gutter) 0;
+  }
+  .card {
+    position: absolute;
+    z-index: 2;
+    top: 104px;
+    right: var(--gutter);
+    width: 286px;
+    padding: 18px 20px;
+    border-radius: 18px;
+    background: rgba(20, 20, 17, .94);
+    border: 1px solid rgba(241, 238, 231, .12);
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+  }
+  :global(html.room) .card { display: flex; }
+  .card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--f-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+  .card-live { display: flex; align-items: center; gap: 8px; }
+  .dot { flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+  .card-time { color: var(--muted); }
+  .card-row { display: flex; justify-content: space-between; align-items: baseline; border-top: 1px solid rgba(241, 238, 231, .08); padding-top: 10px; }
+  .card-name { font-size: 14px; }
+  .card-price { font-family: var(--f-mono); font-size: 15px; }
+  .card-unit { font-size: 10px; color: var(--muted); }
+
+  .hero-inner { display: flex; flex-direction: column; gap: clamp(22px, 3.6vh, 40px); will-change: opacity, transform; }
+  .coords {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    font-family: var(--f-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .square { width: 8px; height: 8px; background: var(--amber); }
+  .headline { font-size: clamp(44px, min(8.6vw, 14.5vh), 150px); line-height: .84; letter-spacing: -.005em; }
+  .headline span { display: block; }
+  .hero-row { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 28px; }
+  .hero-copy { display: flex; flex-direction: column; gap: 8px; max-width: 540px; }
+  h1 { margin: 0; font-size: clamp(17px, 1.5vw, 21px); font-weight: 500; line-height: 1.4; }
+  .hero-copy p { margin: 0; font-size: clamp(15px, 1.2vw, 17px); color: var(--muted); }
+
+  .btns, .step-btns { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn { height: 52px; padding: 0 24px; font-size: 16px; }
+  .btn.small { font-size: 15px; }
+  .btn-amber { gap: 14px; background: var(--amber); color: var(--ink); font-weight: 600; }
+  .btn-line { border: 1px solid rgba(241, 238, 231, .3); font-weight: 500; }
+
+  .ticker { margin: 0 calc(-1 * var(--gutter)); border-top: 1px solid rgba(241, 238, 231, .12); overflow: hidden; padding: 18px 0 20px; }
+  .ticker-track {
+    display: flex;
+    width: max-content;
+    font-family: var(--f-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--stone);
+    white-space: nowrap;
+    animation: ticker 52s linear infinite;
+  }
+  .ticker-run { display: flex; gap: 28px; padding-right: 28px; }
+  @keyframes ticker { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-track { animation: none; }
+  }
+
+  .step { height: 100vh; display: flex; align-items: center; padding: 0 var(--gutter); }
+  .step-inner { max-width: 480px; display: flex; flex-direction: column; gap: 20px; }
+  .step-inner.last { max-width: 500px; }
+  :global(html.js) .step-inner { opacity: 0; }
+  .step-head { display: flex; gap: 14px; }
+  .step-text { color: var(--stone); }
+  .step-meta { font-family: var(--f-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .step-btns { padding-top: 6px; }
+
+  @media (max-width: 899px) {
+    .rail { bottom: 96px; }
+    .rail-name { display: none; }
+    .step { align-items: flex-end; padding-bottom: 150px; }
+  }
+</style>

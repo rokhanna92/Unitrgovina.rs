@@ -1,0 +1,158 @@
+---
+import Icon from './Icon.astro';
+import { getCopy, type Locale } from '../i18n';
+import { getContent } from '../content';
+import { site } from '../site';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = getCopy(locale).zito;
+const { prices } = getContent(locale);
+const pad = (n: number) => String(n).padStart(2, '0');
+const now = new Date();
+const date = `${pad(now.getDate())}.${pad(now.getMonth() + 1)}.${now.getFullYear()}.`;
+const DIGITS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+---
+
+<section id="zito" class="zito" lang={locale === 'sk' ? 'sr-Latn' : undefined}>
+  <div class="grid">
+    <div class="copy">
+      <div class="stack-22" data-reveal="0">
+        <span class="eyebrow">{c.eyebrow}</span>
+        <h2 class="display caps title">{c.title}</h2>
+      </div>
+      <p class="lead text" data-reveal="100">{c.lead}</p>
+      <div class="steps" data-reveal="160">
+        {
+          c.steps.map((s, i) => (
+            <div class="step">
+              <span class="step-n">{pad(i + 1)}</span>
+              <span class="step-t">{s}</span>
+            </div>
+          ))
+        }
+      </div>
+      <div class="btns" data-reveal="220">
+        <a href="#ponuda" class="pill btn dark">{c.cta} <Icon name="arrow" /></a>
+        <a href={site.tel} class="pill btn line">{c.call}</a>
+      </div>
+      <span lang="sk" class="slovak">{c.slovak}</span>
+    </div>
+
+    <div class="board" data-reveal="120" data-board>
+      <div class="board-head">
+        <div class="board-title">
+          <span class="bt">{c.board.title}</span>
+          {/* word spacing comes from the 8px flex gap, as in the reference */}
+          <span class="updated"><span class="dot"></span><span>{c.board.updated}</span><span data-today>{date}</span><span>{c.board.at}</span><span>{prices.time}</span></span>
+        </div>
+        <span class="unit">{prices.unit}</span>
+      </div>
+      <div class="rows">
+        {
+          prices.crops.map((crop, ci) => (
+            <div class="row">
+              <div class="crop">
+                <span class="crop-name">{crop.name}</span>
+                <span class="crop-cond">{c.board.conditions}</span>
+              </div>
+              <span class="sr-only">{crop.price} {prices.unit}</span>
+              <span class="price" aria-hidden="true">
+                {crop.price.split('').map((ch, k) =>
+                  /\d/.test(ch) ? (
+                    <span class="cell">
+                      <span class="roll" style={`--d:${ch};transition-delay:${ci * 160 + k * 90}ms`}>
+                        {DIGITS.map((d) => (
+                          <span>{d}</span>
+                        ))}
+                      </span>
+                    </span>
+                  ) : (
+                    <span class="sep">{ch}</span>
+                  ),
+                )}
+              </span>
+            </div>
+          ))
+        }
+      </div>
+      <div class="board-foot">
+        <span class="board-note">{c.board.note}</span>
+        <a href={site.viber} class="pill viber">{c.board.viber}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .zito { background: var(--amber); color: var(--ink); padding: var(--section-pad); }
+  .grid {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr));
+    gap: 56px clamp(40px, 6vw, 104px);
+    align-items: center;
+  }
+  .copy { display: flex; flex-direction: column; gap: 28px; }
+  .title { margin: 0; font-size: clamp(36px, min(4.6vw, 7.4vh), 80px); line-height: .88; }
+  .text { color: var(--warm-1); max-width: 560px; }
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 0 28px; }
+  .step { display: flex; gap: 14px; padding: 16px 0; border-top: 1px solid rgba(14, 14, 12, .25); }
+  .step-n { font-family: var(--f-mono); font-size: 11px; padding-top: 3px; }
+  .step-t { font-size: 15px; line-height: 1.5; }
+  .btns { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn { height: 52px; padding: 0 24px; font-size: 16px; }
+  .btn.dark { gap: 14px; background: var(--ink); color: var(--paper); font-weight: 600; }
+  .btn.line { border: 1px solid rgba(14, 14, 12, .5); font-weight: 500; }
+  .slovak { font-family: var(--f-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--warm-2); }
+
+  .board {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 28px;
+    padding: clamp(26px, 3vw, 44px);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    box-shadow: 0 40px 80px -30px rgba(60, 40, 0, .45);
+  }
+  .board-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+  .board-title { display: flex; flex-direction: column; gap: 8px; }
+  .bt { font-family: var(--f-display); font-weight: 700; font-stretch: 75%; text-transform: uppercase; font-size: clamp(24px, 2.2vw, 32px); line-height: 1; }
+  .updated, .unit { font-family: var(--f-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .updated { display: flex; align-items: center; gap: 8px; }
+  .dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+  .rows { display: flex; flex-direction: column; }
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 0; border-top: 1px solid rgba(241, 238, 231, .1); }
+  .crop { display: flex; flex-direction: column; gap: 6px; }
+  .crop-name { font-family: var(--f-display); font-weight: 700; font-stretch: 80%; text-transform: uppercase; font-size: clamp(24px, 2.4vw, 34px); line-height: 1; }
+  .crop-cond { font-size: 13px; color: var(--muted); }
+  .price {
+    display: flex;
+    font-family: var(--f-mono);
+    font-size: clamp(30px, 2.8vw, 44px);
+    line-height: 1;
+    height: 1em;
+    overflow: hidden;
+    color: var(--amber);
+  }
+  .cell { display: block; height: 1em; overflow: hidden; }
+  .sep { display: block; height: 1em; }
+  .roll { display: flex; flex-direction: column; transform: translateY(0); transition: transform 1.8s var(--ease-out); }
+  .roll > span { height: 1em; }
+  :global(.is-live) .roll { transform: translateY(calc(var(--d) * -10%)); }
+  .board-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    border-top: 1px solid rgba(241, 238, 231, .1);
+    padding-top: 22px;
+  }
+  .board-note { font-size: 13px; color: var(--muted); max-width: 260px; }
+  .viber { height: 46px; padding: 0 20px; border: 1px solid rgba(241, 238, 231, .3); font-weight: 500; font-size: 14px; }
+</style>
