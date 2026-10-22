@@ -1,0 +1,5 @@
+[
+  { "name": "Padina", "addr": "Save Kovačevića 93, 26215 Padina", "what": "Stovarište, betonska baza i laboratorija", "tel": "063 667 570", "href": "tel:+38163667570", "lat": 45.13238, "lon": 20.731 },
+  { "name": "Samoš", "addr": "Samoš, opština Kovačica", "what": "Stovarište građevinskog materijala i ogreva", "tel": "013 675 045", "href": "tel:+38113675045", "lat": 45.2036, "lon": 20.7781 },
+  { "name": "Jarkovac", "addr": "Jarkovac, kanal DTD", "what": "Šljunkara i separacija, preuzimanje agregata", "tel": "063 667 570", "href": "tel:+38163667570", "lat": 45.2667, "lon": 20.7667 }
+]
