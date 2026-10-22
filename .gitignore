@@ -6,3 +6,10 @@ dist/
 !.env.example
 .DS_Store
 *.log
+
+# Project-specific additions
+.design/
+design/
+CLAUDE.md
+PROMPT.md
+README.md
