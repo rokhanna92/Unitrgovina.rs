@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Unitrgovina — Beton, šljunak i građevinski materijal · Padina, Kovačica</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Gotov beton MB10–MB50 iz sopstvene laboratorije, sa atestom IMS-a. Sopstvena separacija šljunka, stovarišta u Padini i Samošu, otkup žitarica i ogrev sa dostavom.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Instrument+Sans:ital,wdth,wght@0,75..100,400..700;1,75..100,400..700&family=Geist+Mono:wght@400;500&display=swap">
+<script src="./image-slot.js"></script>
+<style>
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#0E0E0C;color:#F1EEE7;font-family:'Instrument Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+*{box-sizing:border-box}
+a{color:inherit;text-decoration:none;transition:opacity .25s}
+a:hover{color:inherit;opacity:.72}
+::selection{background:#E3A83F;color:#0E0E0C}
+input,select,textarea,button{font:inherit;color:inherit}
+input[type=range]{accent-color:#E3A83F}
+select option{background:#171714;color:#F1EEE7}
+</style>
+</helmet>
+<div ref="{{ rootRef }}" style="background:#0E0E0C;color:#F1EEE7;overflow-x:clip">
+
+<header style="position:fixed;top:0;left:0;right:0;z-index:50;height:72px;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:0 clamp(20px,4vw,56px);background:{{ hdrBg }};backdrop-filter:{{ hdrBlur }};border-bottom:1px solid {{ hdrLine }};transition:background .5s,border-color .5s">
+  <a href="#top" aria-label="Unitrgovina — početna" style="display:flex;align-items:center;gap:12px;flex:none">
+    <span style="font-family:'Archivo',sans-serif;font-weight:700;font-stretch:112%;letter-spacing:.18em;font-size:15px">UNITRGOVINA</span>
+  </a>
+  <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
+    <nav style="display:flex;align-items:center;gap:clamp(16px,2.2vw,34px)">
+      <sc-for list="{{ nav }}" as="n" hint-placeholder-count="5">
+        <a href="{{ n.href }}" style="display:flex;align-items:baseline;font-size:14px;font-weight:500">{{ n.t }}
+        </a>
+      </sc-for>
+    </nav>
+  </sc-if>
+  <div style="display:flex;align-items:center;gap:14px;flex:none">
+    <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
+      <a href="tel:+38163667570" style="font-family:'Geist Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.06em">063 667 570</a>
+    </sc-if>
+    <div style="display:flex;padding:3px;border:1px solid rgba(241,238,231,.18);border-radius:999px">
+      <button onClick="{{ setSr }}" style="border:0;cursor:pointer;height:28px;padding:0 10px;border-radius:999px;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.08em;background:{{ srBg }};color:{{ srFg }};transition:background .3s">SR</button>
+      <button onClick="{{ setSk }}" style="border:0;cursor:pointer;height:28px;padding:0 10px;border-radius:999px;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.08em;background:{{ skBg }};color:{{ skFg }};transition:background .3s">SK</button>
+    </div>
+    <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
+      <a href="#ponuda" style="display:inline-flex;align-items:center;justify-content:center;line-height:1;height:42px;padding:0 20px;border-radius:999px;background:#E3A83F;color:#0E0E0C;font-weight:600;font-size:14px">
+        <sc-if value="{{ sr }}" hint-placeholder-val="{{ true }}">Zatražite ponudu</sc-if>
+        <sc-if value="{{ sk }}" hint-placeholder-val="{{ false }}">Vyžiadajte si ponuku</sc-if>
+      </a>
+    </sc-if>
+    <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+      <button onClick="{{ toggleMenu }}" style="display:inline-flex;align-items:center;justify-content:center;line-height:1;height:40px;padding:0 16px;border-radius:999px;border:1px solid rgba(241,238,231,.25);background:transparent;cursor:pointer;font-size:14px;font-weight:500">{{ menuLabel }}</button>
+    </sc-if>
+  </div>
+</header>
+
+<sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:45;background:#0E0E0C;padding:110px clamp(20px,4vw,56px) 120px;display:flex;flex-direction:column;gap:8px;overflow:auto">
+    <sc-for list="{{ nav }}" as="n" hint-placeholder-count="5">
+      <a href="{{ n.href }}" onClick="{{ closeMenu }}" style="display:flex;align-items:baseline;gap:16px;padding:14px 0;border-bottom:1px solid rgba(241,238,231,.1)">
+        <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;color:#E3A83F">{{ n.n }}</span>
+        <span style="font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:52px;line-height:.9">{{ n.t }}</span>
+      </a>
+    </sc-for>
+    <a href="tel:+38163667570" style="margin-top:28px;font-family:'Geist Mono',ui-monospace,monospace;font-size:14px;letter-spacing:.08em;color:#A3A097">063 667 570 · Pon–sub 07–17h</a>
+  </div>
+</sc-if>
+
+<div id="top" ref="{{ chainRef }}" style="position:relative">
+  <div ref="{{ stageRef }}" style="position:sticky;top:0;height:100vh;overflow:hidden;background:#0E0E0C;z-index:0;transform-origin:50% 0%;will-change:transform">
+    <canvas ref="{{ canvasRef }}" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas>
+    <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(14,14,12,.82) 0%,rgba(14,14,12,.42) 34%,rgba(14,14,12,0) 60%)"></div>
+    <div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(0deg,rgba(14,14,12,.95) 0%,rgba(14,14,12,0) 34%),linear-gradient(180deg,rgba(14,14,12,.7) 0%,rgba(14,14,12,0) 20%)"></div>
+    <div ref="{{ labelsRef }}" style="position:absolute;inset:0;pointer-events:none"></div>
+    <div ref="{{ stageDim }}" style="position:absolute;inset:0;z-index:3;background:#0E0E0C;opacity:0;pointer-events:none"></div>
+    <div ref="{{ railRef }}" style="position:absolute;left:clamp(20px,4vw,56px);right:clamp(20px,4vw,56px);bottom:{{ railBottom }};opacity:0;pointer-events:none">
+      <div style="position:relative;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px">
+        <span style="position:absolute;left:0;right:0;top:4px;height:1px;background:rgba(241,238,231,.16)"></span>
+        <span ref="{{ railFill }}" style="position:absolute;left:0;top:4px;height:1px;width:0;background:#E3A83F"></span>
+        <sc-for list="{{ rail }}" as="r" hint-placeholder-count="6">
+          <div data-rail-item="1" style="position:relative;display:flex;flex-direction:column;gap:14px;color:rgba(241,238,231,.5);transition:color .5s">
+            <span data-rail-dot="1" style="flex:none;width:9px;height:9px;border-radius:50%;background:#0E0E0C;box-shadow:0 0 0 1px rgba(241,238,231,.4);transition:background .5s,box-shadow .5s"></span>
+            <div style="display:flex;gap:10px;align-items:baseline">
+              <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.12em">{{ r.n }}</span>
+              <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}"><span style="font-size:13px">{{ r.name }}</span></sc-if>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:relative;z-index:1;margin-top:-100vh">
+    <section style="position:relative;height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:96px clamp(20px,4vw,56px) 0">
+      <sc-if value="{{ showHeroCard }}" hint-placeholder-val="{{ false }}">
+        <a href="#zito" style="position:absolute;z-index:2;top:104px;right:clamp(20px,4vw,56px);width:286px;padding:18px 20px;border-radius:18px;background:rgba(20,20,17,.94);border:1px solid rgba(241,238,231,.12);display:flex;flex-direction:column;gap:12px">
+          <span style="display:flex;justify-content:space-between;align-items:center;font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase">
+            <span style="display:flex;align-items:center;gap:8px"><span style="flex:none;width:6px;height:6px;border-radius:50%;background:#58B67F"></span>Otkup danas</span>
+            <span style="color:#A3A097">{{ boardTime }}</span>
+          </span>
+          <sc-for list="{{ crops }}" as="c" hint-placeholder-count="3">
+            <span style="display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid rgba(241,238,231,.08);padding-top:10px">
+              <span style="font-size:14px">{{ c.name }}</span>
+              <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:15px">{{ c.price }} <span style="font-size:10px;color:#A3A097">din/kg</span></span>
+            </span>
+          </sc-for>
+        </a>
+      </sc-if>
+      <div ref="{{ heroInner }}" style="display:flex;flex-direction:column;gap:clamp(22px,3.6vh,40px);will-change:opacity,transform">
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#A3A097">
+          <span style="width:8px;height:8px;background:#E3A83F"></span>
+          <span>45.13°N / 20.73°E</span>
+          <span>·</span>
+          <span>Padina, Južni Banat</span>
+          <span>·</span>
+          <span>Od 1990.</span>
+        </div>
+        <sc-if value="{{ sr }}" hint-placeholder-val="{{ true }}">
+          <div style="font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(44px,min(8.6vw,14.5vh),150px);line-height:.84;letter-spacing:-.005em">
+            <span style="display:block">Građevinski materijal</span>
+            <span style="display:block;color:#E3A83F">Padina, Kovačica</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:28px">
+            <div style="display:flex;flex-direction:column;gap:8px;max-width:540px">
+              <h1 style="margin:0;font-size:clamp(17px,1.5vw,21px);font-weight:500;line-height:1.4">Beton, šljunak, agregati i ogrev sa dostavom</h1>
+              <p style="margin:0;font-size:clamp(15px,1.2vw,17px);color:#A3A097">Porodična firma iz Padine od 1990.</p>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:12px">
+              <a href="#ponuda" style="display:inline-flex;align-items:center;justify-content:center;line-height:1;gap:14px;height:52px;padding:0 24px;border-radius:999px;background:#E3A83F;color:#0E0E0C;font-weight:600;font-size:16px">Zatražite ponudu <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex:none"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"></path></svg></a>
+              <a href="tel:+38163667570" style="display:inline-flex;align-items:center;justify-content:center;line-height:1;height:52px;padding:0 24px;border-radius:999px;border:1px solid rgba(241,238,231,.3);font-weight:500;font-size:16px">Pozovite 063 667 570</a>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ sk }}" hint-placeholder-val="{{ false }}">
+          <div lang="sk" style="font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(44px,min(8.6vw,14.5vh),150px);line-height:.84;letter-spacing:-.005em">
+            <span style="display:block">Stavebný materiál</span>
+            <span style="display:block;color:#E3A83F">Padina, Kovačica</span>
+          </div>
+          <div lang="sk" style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:28px">
+            <div style="display:flex;flex-direction:column;gap:8px;max-width:540px">
+              <h1 style="margin:0;font-size:clamp(17px,1.5vw,21px);font-weight:500;line-height:1.4">Betón, štrk, kamenivo a palivo s dopravou</h1>
+              <p style="margin:0;font-size:clamp(15px,1.2vw,17px);color:#A3A097">Rodinná firma z Padiny od roku 1990.</p>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:12px">
+              <a href="#ponuda" style="display:inline-flex;align-items:center;justify-content:center;line-height:1;gap:14px;height:52px;padding:0 24px;border-radius:999px;background:#E3A83F;color:#0E0E0C;font-weight:600;font-size:16px">Vyžiadajte si ponuku <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex:none"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"></path></svg></a>
+              <a href="tel:+38163667570" style="display:inline-flex;align-items:center;justify-content:center;line-height:1;height:52px;padding:0 24px;border-radius:999px;border:1px solid rgba(241,238,231,.3);font-weight:500;font-size:16px">Zavolajte nám 063 667 570</a>
+            </div>
+          </div>
+        </sc-if>
+        <div style="margin:0 calc(-1 * clamp(20px,4vw,56px));border-top:1px solid rgba(241,238,231,.12);overflow:hidden;padding:18px 0 20px">
+          <div ref="{{ tickerRef }}" style="display:flex;width:max-content;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#CFCBC2;white-space:nowrap">
+            <span style="display:flex;gap:28px;padding-right:28px">
+              <span>Od 1990.</span><span style="color:#E3A83F">/</span><span>Sopstvena separacija šljunka</span><span style="color:#E3A83F">/</span><span>Laboratorija i IMS atest</span><span style="color:#E3A83F">/</span><span>Pumpe do 42 m</span><span style="color:#E3A83F">/</span><span>Mikseri 9 i 10 m³</span><span style="color:#E3A83F">/</span><span>Gotov beton MB10–MB50</span><span style="color:#E3A83F">/</span><span>Tri prodajna mesta</span><span style="color:#E3A83F">/</span><span>Otkup žitarica po dnevnim cenama</span><span style="color:#E3A83F">/</span>
+            </span>
+            <span aria-hidden="true" style="display:flex;gap:28px;padding-right:28px">
+              <span>Od 1990.</span><span style="color:#E3A83F">/</span><span>Sopstvena separacija šljunka</span><span style="color:#E3A83F">/</span><span>Laboratorija i IMS atest</span><span style="color:#E3A83F">/</span><span>Pumpe do 42 m</span><span style="color:#E3A83F">/</span><span>Mikseri 9 i 10 m³</span><span style="color:#E3A83F">/</span><span>Gotov beton MB10–MB50</span><span style="color:#E3A83F">/</span><span>Tri prodajna mesta</span><span style="color:#E3A83F">/</span><span>Otkup žitarica po dnevnim cenama</span><span style="color:#E3A83F">/</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section data-screen-label="Lanac 01" style="height:100vh;display:flex;align-items:{{ stepAlign }};padding:0 clamp(20px,4vw,56px) {{ stepPadB }}">
+      <div ref="{{ step1 }}" style="max-width:480px;display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;gap:14px;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase"><span style="color:#E3A83F">01 / 06</span><span style="color:#A3A097">Lanac koji je ceo naš</span></div>
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(36px,min(4.8vw,7.6vh),84px);line-height:.88">Separacija Jarkovac</h2>
+        <p style="margin:0;font-size:clamp(15px,1.1vw,18px);line-height:1.6;color:#CFCBC2">Šljunak vadimo i peremo na sopstvenoj separaciji na kanalu DTD.</p>
+        <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#A3A097">Kanal DTD · Jarkovac</span>
+      </div>
+    </section>
+    <section data-screen-label="Lanac 02" style="height:100vh;display:flex;align-items:{{ stepAlign }};padding:0 clamp(20px,4vw,56px) {{ stepPadB }}">
+      <div ref="{{ step2 }}" style="max-width:480px;display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;gap:14px;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase"><span style="color:#E3A83F">02 / 06</span><span style="color:#A3A097">Lanac koji je ceo naš</span></div>
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(36px,min(4.8vw,7.6vh),84px);line-height:.88">Prane frakcije</h2>
+        <p style="margin:0;font-size:clamp(15px,1.1vw,18px);line-height:1.6;color:#CFCBC2">Pesak 0–4 mm i šljunak 4–8, 8–16 i 16–32 mm. Prane frakcije za beton, malter, drenažu i uređenje dvorišta.</p>
+        <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#A3A097">Preuzimanje u Padini, Samošu i Jarkovcu</span>
+      </div>
+    </section>
+    <section data-screen-label="Lanac 03" style="height:100vh;display:flex;align-items:{{ stepAlign }};padding:0 clamp(20px,4vw,56px) {{ stepPadB }}">
+      <div ref="{{ step3 }}" style="max-width:480px;display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;gap:14px;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase"><span style="color:#E3A83F">03 / 06</span><span style="color:#A3A097">Lanac koji je ceo naš</span></div>
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(36px,min(4.8vw,7.6vh),84px);line-height:.88">Laboratorija</h2>
+        <p style="margin:0;font-size:clamp(15px,1.1vw,18px);line-height:1.6;color:#CFCBC2">U laboratoriji naše fabrike betona u Padini kontrolišemo svaku sirovinu i svaku turu betona.</p>
+        <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#A3A097">Granulometrijska analiza · svaka tura</span>
+      </div>
+    </section>
+    <section data-screen-label="Lanac 04" style="height:100vh;display:flex;align-items:{{ stepAlign }};padding:0 clamp(20px,4vw,56px) {{ stepPadB }}">
+      <div ref="{{ step4 }}" style="max-width:480px;display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;gap:14px;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase"><span style="color:#E3A83F">04 / 06</span><span style="color:#A3A097">Lanac koji je ceo naš</span></div>
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(36px,min(4.8vw,7.6vh),84px);line-height:.88">Fabrika betona Padina</h2>
+        <p style="margin:0;font-size:clamp(15px,1.1vw,18px);line-height:1.6;color:#CFCBC2">Radi od 2008. godine. Standardni betoni MB10–MB50, pumpani MB20–MB50 i specijalni betoni – svi atestirani i sertifikovani od strane IMS-a.</p>
+        <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#A3A097">Atest IMS-a za svaki beton</span>
+      </div>
+    </section>
+    <section data-screen-label="Lanac 05" style="height:100vh;display:flex;align-items:{{ stepAlign }};padding:0 clamp(20px,4vw,56px) {{ stepPadB }}">
+      <div ref="{{ step5 }}" style="max-width:480px;display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;gap:14px;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase"><span style="color:#E3A83F">05 / 06</span><span style="color:#A3A097">Lanac koji je ceo naš</span></div>
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(36px,min(4.8vw,7.6vh),84px);line-height:.88">Mikseri i pumpe</h2>
+        <p style="margin:0;font-size:clamp(15px,1.1vw,18px);line-height:1.6;color:#CFCBC2">Beton dovozimo našim auto-mikserima od 9 i 10 m³ i ugrađujemo našim pumpama sa strelom od 28, 36 i 42 m.</p>
+        <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#A3A097">Iz iste baze u Padini</span>
+      </div>
+    </section>
+    <section data-screen-label="Lanac 06" style="height:100vh;display:flex;align-items:{{ stepAlign }};padding:0 clamp(20px,4vw,56px) {{ stepPadB }}">
+      <div ref="{{ step6 }}" style="max-width:500px;display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;gap:14px;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase"><span style="color:#E3A83F">06 / 06</span><span style="color:#A3A097">Lanac koji je ceo naš</span></div>
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(36px,min(4.8vw,7.6vh),84px);line-height:.88">Vaš temelj</h2>
+        <p style="margin:0;font-size:clamp(15px,1.1vw,18px);line-height:1.6;color:#CFCBC2">Jedan dobavljač, jedan atest, jedna odgovornost – od reke do vašeg temelja.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;padding-top:6px">
+          <a href="#ponuda" style="display:inline-flex;align-items:center;justify-content:center;line-height:1;gap:14px;height:52px;padding:0 24px;border-radius:999px;background:#E3A83F;color:#0E0E0C;font-weight:600;font-size:15px">Zatražite ponudu <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex:none"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"></path></svg></a>
+          <a href="#beton" style="display:inline-flex;align-items:center;justify-content:center;line-height:1;height:52px;padding:0 24px;border-radius:999px;border:1px solid rgba(241,238,231,.3);font-weight:500;font-size:15px">Saznajte više o betonu</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div style="position:relative;z-index:2">
+<section data-screen-label="Brojevi" style="position:relative;background:#0E0E0C;color:#F1EEE7;border-top:1px solid rgba(241,238,231,.1);padding:clamp(56px,9vh,96px) clamp(20px,4vw,56px)">
+  <div style="max-width:1440px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:40px 24px">
+    <div data-reveal="0" style="display:flex;flex-direction:column;gap:14px;border-top:1px solid rgba(241,238,231,.16);padding-top:22px">
+      <span style="font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;font-size:clamp(48px,min(5vw,8vh),88px);line-height:.85">1990</span>
+      <span style="font-size:15px;color:#A3A097">Godina osnivanja</span>
+    </div>
+    <div data-reveal="80" style="display:flex;flex-direction:column;gap:14px;border-top:1px solid rgba(241,238,231,.16);padding-top:22px">
+      <span style="font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;font-size:clamp(48px,min(5vw,8vh),88px);line-height:.85"><span data-count="3">3</span></span>
+      <span style="font-size:15px;color:#A3A097">Prodajna mesta</span>
+    </div>
+    <div data-reveal="160" style="display:flex;flex-direction:column;gap:14px;border-top:1px solid rgba(241,238,231,.16);padding-top:22px">
+      <span style="font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;font-size:clamp(48px,min(5vw,8vh),88px);line-height:.85"><span data-count="42">42</span><span style="color:#E3A83F;font-size:.42em;margin-left:6px">m</span></span>
+      <span style="font-size:15px;color:#A3A097">Najduža strela pumpe</span>
+    </div>
+    <div data-reveal="240" style="display:flex;flex-direction:column;gap:14px;border-top:1px solid rgba(241,238,231,.16);padding-top:22px">
+      <span style="font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;font-size:clamp(48px,min(5vw,8vh),88px);line-height:.85"><span data-count="10">10</span><span style="color:#E3A83F;font-size:.42em;margin-left:6px">m³</span></span>
+      <span style="font-size:15px;color:#A3A097">Kapacitet miksera</span>
+    </div>
+    <div data-reveal="320" style="display:flex;flex-direction:column;gap:14px;border-top:1px solid rgba(241,238,231,.16);padding-top:22px">
+      <span style="font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;font-size:clamp(48px,min(5vw,8vh),88px);line-height:.85"><span style="color:#E3A83F;font-size:.42em;margin-right:6px">MB</span>10–50</span>
+      <span style="font-size:15px;color:#A3A097">Klase betona</span>
+    </div>
+  </div>
+</section>
+
+<section id="usluge" data-screen-label="Usluge" style="background:#F1EEE7;color:#0E0E0C;padding:clamp(64px,10vh,120px) clamp(20px,4vw,56px)">
+  <div style="max-width:1440px;margin:0 auto">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:24px clamp(32px,6vw,96px);align-items:end;margin-bottom:clamp(32px,5vh,56px)">
+      <div data-reveal="0" style="display:flex;flex-direction:column;gap:22px">
+        <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#5C5850">02 / Usluge</span>
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(36px,min(4.8vw,7.6vh),84px);line-height:.88">Sve na jednom mestu.</h2>
+      </div>
+      <p data-reveal="120" style="margin:0;font-size:clamp(15px,1.1vw,18px);line-height:1.6;color:#5C5850;max-width:520px">Beton, šljunak, građevinski materijal, armatura, ogrev – od temelja do krova. Jedna firma, sopstvena vozila i isti ljudi godinama.</p>
+    </div>
+    <div style="border-top:1px solid rgba(14,14,12,.16)">
+      <sc-for list="{{ services }}" as="s" hint-placeholder-count="6">
+        <div style="border-bottom:1px solid rgba(14,14,12,.16)">
+          <button onClick="{{ s.toggle }}" style="width:100%;display:grid;grid-template-columns:{{ svcCols }};align-content:center;gap:clamp(12px,2vw,32px);align-items:center;padding:clamp(16px,1.8vw,24px) 0;background:transparent;border:0;cursor:pointer;text-align:left;color:#0E0E0C">
+            <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.12em;color:#5C5850">{{ s.n }}</span>
+            <span style="display:grid;grid-template-columns:{{ svcInner }};align-items:center;column-gap:clamp(20px,3vw,48px);row-gap:6px">
+              <span style="font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(30px,min(3.4vw,5.6vh),58px);line-height:.9">{{ s.title }}</span>
+              <span style="font-size:15px;line-height:1.5;color:#5C5850;max-width:460px;text-wrap:pretty">{{ s.line }}</span>
+            </span>
+            <span style="display:flex;align-items:center;justify-content:flex-end;gap:20px">
+              <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}"><span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#0E0E0C">{{ s.spec }}</span></sc-if>
+              <span style="flex:none;box-sizing:border-box;width:44px;height:44px;border-radius:50%;border:1px solid rgba(14,14,12,.25);display:grid;place-items:center;background:{{ s.plusBg }};color:{{ s.plusFg }};transform:{{ s.plus }};transition:transform .5s cubic-bezier(.16,1,.3,1),background .4s,color .4s"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="display:block"><path d="M8 2v12M2 8h12"></path></svg></span>
+            </span>
+          </button>
+          <div style="display:grid;grid-template-rows:{{ s.rows }};transition:grid-template-rows .8s cubic-bezier(.16,1,.3,1)">
+            <div style="overflow:hidden;min-height:0">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:28px;padding:4px 0 36px">
+                <div style="display:flex;flex-direction:column;gap:18px">
+                  <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#5C5850">U ponudi</span>
+                  <div style="display:flex;flex-wrap:wrap;gap:8px">
+                    <sc-for list="{{ s.subs }}" as="x">
+                      <a href="{{ s.href }}" style="display:inline-flex;align-items:center;justify-content:center;line-height:1;height:40px;padding:0 16px;border-radius:999px;border:1px solid rgba(14,14,12,.2);font-size:14px;font-weight:500">{{ x }}</a>
+                    </sc-for>
+                  </div>
+                  <a href="{{ s.href }}" style="margin-top:8px;font-weight:600;font-size:15px;display:inline-flex;align-items:center;gap:10px">{{ s.cta }} <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex:none"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"></path></svg></a>
+                </div>
+                <div style="position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;color:#5C5850;background:#E7E2D7">
+                  <image-slot id="{{ s.img }}" shape="rect" placeholder="{{ s.ph }}"></image-slot>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section id="beton" data-screen-label="Beton" style="background:#0E0E0C;padding:clamp(64px,10vh,120px) clamp(20px,4vw,56px)">
+  <div style="max-width:1440px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(28px,4.4vh,48px)">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:24px clamp(32px,6vw,96px);align-items:end">
+      <div data-reveal="0" style="display:flex;flex-direction:column;gap:22px">
+        <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#E3A83F">03 / Beton</span>
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(36px,min(4.8vw,7.6vh),84px);line-height:.88">Gotov beton MB10–MB50</h2>
+      </div>
+      <p data-reveal="120" style="margin:0;font-size:clamp(15px,1.1vw,18px);line-height:1.6;color:#CFCBC2;max-width:560px">Od 2008. godine u Padini radi naša fabrika betona. Beton spravljamo isključivo od opranih frakcija sa sopstvene separacije šljunka na kanalu DTD. Laboratorija u fabrici kontroliše svaku ulaznu sirovinu i gotov beton, a svi naši betoni su atestirani i sertifikovani od strane IMS-a.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,520px),1fr));gap:16px">
+      <div data-reveal="0" style="background:#171714;border:1px solid rgba(241,238,231,.08);border-radius:24px;padding:clamp(24px,3vw,44px);display:flex;flex-direction:column;gap:32px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap">
+          <h3 style="margin:0;font-family:'Archivo',sans-serif;font-weight:700;font-stretch:75%;text-transform:uppercase;font-size:clamp(24px,2vw,32px);line-height:1">Koliko betona vam treba?</h3>
+          <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#A3A097">Kalkulator</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:26px 36px">
+          <sc-for list="{{ calcRows }}" as="c" hint-placeholder-count="4">
+            <label style="display:flex;flex-direction:column;gap:12px">
+              <span style="display:flex;justify-content:space-between;align-items:baseline">
+                <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#A3A097">{{ c.label }}</span>
+                <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:20px">{{ c.shown }} <span style="font-size:12px;color:#A3A097">{{ c.unit }}</span></span>
+              </span>
+              <input type="range" min="{{ c.min }}" max="{{ c.max }}" step="{{ c.step }}" value="{{ c.value }}" onChange="{{ c.onChange }}" style="width:100%;margin:0;height:22px;cursor:pointer">
+            </label>
+          </sc-for>
+        </div>
+        <div style="border-top:1px solid rgba(241,238,231,.1);padding-top:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;align-items:end">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#A3A097">Potrebno je oko</span>
+            <span style="display:flex;align-items:baseline;gap:10px">
+              <span style="font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;font-size:clamp(56px,min(5vw,8vh),88px);line-height:.85">{{ volStr }}</span>
+              <span style="font-family:'Archivo',sans-serif;font-weight:700;font-size:28px;color:#E3A83F">m³</span>
+            </span>
+            <span style="font-size:15px;color:#CFCBC2">betona – {{ tripsStr }}</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <sc-for list="{{ bars }}" as="b" hint-placeholder-count="2">
+                <span style="flex:1 1 28px;min-width:28px;max-width:72px;height:10px;border-radius:99px;background:rgba(241,238,231,.12);overflow:hidden;display:block"><span style="display:block;height:100%;width:{{ b.w }};background:#E3A83F;border-radius:99px;transition:width .5s"></span></span>
+              </sc-for>
+            </div>
+            <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#A3A097">Jedan segment = mikser od 10 m³</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <button onClick="{{ calcQuote }}" style="display:flex;align-items:center;justify-content:space-between;gap:14px;height:54px;padding:0 24px;border-radius:999px;background:#E3A83F;color:#0E0E0C;font-weight:600;font-size:16px;border:0;cursor:pointer" style-hover="background:#EDB956"><span>Zatražite ponudu za {{ volStr }} m³</span><svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex:none"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"></path></svg></button>
+          <span style="font-size:13px;color:#A3A097">Rezultat je okviran; tačnu količinu potvrđujemo u ponudi.</span>
+        </div>
+      </div>
+
+      <div data-reveal="120" style="background:#171714;border:1px solid rgba(241,238,231,.08);border-radius:24px;padding:clamp(24px,3vw,44px);display:flex;flex-direction:column;gap:28px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap">
+          <h3 style="margin:0;font-family:'Archivo',sans-serif;font-weight:700;font-stretch:75%;text-transform:uppercase;font-size:clamp(24px,2vw,32px);line-height:1">Beton pumpa</h3>
+          <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#A3A097">Izaberite strelu</span>
+        </div>
+        <p style="margin:0;font-size:16px;line-height:1.6;color:#CFCBC2">Auto-beton pumpe sa strelom od 28, 36 i 42 metra, kao i stabilna pumpa. Beton i pumpu naručujete jednim pozivom, iz iste baze u Padini.</p>
+        <div style="position:relative;height:200px;margin-left:46px;border-bottom:1px solid rgba(241,238,231,.25)">
+          <div style="position:absolute;left:0;right:0;bottom:22.2%;border-top:1px dashed rgba(241,238,231,.1)"><span style="position:absolute;left:-46px;top:-7px;font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;color:#A3A097">10 m</span></div>
+          <div style="position:absolute;left:0;right:0;bottom:44.4%;border-top:1px dashed rgba(241,238,231,.1)"><span style="position:absolute;left:-46px;top:-7px;font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;color:#A3A097">20 m</span></div>
+          <div style="position:absolute;left:0;right:0;bottom:66.7%;border-top:1px dashed rgba(241,238,231,.1)"><span style="position:absolute;left:-46px;top:-7px;font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;color:#A3A097">30 m</span></div>
+          <div style="position:absolute;left:0;right:0;bottom:88.9%;border-top:1px dashed rgba(241,238,231,.1)"><span style="position:absolute;left:-46px;top:-7px;font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;color:#A3A097">40 m</span></div>
+          <div style="position:absolute;inset:0;display:flex;justify-content:space-around;align-items:flex-end">
+            <sc-for list="{{ pumps }}" as="p" hint-placeholder-count="3">
+              <button onClick="{{ p.pick }}" aria-label="{{ p.label }}" style="position:relative;height:100%;width:72px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;background:transparent;border:0;cursor:pointer;padding:0">
+                <span style="position:relative;display:block;width:2px;height:{{ p.h }};background:{{ p.line }};transition:background .4s">
+                  <span style="position:absolute;top:-7px;left:50%;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:{{ p.dot }};box-shadow:0 0 0 2px {{ p.ring }};transition:background .4s"></span>
+                </span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="margin:-12px 0 0 46px;display:flex;justify-content:space-around">
+          <sc-for list="{{ pumps }}" as="p" hint-placeholder-count="3">
+            <button onClick="{{ p.pick }}" style="width:72px;background:transparent;border:0;cursor:pointer;padding:0;font-family:'Archivo',sans-serif;font-weight:700;font-stretch:80%;font-size:26px;color:{{ p.fg }};transition:color .4s">{{ p.label }}</button>
+          </sc-for>
+        </div>
+        <div style="border-top:1px solid rgba(241,238,231,.1);padding-top:22px;display:flex;flex-direction:column;gap:14px">
+          <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#E3A83F">Pre dolaska pumpe recite nam</span>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px 24px;font-size:15px;color:#CFCBC2">
+            <span>— Adresu gradilišta</span>
+            <span>— Koliko je širok prilaz</span>
+            <span>— Gde pumpa može da stane</span>
+            <span>— Koliko kubika ugrađujete</span>
+            <span>— Koliko daleko i visoko treba dosegnuti</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap">
+        <h3 data-reveal="0" style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(30px,min(3.2vw,5.4vh),52px);line-height:.9">Specijalni betoni</h3>
+        <p data-reveal="100" style="margin:0;font-size:16px;line-height:1.6;color:#A3A097;max-width:520px">Za objekte koji trpe vodu, mraz, so ili agresivno tlo. Koji je pravi za vaš objekat određuje projekat, a naša laboratorija ga priprema i kontroliše.</p>
+      </div>
+      <div data-reveal="0" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));border-top:1px solid rgba(241,238,231,.12);border-left:1px solid rgba(241,238,231,.12)">
+        <div style="padding:28px;border-right:1px solid rgba(241,238,231,.12);border-bottom:1px solid rgba(241,238,231,.12);display:flex;flex-direction:column;gap:12px;min-height:0">
+          <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;color:#E3A83F">01</span>
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-stretch:80%;text-transform:uppercase;font-size:24px;line-height:1.05">Vodonepropusni beton</span>
+          <span style="font-size:15px;line-height:1.5;color:#A3A097">Podrumi, rezervoari, bazeni, temelji u vlažnom tlu.</span>
+        </div>
+        <div style="padding:28px;border-right:1px solid rgba(241,238,231,.12);border-bottom:1px solid rgba(241,238,231,.12);display:flex;flex-direction:column;gap:12px;min-height:0">
+          <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;color:#E3A83F">02</span>
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-stretch:80%;text-transform:uppercase;font-size:24px;line-height:1.05">Otporan na mraz</span>
+          <span style="font-size:15px;line-height:1.5;color:#A3A097">Spoljne površine, stepeništa, dvorišta.</span>
+        </div>
+        <div style="padding:28px;border-right:1px solid rgba(241,238,231,.12);border-bottom:1px solid rgba(241,238,231,.12);display:flex;flex-direction:column;gap:12px;min-height:0">
+          <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;color:#E3A83F">03</span>
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-stretch:80%;text-transform:uppercase;font-size:24px;line-height:1.05">Otporan na mraz i so</span>
+          <span style="font-size:15px;line-height:1.5;color:#A3A097">Prilazi, rampe i parkinzi koji se zimi posipaju solju.</span>
+        </div>
+        <div style="padding:28px;border-right:1px solid rgba(241,238,231,.12);border-bottom:1px solid rgba(241,238,231,.12);display:flex;flex-direction:column;gap:12px;min-height:0">
+          <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;color:#E3A83F">04</span>
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-stretch:80%;text-transform:uppercase;font-size:24px;line-height:1.05">Sulfatno-otporan beton</span>
+          <span style="font-size:15px;line-height:1.5;color:#A3A097">Temelji u agresivnom tlu i podzemnoj vodi, poljoprivredni objekti.</span>
+        </div>
+        <div style="padding:28px;border-right:1px solid rgba(241,238,231,.12);border-bottom:1px solid rgba(241,238,231,.12);display:flex;flex-direction:column;gap:12px;min-height:0">
+          <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;color:#E3A83F">05</span>
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-stretch:80%;text-transform:uppercase;font-size:24px;line-height:1.05">Sa čeličnim i sintetičkim vlaknima</span>
+          <span style="font-size:15px;line-height:1.5;color:#A3A097">Podovi i ploče na tlu sa manje pukotina.</span>
+        </div>
+        <div style="padding:28px;border-right:1px solid rgba(241,238,231,.12);border-bottom:1px solid rgba(241,238,231,.12);display:flex;flex-direction:column;gap:12px;min-height:0">
+          <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;color:#E3A83F">06</span>
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-stretch:80%;text-transform:uppercase;font-size:24px;line-height:1.05">Za industrijske podove</span>
+          <span style="font-size:15px;line-height:1.5;color:#A3A097">Hale, magacini, skladišta.</span>
+        </div>
+      </div>
+      <div data-reveal="0" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:24px 48px;align-items:center;padding:clamp(28px,3vw,44px);border-radius:24px;background:#171714;border:1px solid rgba(241,238,231,.08)">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#E3A83F">Industrijski podovi</span>
+          <span style="font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(28px,2.6vw,42px);line-height:.92">Po sistemu ključ u ruke</span>
+          <span style="font-size:15px;line-height:1.6;color:#A3A097">Sa našim partnerima, izvođačima radova, izrađujemo industrijske podove za sve vrste objekata – od pripreme terena do završnog sloja.</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <span style="height:36px;padding:0 14px;border-radius:999px;border:1px solid rgba(241,238,231,.18);display:inline-flex;align-items:center;font-size:14px">Iskop i odvoz zemlje</span>
+            <span style="height:36px;padding:0 14px;border-radius:999px;border:1px solid rgba(241,238,231,.18);display:inline-flex;align-items:center;font-size:14px">Armiranje</span>
+            <span style="height:36px;padding:0 14px;border-radius:999px;border:1px solid rgba(241,238,231,.18);display:inline-flex;align-items:center;font-size:14px">Hidro i termo izolacija</span>
+            <span style="height:36px;padding:0 14px;border-radius:999px;border:1px solid rgba(241,238,231,.18);display:inline-flex;align-items:center;font-size:14px">Perdašenje</span>
+            <span style="height:36px;padding:0 14px;border-radius:999px;border:1px solid rgba(241,238,231,.18);display:inline-flex;align-items:center;font-size:14px">Pumpanje betona</span>
+            <span style="height:36px;padding:0 14px;border-radius:999px;border:1px solid rgba(241,238,231,.18);display:inline-flex;align-items:center;font-size:14px">Sečenje dilatacija</span>
+            <span style="height:36px;padding:0 14px;border-radius:999px;border:1px solid rgba(241,238,231,.18);display:inline-flex;align-items:center;font-size:14px">Epoksidni sistemi</span>
+          </div>
+          <button onClick="{{ floorQuote }}" style="align-self:flex-start;display:inline-flex;align-items:center;justify-content:center;line-height:1;gap:14px;height:52px;padding:0 24px;border-radius:999px;border:1px solid rgba(241,238,231,.35);background:transparent;cursor:pointer;font-weight:500;font-size:15px" style-hover="border-color:#F1EEE7">Upit za pod <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex:none"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"></path></svg></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="agregati" data-screen-label="Agregati" style="background:#F1EEE7;color:#0E0E0C;padding:clamp(64px,10vh,120px) clamp(20px,4vw,56px)">
+  <div style="max-width:1440px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(28px,4.4vh,48px)">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:24px clamp(32px,6vw,96px);align-items:end">
+      <div data-reveal="0" style="display:flex;flex-direction:column;gap:22px">
+        <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#5C5850">04 / Agregati</span>
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(36px,min(4.8vw,7.6vh),84px);line-height:.88">Koja frakcija vam treba?</h2>
+      </div>
+      <p data-reveal="120" style="margin:0;font-size:clamp(15px,1.1vw,18px);line-height:1.6;color:#5C5850;max-width:560px">Na našoj separaciji na kanalu DTD peremo i separišemo šljunak u sve frakcije koje su potrebne za beton, malter, drenažu i uređenje dvorišta.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#5C5850">Za šta vam treba</span>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <sc-for list="{{ tasks }}" as="t" hint-placeholder-count="7">
+          <button onClick="{{ t.pick }}" style="display:inline-flex;align-items:center;justify-content:center;line-height:1;height:44px;padding:0 18px;border-radius:999px;border:1px solid {{ t.bd }};background:{{ t.bg }};color:{{ t.fg }};cursor:pointer;font-size:14px;font-weight:500;transition:background .3s,color .3s,border-color .3s">{{ t.t }}</button>
+        </sc-for>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,480px),1fr));gap:clamp(28px,4vw,64px);align-items:start">
+      <div role="listbox" aria-label="Frakcije" style="display:flex;flex-direction:column;border-top:1px solid rgba(14,14,12,.16)">
+        <sc-for list="{{ fractions }}" as="f" hint-placeholder-count="7">
+          <button role="option" aria-selected="{{ f.sel }}" onClick="{{ f.choose }}" onMouseEnter="{{ f.choose }}" style="display:grid;grid-template-columns:minmax(118px,0.9fr) minmax(0,2fr) 36px;gap:20px;align-items:center;width:100%;text-align:left;padding:clamp(14px,2vh,20px) 20px;margin:0;border:0;border-bottom:1px solid rgba(14,14,12,.16);border-radius:0;background:{{ f.rowBg }};color:{{ f.rowFg }};opacity:{{ f.op }};cursor:pointer;transition:background .35s,color .35s,opacity .35s">
+            <span style="display:flex;align-items:baseline;gap:6px;white-space:nowrap">
+              <span style="font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(28px,2.4vw,38px);line-height:.88">{{ f.size }}</span>
+              <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:{{ f.rowSub }}">{{ f.unit }}</span>
+            </span>
+            <span style="display:flex;flex-direction:column;gap:4px;min-width:0">
+              <span style="font-size:17px;font-weight:600">{{ f.name }}</span>
+              <span style="font-size:14px;line-height:1.45;color:{{ f.rowSub }};text-wrap:pretty">{{ f.use }}</span>
+            </span>
+            <span aria-hidden="true" style="flex:none;box-sizing:border-box;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;border:1px solid {{ f.rowLine }};transform:{{ f.arrow }};transition:transform .4s cubic-bezier(.16,1,.3,1),border-color .35s"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex:none"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"></path></svg></span>
+          </button>
+        </sc-for>
+      </div>
+      <div style="position:sticky;top:96px;display:flex;flex-direction:column;gap:22px">
+        <div style="position:relative;aspect-ratio:3/2;max-height:46vh;width:100%;border-radius:24px;overflow:hidden;background:#E7E2D7">
+          <sc-for list="{{ fractions }}" as="f" hint-placeholder-count="1">
+            <div style="position:absolute;inset:0;opacity:{{ f.imgOp }};visibility:{{ f.imgVis }};transition:opacity .45s">
+              <image-slot id="{{ f.slot }}" shape="rect" placeholder="{{ f.ph }}" style="display:block;width:100%;height:100%"></image-slot>
+            </div>
+          </sc-for>
+          <span style="position:absolute;left:18px;top:18px;height:28px;padding:0 12px;border-radius:999px;background:rgba(250,248,243,.9);display:inline-flex;align-items:center;font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;pointer-events:none">{{ cur.badge }}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <span style="font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(30px,2.6vw,42px);line-height:.9">{{ cur.title }}</span>
+            <span style="font-size:15px;line-height:1.5;color:#5C5850;max-width:440px;text-wrap:pretty">{{ cur.use }}</span>
+          </div>
+        </div>
+        <sc-if value="{{ cur.hasRange }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#5C5850">Granulacija, mm</span>
+            <div style="position:relative;height:12px;border-radius:999px;background:rgba(14,14,12,.08);overflow:hidden">
+              <span style="position:absolute;top:0;bottom:0;left:{{ cur.left }};width:{{ cur.width }};border-radius:999px;background:#0E0E0C;transition:left .5s cubic-bezier(.16,1,.3,1),width .5s cubic-bezier(.16,1,.3,1)"></span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;color:#5C5850">
+              <span>0</span><span>4</span><span>8</span><span>16</span><span style="display:flex;justify-content:space-between">32<span>64+</span></span>
+            </div>
+          </div>
+        </sc-if>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <sc-for list="{{ cur.tags }}" as="tg" hint-placeholder-count="2">
+            <span style="height:30px;padding:0 12px;border-radius:999px;border:1px solid rgba(14,14,12,.2);display:inline-flex;align-items:center;font-size:13px">{{ tg }}</span>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;padding-top:18px;border-top:1px solid rgba(14,14,12,.14)">
+          <button onClick="{{ cur.order }}" style="display:inline-flex;align-items:center;justify-content:center;line-height:1;gap:12px;height:52px;padding:0 24px;border-radius:999px;border:0;background:#0E0E0C;color:#F1EEE7;font-weight:600;font-size:15px;cursor:pointer">Naručite {{ cur.short }} <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex:none"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"></path></svg></button>
+          <a href="tel:+38163667570" style="display:inline-flex;align-items:center;justify-content:center;line-height:1;height:52px;padding:0 22px;border-radius:999px;border:1px solid rgba(14,14,12,.25);font-weight:500;font-size:15px">Pozovite 063 667 570</a>
+        </div>
+      </div>
+    </div>
+    <p style="margin:0;font-size:15px;color:#5C5850">Robu preuzimate sopstvenim vozilom u Padini, Samošu ili Jarkovcu, ili vam je dovozimo na adresu.</p>
+  </div>
+</section>
+
+<section id="galerija" data-screen-label="Galerija" style="background:#0E0E0C;padding:clamp(64px,10vh,120px) clamp(20px,4vw,56px)">
+  <div style="max-width:1600px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(28px,4.4vh,48px)">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:28px;flex-wrap:wrap">
+      <div data-reveal="0" style="display:flex;flex-direction:column;gap:22px;max-width:900px">
+        <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#E3A83F">05 / Galerija</span>
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(36px,min(4.8vw,7.6vh),84px);line-height:.88">Gradili smo zajedno</h2>
+        <p style="margin:0;font-size:clamp(15px,1.1vw,18px);line-height:1.6;color:#CFCBC2">Temelji, ploče, industrijski podovi i hale širom Južnog Banata.</p>
+      </div>
+      <div style="display:flex;align-items:center;gap:18px">
+        <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.12em"><span style="color:#F1EEE7">{{ galNow }}</span><span style="color:#A3A097"> / 07</span></span>
+        <button onClick="{{ galPrev }}" aria-label="Prethodna" style="flex:none;box-sizing:border-box;width:48px;height:48px;padding:0;border-radius:50%;border:1px solid rgba(241,238,231,.25);background:transparent;color:#F1EEE7;cursor:pointer;display:grid;place-items:center;transition:border-color .3s,background .3s" style-hover="border-color:#F1EEE7;background:rgba(241,238,231,.06)"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="M13.5 8h-11M7 3.5 2.5 8 7 12.5"></path></svg></button>
+        <button onClick="{{ galNext }}" aria-label="Sledeća" style="flex:none;box-sizing:border-box;width:48px;height:48px;padding:0;border-radius:50%;border:1px solid rgba(241,238,231,.25);background:transparent;color:#F1EEE7;cursor:pointer;display:grid;place-items:center;transition:border-color .3s,background .3s" style-hover="border-color:#F1EEE7;background:rgba(241,238,231,.06)"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex:none"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"></path></svg></button>
+      </div>
+    </div>
+    <div ref="{{ galRef }}" onMouseEnter="{{ galEnter }}" onMouseLeave="{{ galLeave }}" style="display:flex;gap:{{ galGap }};height:clamp(360px,58vh,600px)">
+      <sc-for list="{{ gallery }}" as="g" hint-placeholder-count="7">
+        <div data-reveal="{{ g.delay }}" data-reveal-kind="rise" onMouseEnter="{{ g.focus }}" style="position:relative;flex:{{ g.flex }};min-width:0;border-radius:16px;overflow:hidden;background:#171714;color:rgba(241,238,231,.5);transition:flex 1.1s cubic-bezier(.16,1,.3,1)">
+          <image-slot id="{{ g.id }}" shape="rect" placeholder="{{ g.ph }}"></image-slot>
+          <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background:#171714;opacity:{{ g.coverOp }};transition:opacity .9s"></div>
+          <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(0deg,rgba(14,14,12,.88) 0%,rgba(14,14,12,0) 46%);opacity:{{ g.capOp }};transition:opacity .8s"></div>
+          <div style="position:absolute;left:clamp(20px,2.4vw,32px);right:clamp(20px,2.4vw,32px);bottom:clamp(20px,2.4vw,30px);z-index:2;pointer-events:none;display:flex;flex-direction:column;gap:12px;color:#F1EEE7;opacity:{{ g.capOp }};transform:{{ g.capTf }};transition:opacity .7s .15s,transform .9s .15s cubic-bezier(.16,1,.3,1)">
+            <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#E3A83F">{{ g.n }} · {{ g.cat }}</span>
+            <span style="font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(28px,2.8vw,46px);line-height:.9;white-space:nowrap">{{ g.title }}</span>
+            <span style="font-size:15px;color:#CFCBC2;max-width:440px">{{ g.sub }}</span>
+          </div>
+          <div style="position:absolute;left:50%;bottom:22px;transform:translateX(-50%) rotate(180deg);writing-mode:vertical-rl;z-index:2;pointer-events:none;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#CFCBC2;white-space:nowrap;opacity:{{ g.vOp }};transition:opacity .5s">{{ g.n }} — {{ g.title }}</div>
+          <sc-if value="{{ g.collapsed }}">
+            <button onClick="{{ g.focus }}" aria-label="{{ g.title }}" style="position:absolute;inset:0;z-index:3;background:transparent;border:0;cursor:pointer"></button>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#A3A097">
+      <span>Beton · Podovi · Agregati · Stovarišta · Ogrev · Otkup</span>
+      <a href="#galerija" style="color:#F1EEE7;display:inline-flex;align-items:center;gap:8px">Svi radovi <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex:none"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"></path></svg></a>
+    </div>
+  </div>
+</section>
+
+<section id="zito" data-screen-label="Žito za zid" style="background:#E3A83F;color:#0E0E0C;padding:clamp(64px,10vh,120px) clamp(20px,4vw,56px)">
+  <div style="max-width:1440px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,480px),1fr));gap:56px clamp(40px,6vw,104px);align-items:center">
+    <div style="display:flex;flex-direction:column;gap:28px">
+      <div data-reveal="0" style="display:flex;flex-direction:column;gap:22px">
+        <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase">06 / Poljoprivreda · Žito za zid</span>
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(36px,min(4.6vw,7.4vh),80px);line-height:.88">Vaše žito može da postane vaš zid.</h2>
+      </div>
+      <p data-reveal="100" style="margin:0;font-size:clamp(15px,1.1vw,18px);line-height:1.6;color:#2B2416;max-width:560px">Otkupljujemo žitarice po najvišim dnevnim cenama, u sopstveni silos i podna skladišta. Umesto novca možete uzeti građevinski materijal ili ogrev – kroz program Žito za zid.</p>
+      <div data-reveal="160" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:0 28px">
+        <div style="display:flex;gap:14px;padding:16px 0;border-top:1px solid rgba(14,14,12,.25)"><span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;padding-top:3px">01</span><span style="font-size:15px;line-height:1.5">Dovezete žito u naš silos.</span></div>
+        <div style="display:flex;gap:14px;padding:16px 0;border-top:1px solid rgba(14,14,12,.25)"><span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;padding-top:3px">02</span><span style="font-size:15px;line-height:1.5">Vrednost robe obračunavamo po dnevnoj ceni.</span></div>
+        <div style="display:flex;gap:14px;padding:16px 0;border-top:1px solid rgba(14,14,12,.25)"><span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;padding-top:3px">03</span><span style="font-size:15px;line-height:1.5">Taj iznos koristite za materijal ili ogrev.</span></div>
+        <div style="display:flex;gap:14px;padding:16px 0;border-top:1px solid rgba(14,14,12,.25)"><span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;padding-top:3px">04</span><span style="font-size:15px;line-height:1.5">Robu preuzimate kad vam treba.</span></div>
+      </div>
+      <div data-reveal="220" style="display:flex;flex-wrap:wrap;gap:12px">
+        <a href="#ponuda" style="display:inline-flex;align-items:center;justify-content:center;line-height:1;gap:14px;height:52px;padding:0 24px;border-radius:999px;background:#0E0E0C;color:#F1EEE7;font-weight:600;font-size:16px">Pogledajte uslove <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex:none"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"></path></svg></a>
+        <a href="tel:+38163667570" style="display:inline-flex;align-items:center;justify-content:center;line-height:1;height:52px;padding:0 24px;border-radius:999px;border:1px solid rgba(14,14,12,.5);font-weight:500;font-size:16px">Raspitajte se – 063 667 570</a>
+      </div>
+      <span lang="sk" style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#3A3020">Po slovensky: Obilie za múr</span>
+    </div>
+    <div ref="{{ boardRef }}" data-reveal="120" style="background:#0E0E0C;color:#F1EEE7;border-radius:28px;padding:clamp(26px,3vw,44px);display:flex;flex-direction:column;gap:24px;box-shadow:0 40px 80px -30px rgba(60,40,0,.45)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-family:'Archivo',sans-serif;font-weight:700;font-stretch:75%;text-transform:uppercase;font-size:clamp(24px,2.2vw,32px);line-height:1">Današnje otkupne cene</span>
+          <span style="display:flex;align-items:center;gap:8px;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#A3A097"><span style="flex:none;width:7px;height:7px;border-radius:50%;background:#58B67F"></span>Ažurirano {{ boardDate }} u {{ boardTime }}</span>
+        </div>
+        <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#A3A097">din/kg</span>
+      </div>
+      <div style="display:flex;flex-direction:column">
+        <sc-for list="{{ crops }}" as="c" hint-placeholder-count="3">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 0;border-top:1px solid rgba(241,238,231,.1)">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <span style="font-family:'Archivo',sans-serif;font-weight:700;font-stretch:80%;text-transform:uppercase;font-size:clamp(24px,2.4vw,34px);line-height:1">{{ c.name }}</span>
+              <span style="font-size:13px;color:#A3A097">Uslovi: vlaga i primese</span>
+            </div>
+            <span style="display:flex;font-family:'Geist Mono',ui-monospace,monospace;font-size:clamp(30px,2.8vw,44px);line-height:1;height:1em;overflow:hidden;color:#E3A83F">
+              <sc-for list="{{ c.chars }}" as="ch">
+                <sc-if value="{{ ch.dg }}">
+                  <span style="display:block;height:1em;overflow:hidden">
+                    <span style="display:flex;flex-direction:column;transform:{{ ch.tf }};transition:transform 1.8s cubic-bezier(.16,1,.3,1);transition-delay:{{ ch.dl }}">
+                      <span style="height:1em">0</span><span style="height:1em">1</span><span style="height:1em">2</span><span style="height:1em">3</span><span style="height:1em">4</span><span style="height:1em">5</span><span style="height:1em">6</span><span style="height:1em">7</span><span style="height:1em">8</span><span style="height:1em">9</span>
+                    </span>
+                  </span>
+                </sc-if>
+                <sc-if value="{{ ch.nd }}"><span style="display:block;height:1em">{{ ch.ch }}</span></sc-if>
+              </sc-for>
+            </span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;border-top:1px solid rgba(241,238,231,.1);padding-top:22px">
+        <span style="font-size:13px;color:#A3A097;max-width:260px">Cene važe na dan objave. Silos, podna skladišta i kolska vaga u Padini.</span>
+        <a href="viber://chat?number=%2B38163667570" style="display:inline-flex;align-items:center;justify-content:center;line-height:1;height:46px;padding:0 20px;border-radius:999px;border:1px solid rgba(241,238,231,.3);font-weight:500;font-size:14px">Primajte cene na Viber</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ogrev" data-screen-label="Ogrev" style="background:#0E0E0C;padding:clamp(64px,10vh,120px) clamp(20px,4vw,56px)">
+  <div style="max-width:1440px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(40px,6vh,72px)">
+    <div data-reveal="0" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:28px 56px;align-items:end;padding:clamp(28px,4vw,60px);border-radius:28px;background:#171714;border:1px solid rgba(241,238,231,.08)">
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#E3A83F">Sezonski predlog · {{ seasonLabel }}</span>
+        <span style="font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(30px,min(3.4vw,6vh),56px);line-height:.9">{{ seasonText }}</span>
+      </div>
+      <div style="display:flex;justify-content:flex-start">
+        <button onClick="{{ seasonGo }}" style="display:inline-flex;align-items:center;justify-content:center;line-height:1;gap:14px;height:54px;padding:0 26px;border-radius:999px;background:#E3A83F;color:#0E0E0C;font-weight:600;font-size:16px;border:0;cursor:pointer" style-hover="background:#EDB956">{{ seasonBtn }} <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex:none"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"></path></svg></button>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:40px clamp(32px,6vw,96px)">
+      <div data-reveal="0" style="display:flex;flex-direction:column;gap:22px">
+        <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#E3A83F">07 / Ogrev</span>
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(36px,min(4.4vw,7vh),76px);line-height:.88">Ugalj, drva i pelet sa dostavom</h2>
+        <p style="margin:0;font-size:clamp(15px,1.1vw,18px);line-height:1.6;color:#CFCBC2;max-width:520px">Nudimo ugalj, pelet, drva u oblicama i cepana drva, kao i otpadno drvo u paletama. Ogrev dovozimo na kućnu adresu našim vozilima.</p>
+      </div>
+      <div data-reveal="120" style="display:flex;flex-direction:column;border-top:1px solid rgba(241,238,231,.14)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:16px 0;border-bottom:1px solid rgba(241,238,231,.14)"><span style="font-family:'Archivo',sans-serif;font-weight:700;font-stretch:80%;text-transform:uppercase;font-size:22px">Ugalj</span><span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#A3A097">po toni</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:16px 0;border-bottom:1px solid rgba(241,238,231,.14)"><span style="font-family:'Archivo',sans-serif;font-weight:700;font-stretch:80%;text-transform:uppercase;font-size:22px">Drva – oblice</span><span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#A3A097">po m³</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:16px 0;border-bottom:1px solid rgba(241,238,231,.14)"><span style="font-family:'Archivo',sans-serif;font-weight:700;font-stretch:80%;text-transform:uppercase;font-size:22px">Drva – cepana</span><span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#A3A097">po m³</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:16px 0;border-bottom:1px solid rgba(241,238,231,.14)"><span style="font-family:'Archivo',sans-serif;font-weight:700;font-stretch:80%;text-transform:uppercase;font-size:22px">Pelet</span><span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#A3A097">pakovanje</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:16px 0;border-bottom:1px solid rgba(241,238,231,.14)"><span style="font-family:'Archivo',sans-serif;font-weight:700;font-stretch:80%;text-transform:uppercase;font-size:22px">Otpadno drvo u paletama</span><span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#A3A097">paleta</span></div>
+      </div>
+    </div>
+    <div data-reveal="0" style="display:flex;flex-direction:column;gap:18px">
+      <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#A3A097">Sarađujemo sa rudnicima</span>
+      <div style="display:flex;flex-wrap:wrap;column-gap:clamp(16px,2vw,32px);row-gap:6px;font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(30px,min(3.8vw,6.4vh),64px);line-height:.95;color:#5A5751">
+        <span style="color:#F1EEE7">Kolubara</span><span style="color:#E3A83F">/</span><span style="color:#F1EEE7">Kovin</span><span style="color:#E3A83F">/</span><span style="color:#F1EEE7">Kostolac</span><span style="color:#E3A83F">/</span><span style="color:#F1EEE7">Banovići</span><span style="color:#E3A83F">/</span><span style="color:#F1EEE7">Pljevlja</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="o-nama" data-screen-label="O nama" style="background:#F1EEE7;color:#0E0E0C;padding:clamp(64px,10vh,120px) clamp(20px,4vw,56px)">
+  <div style="max-width:1440px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(28px,4.4vh,48px)">
+    <div data-reveal="0" style="display:flex;flex-direction:column;gap:22px">
+      <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#5C5850">08 / O nama</span>
+      <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(40px,min(5.6vw,8.8vh),100px);line-height:.88;max-width:1300px">Porodična firma iz Padine od 1990.</h2>
+      <span lang="sk" style="font-size:clamp(18px,1.6vw,24px);font-style:italic;color:#5C5850">Rodinná firma z Padiny od roku 1990.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:40px clamp(32px,6vw,96px);align-items:start">
+      <div data-reveal="0" style="position:relative;aspect-ratio:4/5;max-height:72vh;width:100%;border-radius:20px;overflow:hidden;background:#E7E2D7;color:#5C5850">
+        <image-slot id="o-nama-tim" shape="rect" placeholder="Fotografija: osnivač i tim ispred fabrike betona"></image-slot>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:22px;font-size:clamp(16px,1.25vw,18px);line-height:1.65;color:#2E2C28">
+        <p data-reveal="0" style="margin:0">Unitrgovinu je 1990. godine u Padini osnovao Jan Beška. Počeli smo sa jednim stovarištem u ulici Vuka Karadžića 11 i trgovinom građevinskim materijalom.</p>
+        <p data-reveal="60" style="margin:0">Vremenom smo počeli i da proizvodimo: betonske blokove, fert gredice i betonske cevi. Od 2008. godine u Padini radi naša fabrika betona sa laboratorijom, a na kanalu DTD imamo sopstvenu separaciju šljunka.</p>
+        <p data-reveal="120" style="margin:0">Pored građevine i ogreva, danas se bavimo i poljoprivredom – otkupom, skladištenjem i distribucijom žitarica, semenske robe i veštačkog đubriva.</p>
+        <p data-reveal="180" style="margin:0">Na prodajnim mestima u Padini, Samošu i Jarkovcu imamo viljuškare, utovarivače, kolske vage, velike kamione i manje kamione sa kranom za dostavu materijala i ogreva.</p>
+        <div data-reveal="240" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:0 24px;margin-top:20px">
+          <div style="display:flex;flex-direction:column;gap:10px;padding:22px 0;border-top:1px solid #0E0E0C">
+            <span style="font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;font-size:clamp(40px,3.4vw,52px);line-height:.85">1990</span>
+            <span style="font-size:14px;line-height:1.5;color:#5C5850">Osnivanje u Padini, prvo stovarište u ulici Vuka Karadžića 11.</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;padding:22px 0;border-top:1px solid #0E0E0C">
+            <span style="font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;font-size:clamp(40px,3.4vw,52px);line-height:.85">2008</span>
+            <span style="font-size:14px;line-height:1.5;color:#5C5850">Fabrika betona sa laboratorijom u Padini; separacija šljunka na kanalu DTD.</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;padding:22px 0;border-top:1px solid #0E0E0C">
+            <span style="font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;font-size:clamp(40px,3.4vw,52px);line-height:.85;color:#0E0E0C">Danas</span>
+            <span style="font-size:14px;line-height:1.5;color:#5C5850">Tri prodajna mesta, sopstvena vozila, otkup i skladištenje žitarica.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="lokacije" data-screen-label="Lokacije" style="background:#E7E2D7;color:#0E0E0C;padding:clamp(64px,10vh,120px) clamp(20px,4vw,56px)">
+  <div style="max-width:1440px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(28px,5vh,52px)">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:24px clamp(32px,6vw,96px);align-items:end">
+      <div data-reveal="0" style="display:flex;flex-direction:column;gap:22px">
+        <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#5C5850">09 / Lokacije</span>
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(36px,min(4.8vw,7.6vh),84px);line-height:.88">Tri prodajna mesta, jedan broj.</h2>
+      </div>
+      <div data-reveal="120" style="display:flex;flex-direction:column;gap:10px">
+        <a href="tel:+38163667570" style="font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;font-size:clamp(36px,3.6vw,60px);line-height:.9">063 667 570</a>
+        <span style="font-size:16px;color:#5C5850">Radno vreme: ponedeljak–subota 07–17h</span>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:16px;align-items:stretch">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <sc-for list="{{ locations }}" as="l" hint-placeholder-count="3">
+          <div onClick="{{ l.pick }}" style="cursor:pointer;display:flex;flex-direction:column;gap:12px;padding:clamp(22px,2.4vw,32px);border-radius:20px;border:1px solid {{ l.bd }};background:{{ l.bg }};color:{{ l.fg }};transition:background .5s,color .5s,border-color .5s">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px">
+              <span style="font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(30px,2.6vw,42px);line-height:.9">{{ l.name }}</span>
+              <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;color:{{ l.sub }}">{{ l.coords }}</span>
+            </div>
+            <span style="font-size:15px;font-weight:500">{{ l.addr }}</span>
+            <span style="font-size:14px;line-height:1.5;color:{{ l.sub }}">{{ l.what }}</span>
+            <a href="{{ l.href }}" style="display:inline-flex;align-items:center;gap:8px;font-family:'Geist Mono',ui-monospace,monospace;font-size:13px;letter-spacing:.08em">{{ l.tel }} <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex:none"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"></path></svg></a>
+          </div>
+        </sc-for>
+      </div>
+      <div data-reveal="0" style="position:relative;min-height:400px;border-radius:20px;overflow:hidden;background:#D9D3C6">
+        <iframe title="Mapa lokacije" src="{{ mapSrc }}" loading="lazy" tabindex="-1" aria-hidden="true" style="pointer-events:none;position:absolute;inset:0;width:100%;height:100%;border:0;filter:grayscale(1) contrast(1.05) brightness(1.02)"></iframe>
+        <span style="position:absolute;left:16px;top:16px;height:30px;padding:0 12px;border-radius:999px;background:#0E0E0C;color:#F1EEE7;display:inline-flex;align-items:center;font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;pointer-events:none">{{ mapLabel }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ponuda" ref="{{ quoteRef }}" data-screen-label="Ponuda" style="background:#0E0E0C;padding:clamp(64px,10vh,120px) clamp(20px,4vw,56px)">
+  <div style="max-width:1440px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:48px clamp(32px,6vw,96px);align-items:start">
+    <div style="display:flex;flex-direction:column;gap:28px">
+      <div data-reveal="0" style="display:flex;flex-direction:column;gap:22px">
+        <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#E3A83F">10 / Ponuda</span>
+        <h2 style="margin:0;font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(36px,min(4.8vw,7.6vh),84px);line-height:.88">Zatražite ponudu</h2>
+        <p style="margin:0;font-size:clamp(15px,1.1vw,18px);line-height:1.6;color:#CFCBC2;max-width:480px">Recite nam šta vam treba i gde – javljamo se istog dana. Forma vas pita samo ono što nam je potrebno za tačnu cenu.</p>
+      </div>
+      <div data-reveal="100" style="display:flex;flex-direction:column;border-top:1px solid rgba(241,238,231,.14)">
+        <a href="tel:+38163667570" style="display:flex;justify-content:space-between;gap:16px;padding:18px 0;border-bottom:1px solid rgba(241,238,231,.14)"><span style="font-size:15px;color:#A3A097">Stovarište Padina</span><span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:14px">063 667 570</span></a>
+        <a href="tel:+38113675045" style="display:flex;justify-content:space-between;gap:16px;padding:18px 0;border-bottom:1px solid rgba(241,238,231,.14)"><span style="font-size:15px;color:#A3A097">Stovarište Samoš</span><span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:14px">013 675 045</span></a>
+        <a href="mailto:unitrgovina@gmail.com" style="display:flex;justify-content:space-between;gap:16px;padding:18px 0;border-bottom:1px solid rgba(241,238,231,.14)"><span style="font-size:15px;color:#A3A097">E-mail</span><span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:14px">unitrgovina@gmail.com</span></a>
+      </div>
+      <div data-reveal="160" style="display:flex;gap:10px;flex-wrap:wrap">
+        <a href="viber://chat?number=%2B38163667570" style="display:inline-flex;align-items:center;justify-content:center;line-height:1;height:48px;padding:0 20px;border-radius:999px;border:1px solid rgba(241,238,231,.25);font-size:14px;font-weight:500">Viber</a>
+        <a href="https://wa.me/38163667570" style="display:inline-flex;align-items:center;justify-content:center;line-height:1;height:48px;padding:0 20px;border-radius:999px;border:1px solid rgba(241,238,231,.25);font-size:14px;font-weight:500">WhatsApp</a>
+      </div>
+    </div>
+
+    <div data-reveal="120" style="background:#171714;border:1px solid rgba(241,238,231,.08);border-radius:28px;padding:clamp(24px,3vw,44px);display:flex;flex-direction:column;gap:30px">
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+          <button onClick="{{ t.pick }}" style="display:inline-flex;align-items:center;justify-content:center;line-height:1;height:42px;padding:0 16px;border-radius:999px;border:1px solid {{ t.bd }};background:{{ t.bg }};color:{{ t.fg }};cursor:pointer;font-size:14px;font-weight:500;transition:background .3s,color .3s">{{ t.name }}</button>
+        </sc-for>
+      </div>
+      <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+        <form onSubmit="{{ submit }}" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:26px 28px">
+          <label style="display:flex;flex-direction:column;gap:10px">
+            <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#A3A097">Ime i prezime *</span>
+            <input required="" type="text" autocomplete="name" style="background:transparent;border:0;border-bottom:1px solid rgba(241,238,231,.22);padding:8px 0 12px;font-size:17px;outline:none;color:#F1EEE7;border-radius:0" style-focus="border-bottom-color:#E3A83F">
+          </label>
+          <label style="display:flex;flex-direction:column;gap:10px">
+            <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#A3A097">Telefon *</span>
+            <input required="" type="tel" autocomplete="tel" style="background:transparent;border:0;border-bottom:1px solid rgba(241,238,231,.22);padding:8px 0 12px;font-size:17px;outline:none;color:#F1EEE7;border-radius:0" style-focus="border-bottom-color:#E3A83F">
+          </label>
+          <label style="display:flex;flex-direction:column;gap:10px">
+            <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#A3A097">Mesto *</span>
+            <input required="" type="text" style="background:transparent;border:0;border-bottom:1px solid rgba(241,238,231,.22);padding:8px 0 12px;font-size:17px;outline:none;color:#F1EEE7;border-radius:0" style-focus="border-bottom-color:#E3A83F">
+          </label>
+          <sc-for list="{{ extras }}" as="f" hint-placeholder-count="3">
+            <label style="display:flex;flex-direction:column;gap:10px;grid-column:{{ f.span }}">
+              <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#A3A097">{{ f.label }}</span>
+              <sc-if value="{{ f.isText }}">
+                <input type="text" value="{{ f.value }}" onChange="{{ f.onChange }}" style="background:transparent;border:0;border-bottom:1px solid rgba(241,238,231,.22);padding:8px 0 12px;font-size:17px;outline:none;color:#F1EEE7;border-radius:0" style-focus="border-bottom-color:#E3A83F">
+              </sc-if>
+              <sc-if value="{{ f.isDate }}">
+                <input type="date" value="{{ f.value }}" onChange="{{ f.onChange }}" style="background:transparent;border:0;border-bottom:1px solid rgba(241,238,231,.22);padding:8px 0 12px;font-size:17px;outline:none;color:#F1EEE7;border-radius:0;color-scheme:dark" style-focus="border-bottom-color:#E3A83F">
+              </sc-if>
+              <sc-if value="{{ f.isSelect }}">
+                <select value="{{ f.value }}" onChange="{{ f.onChange }}" style="background:transparent;border:0;border-bottom:1px solid rgba(241,238,231,.22);padding:8px 0 12px;font-size:17px;outline:none;color:#F1EEE7;border-radius:0;cursor:pointer" style-focus="border-bottom-color:#E3A83F">
+                  <sc-for list="{{ f.options }}" as="o"><option value="{{ o }}">{{ o }}</option></sc-for>
+                </select>
+              </sc-if>
+              <sc-if value="{{ f.isChips }}">
+                <span style="display:flex;flex-wrap:wrap;gap:8px">
+                  <sc-for list="{{ f.chips }}" as="c">
+                    <button type="button" onClick="{{ c.pick }}" style="display:inline-flex;align-items:center;justify-content:center;line-height:1;height:40px;padding:0 16px;border-radius:999px;border:1px solid {{ c.bd }};background:{{ c.bg }};color:{{ c.fg }};cursor:pointer;font-size:14px;font-weight:500;transition:background .3s,color .3s">{{ c.o }}</button>
+                  </sc-for>
+                </span>
+              </sc-if>
+            </label>
+          </sc-for>
+          <label style="display:flex;flex-direction:column;gap:10px;grid-column:1 / -1">
+            <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#A3A097">Poruka</span>
+            <textarea rows="3" style="background:transparent;border:0;border-bottom:1px solid rgba(241,238,231,.22);padding:8px 0 12px;font-size:17px;outline:none;color:#F1EEE7;resize:vertical;border-radius:0" style-focus="border-bottom-color:#E3A83F"></textarea>
+          </label>
+          <label style="grid-column:1 / -1;display:flex;gap:12px;align-items:flex-start;font-size:14px;line-height:1.5;color:#A3A097;cursor:pointer">
+            <input required="" type="checkbox" style="width:18px;height:18px;margin:2px 0 0;accent-color:#E3A83F;flex:none">
+            <span>Slažem se da Unitrgovina d.o.o. obradi moje podatke radi odgovora na ovaj upit, u skladu sa <a href="#" style="color:#F1EEE7;text-decoration:underline;text-underline-offset:3px">Politikom privatnosti</a>.</span>
+          </label>
+          <div style="grid-column:1 / -1;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px">
+            <button type="submit" style="display:inline-flex;align-items:center;justify-content:center;line-height:1;gap:14px;height:54px;padding:0 28px;border-radius:999px;background:#E3A83F;color:#0E0E0C;font-weight:600;font-size:16px;border:0;cursor:pointer" style-hover="background:#EDB956">Pošaljite upit <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex:none"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"></path></svg></button>
+            <span style="font-size:13px;color:#A3A097">Hitno? Pozovite 063 667 570</span>
+          </div>
+        </form>
+      </sc-if>
+      <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:20px;padding:24px 0">
+          <span style="flex:none;width:56px;height:56px;border-radius:50%;background:#E3A83F;color:#0E0E0C;display:grid;place-items:center"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="M5 12.5 10 17.5 19 7"></path></svg></span>
+          <span style="font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(34px,3vw,48px);line-height:.9">Hvala!</span>
+          <p style="margin:0;font-size:17px;line-height:1.6;color:#CFCBC2;max-width:460px">Primili smo vaš upit i javljamo se istog dana. Ako je hitno, pozovite 063 667 570.</p>
+          <button onClick="{{ resetForm }}" style="align-self:flex-start;background:transparent;border:0;padding:0;cursor:pointer;font-weight:600;font-size:15px;color:#E3A83F;display:inline-flex;align-items:center;gap:8px">Pošaljite novi upit <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex:none"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"></path></svg></button>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</section>
+
+<footer data-screen-label="Footer" style="position:relative;background:#F1EEE7;color:#0E0E0C;margin-top:-1px;padding:clamp(56px,8vh,96px) clamp(20px,4vw,56px) clamp(28px,4vh,44px);overflow:hidden">
+  <div style="max-width:1440px;margin:0 auto;display:flex;flex-direction:column;gap:clamp(40px,6vh,72px)">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:40px clamp(32px,6vw,96px);align-items:end">
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#5C5850">Unitrgovina d.o.o. · od 1990.</span>
+        <span style="font-family:'Archivo',sans-serif;font-weight:800;font-stretch:66%;text-transform:uppercase;font-size:clamp(36px,min(4.6vw,7.4vh),80px);line-height:.88">Građevinski materijal.<br>Padina, Kovačica.</span>
+        <span lang="sk" style="font-size:15px;font-style:italic;color:#5C5850">Stavebný materiál. Padina, Kovačica.</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:20px;padding:clamp(24px,3vw,36px);border-radius:24px;background:#0E0E0C;color:#F1EEE7">
+        <span style="display:flex;justify-content:space-between;gap:12px;font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#A3A097"><span>Pozovite nas</span><span style="color:#E3A83F">Pon–sub 07–17h</span></span>
+        <a href="tel:+38163667570" style="font-family:'Archivo',sans-serif;font-weight:800;font-stretch:72%;font-size:clamp(34px,3.2vw,52px);line-height:.92;letter-spacing:-.005em">063 667 570</a>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <a href="#ponuda" style="display:inline-flex;align-items:center;justify-content:center;line-height:1;gap:12px;height:50px;padding:0 22px;border-radius:999px;background:#E3A83F;color:#0E0E0C;font-weight:600;font-size:15px">Zatražite ponudu <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:block;flex:none"><path d="M2.5 8h11M9 3.5 13.5 8 9 12.5"></path></svg></a>
+          <a href="viber://chat?number=%2B38163667570" style="display:inline-flex;align-items:center;justify-content:center;line-height:1;height:50px;padding:0 22px;border-radius:999px;border:1px solid rgba(241,238,231,.3);font-weight:500;font-size:15px">Viber</a>
+          <a href="mailto:unitrgovina@gmail.com" style="display:inline-flex;align-items:center;justify-content:center;line-height:1;height:50px;padding:0 22px;border-radius:999px;border:1px solid rgba(241,238,231,.3);font-weight:500;font-size:15px">E-pošta</a>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:40px 32px;padding-top:40px;border-top:1px solid rgba(14,14,12,.16)">
+      <div style="display:flex;flex-direction:column;gap:12px;font-size:15px">
+        <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#5C5850;margin-bottom:4px">Usluge</span>
+        <a href="#beton">Gotov beton</a><a href="#beton">Pumpe 28, 36 i 42 m</a><a href="#agregati">Agregati</a><a href="#usluge">Građevinski materijal</a><a href="#zito">Otkup žitarica</a><a href="#ogrev">Ogrev</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:18px;font-size:15px">
+        <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#5C5850;margin-bottom:-2px">Lokacije</span>
+        <a href="#lokacije" style="display:flex;flex-direction:column;gap:3px"><span style="font-weight:600">Padina</span><span style="color:#5C5850">Save Kovačevića 93, 26215 Padina</span></a>
+        <a href="tel:+38113675045" style="display:flex;flex-direction:column;gap:3px"><span style="font-weight:600">Samoš</span><span style="color:#5C5850">013 675 045</span></a>
+        <a href="#lokacije" style="display:flex;flex-direction:column;gap:3px"><span style="font-weight:600">Jarkovac</span><span style="color:#5C5850">Separacija, kanal DTD</span></a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;font-size:15px">
+        <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#5C5850;margin-bottom:4px">Korisno</span>
+        <a href="#beton">Kalkulator betona</a><a href="#agregati">Izbor frakcije</a><a href="#galerija">Galerija</a><a href="#o-nama">O nama</a><a href="#ponuda">Kontakt</a>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;font-size:15px">
+        <span style="font-family:'Geist Mono',ui-monospace,monospace;font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#5C5850;margin-bottom:4px">Kontakt</span>
+        <a href="tel:+38163667570">063 667 570</a><a href="mailto:unitrgovina@gmail.com">unitrgovina@gmail.com</a><a href="viber://chat?number=%2B38163667570">Viber</a>
+        <span style="color:#5C5850">Pon–sub 07–17h</span>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-family:'Geist Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.08em;color:#5C5850">
+      <span>© 1990–{{ year }} Unitrgovina d.o.o.</span>
+      <span style="display:flex;gap:24px;flex-wrap:wrap"><a href="#">Politika privatnosti</a><a href="#top" style="color:#0E0E0C">Nazad na vrh ↑</a></span>
+    </div>
+  </div>
+</footer>
+<div ref="{{ endRef }}" aria-hidden="true" style="background:#0E0E0C;overflow:hidden;padding:clamp(28px,5vh,56px) 0 {{ footPad }}">
+  <div ref="{{ wordRef }}" style="font-family:'Archivo',sans-serif;font-weight:900;font-stretch:62%;text-transform:uppercase;font-size:18.2vw;line-height:.76;letter-spacing:-.01em;text-align:center;color:#F1EEE7;white-space:nowrap;margin-bottom:-.04em;transform:translate3d(0,70%,0);opacity:0;will-change:transform,opacity;user-select:none">Unitrgovina</div>
+</div>
+</div>
+
+<button ref="{{ topRef }}" onClick="{{ toTop }}" aria-label="Nazad na vrh" style="position:fixed;right:clamp(16px,2vw,28px);bottom:{{ topBottom }};z-index:56;box-sizing:border-box;width:52px;height:52px;padding:0;border-radius:50%;border:1px solid rgba(241,238,231,.2);background:#1A1A17;color:#F1EEE7;display:grid;place-items:center;cursor:pointer;opacity:0;transform:translateY(16px) scale(.9);pointer-events:none;transition:opacity .4s,transform .6s cubic-bezier(.16,1,.3,1),background .3s,color .3s" style-hover="background:#E3A83F;color:#0E0E0C;border-color:#E3A83F"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="M8 13.5v-11M3.5 7 8 2.5 12.5 7"></path></svg></button>
+
+<sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+  <nav style="position:fixed;left:12px;right:12px;bottom:12px;z-index:55;display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:6px;padding:6px;border-radius:999px;background:rgba(23,23,20,.88);backdrop-filter:blur(16px);border:1px solid rgba(241,238,231,.12)">
+    <a href="tel:+38163667570" style="height:48px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:500">Pozovite</a>
+    <a href="viber://chat?number=%2B38163667570" style="height:48px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:500">Viber</a>
+    <a href="#ponuda" style="height:48px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;background:#E3A83F;color:#0E0E0C">Ponuda</a>
+  </nav>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;quality&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Puna&quot;,&quot;Štedljiva&quot;],&quot;default&quot;:&quot;Puna&quot;,&quot;tsType&quot;:&quot;'Puna' | 'Štedljiva'&quot;,&quot;section&quot;:&quot;3D scena&quot;},&quot;heroPrices&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Početna&quot;},&quot;galleryAutoplay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Galerija&quot;}}">
+class Component extends DCLogic {
+  state = { lang: 'sr', menu: false, scrolled: false, step: 0, L: 10, W: 8, D: 15, r: 5, pump: '36 m', frac: 'Sve', gal: 0, tab: 0, sent: false, vals: {}, loc: 0, board: false, mobile: false, svc: 0 };
+  rootRef = React.createRef(); canvasRef = React.createRef(); labelsRef = React.createRef(); chainRef = React.createRef();
+  heroInner = React.createRef(); railRef = React.createRef(); railFill = React.createRef(); tickerRef = React.createRef();
+  boardRef = React.createRef(); quoteRef = React.createRef(); galRef = React.createRef();
+  stepRefs = [0, 1, 2, 3, 4, 5].map(() => React.createRef());
+  topRef = React.createRef(); stageRef = React.createRef(); stageDim = React.createRef(); endRef = React.createRef(); wordRef = React.createRef();
+
+  componentDidMount() {
+    this.onScroll = (force) => {
+      const el = this.chainRef.current; if (!el) return;
+      const y = window.scrollY; if (force !== true && y === this.lastY) return; this.lastY = y;
+      const end = this.endRef.current, word = this.wordRef.current;
+      const vh = window.innerHeight, r = el.getBoundingClientRect(), er = end && word ? end.getBoundingClientRect() : null;
+      const p = Math.max(0, Math.min(6, -r.top / vh));
+      if (this.strata) { this.strata.setProgress(p); this.strata.setActive(r.bottom > -50); }
+      this.stepRefs.forEach((ref, i) => {
+        const n = ref.current; if (!n) return;
+        const d = p - (i + 1);
+        n.style.opacity = String(Math.max(0, 1 - Math.abs(d) * 1.7));
+        n.style.transform = 'translateY(' + (-d * 36).toFixed(1) + 'px)';
+      });
+      const hi = this.heroInner.current;
+      if (hi) { hi.style.opacity = String(Math.max(0, 1 - p * 1.6)); hi.style.transform = 'translateY(' + (-p * 80).toFixed(1) + 'px)'; }
+      const rail = this.railRef.current;
+      if (rail) rail.style.opacity = String(Math.min(1, Math.max(0, (p - 0.55) * 2.5)));
+      const fill = this.railFill.current;
+      if (fill) fill.style.width = (Math.max(0, Math.min(1, (p - 1) / 5)) * 83.4).toFixed(2) + '%';
+      // parallax hand-off: the scene sinks and dims while the next section slides over it
+      const over = Math.max(0, vh - r.bottom), ko = Math.min(1, over / vh);
+      const st = this.stageRef.current;
+      if (st) st.style.transform = over > 0 ? 'translate3d(0,' + (over * 0.6).toFixed(1) + 'px,0) scale(' + (1 - ko * 0.06).toFixed(4) + ')' : 'none';
+      const dim = this.stageDim.current; if (dim) dim.style.opacity = (ko * 0.8).toFixed(3);
+      if (er) {
+        const t = Math.max(0, Math.min(1, (vh - er.top) / Math.max(1, er.height))), e = 1 - Math.pow(1 - t, 3);
+        word.style.transform = 'translate3d(0,' + ((1 - e) * 70).toFixed(2) + '%,0)'; word.style.opacity = (0.15 + 0.85 * e).toFixed(3);
+      }
+      const step = Math.round(p), scrolled = window.scrollY > 40, past = r.bottom < vh * 0.4;
+      if (step !== this.railStep) { this.railStep = step; this.paintRail(step); }
+      if (past !== this.pastNow) { this.pastNow = past; const tb = this.topRef.current; if (tb) { tb.style.opacity = past ? '1' : '0'; tb.style.transform = past ? 'none' : 'translateY(16px) scale(.9)'; tb.style.pointerEvents = past ? 'auto' : 'none'; } }
+      if (scrolled !== this.state.scrolled) this.setState({ scrolled });
+    };
+    this.onResize = () => {
+      const m = window.innerWidth < 900;
+      const room = window.innerWidth >= 1100 && window.innerHeight >= Math.min(0.18 * window.innerWidth, 317) + 560;
+      if (m !== this.state.mobile || room !== this.state.room) this.setState({ mobile: m, room });
+      this.onScroll(true);
+    };
+    this.onScrollEvt = () => { if (!this.scrollRaf) this.scrollRaf = requestAnimationFrame(() => { this.scrollRaf = 0; this.onScroll(); }); };
+    this.onPointer = (e) => { if (this.strata) this.strata.setPointer((e.clientX / window.innerWidth) * 2 - 1, (e.clientY / window.innerHeight) * 2 - 1); };
+    window.addEventListener('scroll', this.onScrollEvt, { passive: true });
+    window.addEventListener('resize', this.onResize);
+    window.addEventListener('pointermove', this.onPointer, { passive: true });
+    this.setupSmoothScroll();
+    this.onResize();
+    this.initStrata();
+    if (this.tickerRef.current && this.tickerRef.current.animate) {
+      this.tickerAnim = this.tickerRef.current.animate([{ transform: 'translateX(0)' }, { transform: 'translateX(-50%)' }], { duration: 52000, iterations: Infinity });
+    }
+    this.revealTimer = setTimeout(() => this.setupReveals(), 80);
+    this.galTimer = setInterval(() => {
+      if (this.galInView && !this.galHover && (this.props.galleryAutoplay ?? true)) this.setState((s) => ({ gal: (s.gal + 1) % 7 }));
+    }, 5200);
+  }
+
+  paintRail(step) {
+    const root = this.railRef.current; if (!root) return;
+    root.querySelectorAll('[data-rail-item]').forEach((el, i) => {
+      const k = i + 1, on = step === k, done = step > k, dot = el.querySelector('[data-rail-dot]');
+      el.style.color = on ? '#F1EEE7' : done ? '#A3A097' : 'rgba(241,238,231,.5)';
+      if (dot) { dot.style.background = on || done ? '#E3A83F' : '#0E0E0C'; dot.style.boxShadow = '0 0 0 1px ' + (on || done ? '#E3A83F' : 'rgba(241,238,231,.4)'); }
+    });
+  }
+
+  // inertial wheel scrolling (touch keeps native momentum)
+  setupSmoothScroll() {
+    this.reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.ss = { cur: window.scrollY, target: window.scrollY, on: false, last: 0 };
+    const maxY = () => document.documentElement.scrollHeight - window.innerHeight;
+    this.ssTick = (now) => {
+      const ss = this.ss, dt = Math.min(0.05, (now - ss.last) / 1000); ss.last = now;
+      ss.cur += (ss.target - ss.cur) * (1 - Math.exp(-dt * 9));
+      if (Math.abs(ss.target - ss.cur) < 0.25) { ss.cur = ss.target; ss.on = false; }
+      window.scrollTo(0, ss.cur);
+      this.onScroll();
+      if (ss.on) this.ssRaf = requestAnimationFrame(this.ssTick);
+    };
+    this.onWheel = (e) => {
+      if (this.reduceMotion || e.ctrlKey || this.state.menu || e.defaultPrevented) return;
+      if (e.target.closest && e.target.closest('textarea,select,iframe,[data-native-scroll]')) return;
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      if (this.animRaf) { cancelAnimationFrame(this.animRaf); this.animRaf = 0; }
+      let d = e.deltaY; if (e.deltaMode === 1) d *= 32; else if (e.deltaMode === 2) d *= window.innerHeight;
+      push(d);
+    };
+    const push = (d) => {
+      const ss = this.ss;
+      if (!ss.on) { ss.cur = ss.target = window.scrollY; }
+      ss.target = Math.max(0, Math.min(maxY(), ss.target + d));
+      if (!ss.on) { ss.on = true; ss.last = performance.now(); this.ssRaf = requestAnimationFrame(this.ssTick); }
+    };
+    this.onKey = (e) => {
+      if (this.reduceMotion || this.state.menu || e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
+      const t = e.target;
+      if (t && t.closest && t.closest('input,textarea,select,[contenteditable],[data-native-scroll]')) return;
+      const vh = window.innerHeight; let d = 0;
+      switch (e.key) {
+        case 'ArrowDown': d = 140; break; case 'ArrowUp': d = -140; break;
+        case 'PageDown': d = vh * 0.85; break; case 'PageUp': d = -vh * 0.85; break;
+        case ' ': if (t && t.closest && t.closest('a,button')) return; d = (e.shiftKey ? -1 : 1) * vh * 0.85; break;
+        case 'Home': e.preventDefault(); this.animTo(0); return;
+        case 'End': e.preventDefault(); this.animTo(maxY()); return;
+        default: return;
+      }
+      e.preventDefault();
+      if (this.animRaf) { cancelAnimationFrame(this.animRaf); this.animRaf = 0; }
+      push(d);
+    };
+    window.addEventListener('keydown', this.onKey);
+    this.onAnchor = (e) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey) return;
+      const a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a) return;
+      const id = a.getAttribute('href').slice(1); if (!id) return;
+      const el = document.getElementById(id); if (!el) return;
+      e.preventDefault();
+      this.animTo(id === 'top' ? 0 : el.getBoundingClientRect().top + window.scrollY);
+    };
+    window.addEventListener('wheel', this.onWheel, { passive: false });
+    document.addEventListener('click', this.onAnchor);
+  }
+
+  animTo(y) {
+    if (this.ssRaf) cancelAnimationFrame(this.ssRaf); if (this.animRaf) cancelAnimationFrame(this.animRaf);
+    const maxY = document.documentElement.scrollHeight - window.innerHeight, to = Math.max(0, Math.min(maxY, y)), from = window.scrollY, dist = to - from;
+    if (this.reduceMotion || Math.abs(dist) < 2) { window.scrollTo(0, to); return; }
+    const dur = Math.min(1700, 650 + Math.abs(dist) * 0.09), t0 = performance.now();
+    const ez = (t) => (t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2);
+    this.ss.on = false;
+    const tick = (now) => {
+      const k = Math.min(1, (now - t0) / dur);
+      window.scrollTo(0, from + dist * ez(k)); this.ss.cur = this.ss.target = window.scrollY; this.onScroll();
+      this.animRaf = k < 1 ? requestAnimationFrame(tick) : 0;
+    };
+    this.animRaf = requestAnimationFrame(tick);
+  }
+
+  initStrata() {
+    if (this.strata) { this.strata.dispose(); this.strata = null; }
+    const token = (this.strataToken = (this.strataToken || 0) + 1);
+    const url = new URL('./strata.js', document.baseURI).href;
+    import(url)
+      .then((m) => m.createStrata(this.canvasRef.current, this.labelsRef.current, { quality: this.props.quality === 'Štedljiva' ? 'lite' : 'full' }))
+      .then((s) => { if (this.dead || token !== this.strataToken) { s.dispose(); return; } this.strata = s; window.__strata = s; this.onScroll(true); })
+      .catch((e) => console.warn('3D scena nije učitana', e));
+  }
+
+  componentDidUpdate(prev) {
+    if (prev.quality !== this.props.quality) this.initStrata();
+  }
+
+  setupReveals() {
+    const root = this.rootRef.current;
+    if (!root || !('IntersectionObserver' in window)) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.io = new IntersectionObserver((ents) => ents.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const t = e.target;
+      if (t.__rv) t.__rv.play();
+      if (t.dataset.count && !t.__counted) this.countUp(t);
+      if (t === this.boardRef.current) this.setState({ board: true });
+      this.io.unobserve(t);
+    }), { threshold: 0.15, rootMargin: '0px 0px -6% 0px' });
+    root.querySelectorAll('[data-reveal]').forEach((el) => {
+      if (reduce || !el.animate) return;
+      if (el.getBoundingClientRect().top < window.innerHeight * 0.95) return;
+      const rise = el.dataset.revealKind === 'rise';
+      const a = el.animate(
+        [{ opacity: 0, transform: rise ? 'translateY(160px)' : 'translateY(32px)' }, { opacity: 1, transform: 'none' }],
+        { duration: rise ? 1400 : 1000, delay: +el.dataset.reveal || 0, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'both' }
+      );
+      a.pause(); el.__rv = a; this.io.observe(el);
+    });
+    if (!reduce) root.querySelectorAll('[data-count]').forEach((el) => this.io.observe(el));
+    if (this.boardRef.current) this.io.observe(this.boardRef.current);
+    if (this.galRef.current) {
+      this.galIO = new IntersectionObserver((e) => { this.galInView = e[0].isIntersecting; }, { threshold: 0.3 });
+      this.galIO.observe(this.galRef.current);
+    }
+  }
+
+  countUp(el) {
+    el.__counted = true;
+    const node = el.firstChild; if (!node || node.nodeType !== 3) return;
+    const target = +el.dataset.count, t0 = performance.now(), dur = 1600;
+    const tick = (now) => {
+      const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 4);
+      node.nodeValue = k < 1 ? String(Math.round(target * e)) : String(target);
+      if (k < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+
+  componentWillUnmount() {
+    this.dead = true;
+    window.removeEventListener('scroll', this.onScrollEvt);
+    window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('pointermove', this.onPointer);
+    window.removeEventListener('wheel', this.onWheel); window.removeEventListener('keydown', this.onKey); if (this.scrollRaf) cancelAnimationFrame(this.scrollRaf); document.removeEventListener('click', this.onAnchor);
+    if (this.ssRaf) cancelAnimationFrame(this.ssRaf); if (this.animRaf) cancelAnimationFrame(this.animRaf);
+    clearTimeout(this.revealTimer); clearInterval(this.galTimer);
+    if (this.io) this.io.disconnect(); if (this.galIO) this.galIO.disconnect();
+    if (this.tickerAnim) this.tickerAnim.cancel();
+    if (this.strata) this.strata.dispose();
+  }
+
+  toQuote(tab, extra) {
+    this.setState((s) => ({ tab, sent: false, vals: { ...s.vals, ...(extra || {}) } }), () => {
+      const el = this.quoteRef.current;
+      if (el) this.animTo(el.getBoundingClientRect().top + window.scrollY);
+    });
+  }
+
+  renderVals() {
+    const s = this.state, sr = s.lang === 'sr', now = new Date();
+    const fmt = (n, d) => (Math.round(n * 10 ** d) / 10 ** d).toFixed(d).replace('.', ',');
+    const fmtN = (n) => (Number.isInteger(n) ? String(n) : fmt(n, 1));
+    const pad = (n) => String(n).padStart(2, '0');
+
+    const V = s.L * s.W * (s.D / 100) * (1 + s.r / 100);
+    const vol = Math.round(V * 10) / 10;
+    const trips = Math.max(1, Math.ceil(vol / 10 - 1e-9));
+    const word = (n) => { const a = n % 10, b = n % 100; return a >= 2 && a <= 4 && (b < 12 || b > 14) ? 'ture' : 'tura'; };
+    const bars = Array.from({ length: Math.min(trips, 12) }, (_, k) => ({ w: Math.round(Math.min(1, Math.max(0, (vol - k * 10) / 10)) * 100) + '%' }));
+    const calcRows = [
+      { k: 'L', label: 'Dužina', unit: 'm', min: 1, max: 60, step: 0.5 },
+      { k: 'W', label: 'Širina', unit: 'm', min: 1, max: 40, step: 0.5 },
+      { k: 'D', label: 'Debljina', unit: 'cm', min: 5, max: 60, step: 1 },
+      { k: 'r', label: 'Rezerva', unit: '%', min: 0, max: 15, step: 1 },
+    ].map((c) => ({ ...c, value: s[c.k], shown: fmtN(s[c.k]), onChange: (e) => this.setState({ [c.k]: parseFloat(e.target.value) }) }));
+
+    const pumps = [28, 36, 42].map((m) => {
+      const on = s.pump === m + ' m';
+      return { label: m + ' m', h: ((m / 45) * 100).toFixed(1) + '%', line: on ? '#E3A83F' : 'rgba(241,238,231,.35)', dot: on ? '#E3A83F' : '#171714', ring: on ? '#E3A83F' : 'rgba(241,238,231,.5)', fg: on ? '#F1EEE7' : '#A3A097', pick: () => this.setState({ pump: m + ' m' }) };
+    });
+
+    const SVC = [
+      { title: 'Beton', line: 'Gotov beton MB10–MB50, specijalni betoni i pumpe sa strelom od 28, 36 i 42 m.', spec: 'MB10–MB50', subs: ['Gotov beton', 'Beton pumpa', 'Specijalni betoni', 'Industrijski podovi', 'Laboratorija i atesti'], img: 'svc-beton', ph: 'Fotografija: fabrika betona u Padini', href: '#beton', cta: 'Sve o betonu' },
+      { title: 'Agregati', line: 'Prane frakcije od 0–4 do 16–32 mm, iberlauf, pesak i drobljeni kamen.', spec: '0–32 mm', subs: ['Pesak 0–4', 'Šljunak 4–8', 'Šljunak 8–16', 'Šljunak 16–32', 'Iberlauf', 'Prirodna mešavina', 'Drobljeni kamen'], img: 'svc-agregati', ph: 'Fotografija: frakcije šljunka izbliza, pored lenjira', href: '#agregati', cta: 'Izaberite frakciju' },
+      { title: 'Građevinski materijal', line: 'Sve od temelja do krova: blokovi, crep, armatura, izolacija, fert gredice.', spec: 'Padina · Samoš', subs: ['Blokovi i opeka', 'Fert gredice', 'Armatura', 'Betonske cevi', 'Čelik, limovi i profili', 'Izolacija', 'Crep', 'Boje i lakovi'], img: 'svc-materijal', ph: 'Fotografija: stovarište i kamion sa kranom', href: '#ponuda', cta: 'Pošaljite spisak materijala' },
+      { title: 'Gradnja', line: 'Izvođenje svih vrsta građevinskih radova po principu ključ u ruke.', spec: 'Ključ u ruke', subs: ['Industrijski podovi', 'Temelji i ploče', 'Reference'], img: 'svc-gradnja', ph: 'Fotografija: završen objekat ili hala', href: '#galerija', cta: 'Pogledajte radove' },
+      { title: 'Poljoprivreda', line: 'Otkup žitarica po dnevnim cenama, seme, đubrivo i program Žito za zid.', spec: 'Dnevne cene', subs: ['Otkup žitarica', 'Žito za zid', 'Seme i đubrivo'], img: 'svc-poljoprivreda', ph: 'Fotografija: silos u žetvi', href: '#zito', cta: 'Današnje cene' },
+      { title: 'Ogrev', line: 'Ugalj, drva i pelet sa dostavom na kućnu adresu.', spec: 'Dostava', subs: ['Drva', 'Ugalj', 'Pelet'], img: 'svc-ogrev', ph: 'Fotografija: složena drva i ugalj', href: '#ogrev', cta: 'Naručite ogrev' },
+    ];
+    const services = SVC.map((x, i) => {
+      const open = s.svc === i;
+      return { ...x, n: pad(i + 1), rows: open ? '1fr' : '0fr', plus: open ? 'rotate(45deg)' : 'none', plusBg: open ? '#0E0E0C' : 'transparent', plusFg: open ? '#F1EEE7' : '#0E0E0C', toggle: () => this.setState({ svc: open ? -1 : i }) };
+    });
+
+    const TASKS = ['Sve', 'Beton', 'Malter i košuljica', 'Drenaža', 'Dvorište i staze', 'Podloga za put', 'Stabilizacija tla'];
+    const tasks = TASKS.map((t) => {
+      const on = s.frac === t;
+      return { t, bg: on ? '#0E0E0C' : 'transparent', fg: on ? '#F1EEE7' : '#0E0E0C', bd: on ? '#0E0E0C' : 'rgba(14,14,12,.22)', pick: () => this.setState({ frac: t, fsel: null }) };
+    });
+    const FR = [
+      { size: '0–4', unit: 'mm', badge: 'Frakcija 1', name: 'Pesak', use: 'Spravljanje betona, malterisanje, cementne košuljice.', tags: ['Beton', 'Malter i košuljica'], d: 'f1', form: 'Pesak 0–4 mm' },
+      { size: '4–8', unit: 'mm', badge: 'Frakcija 2', name: 'Šljunak', use: 'Spravljanje betona, dekoracija dvorišta i parkova.', tags: ['Beton', 'Dvorište i staze'], d: 'f2', form: 'Šljunak 4–8 mm' },
+      { size: '8–16', unit: 'mm', badge: 'Frakcija 3', name: 'Šljunak', use: 'Spravljanje betona, dekoracija dvorišta i parkova.', tags: ['Beton', 'Dvorište i staze'], d: 'f3', form: 'Šljunak 8–16 mm' },
+      { size: '16–32', unit: 'mm', badge: 'Frakcija 4', name: 'Šljunak', use: 'Spravljanje betona, dekoracija dvorišta i parkova.', tags: ['Beton', 'Dvorište i staze'], d: 'f4', form: 'Šljunak 16–32 mm' },
+      { size: '32+', unit: 'mm', badge: 'Preko 32 mm', name: 'Iberlauf', use: 'Drenaža i nasipanje gde voda mora da prolazi u zemlju; nikako za beton.', tags: ['Drenaža'], d: 'ib', form: 'Iberlauf' },
+      { size: 'Mix', unit: '', badge: 'Prirodna', name: 'Prirodna mešavina šljunka', use: 'Sirovina za separisani agregat; podloge u putogradnji.', tags: ['Podloga za put'], d: 'mix', form: 'Prirodna mešavina' },
+      { size: 'Kamen', unit: '', badge: 'Drobljeni', name: 'Drobljeni kamen', use: 'Stabilizacija tla, spravljanje betona.', tags: ['Stabilizacija tla', 'Beton'], d: 'dk', form: 'Drobljeni kamen' },
+    ];
+    const BAR = { f1: [0, 20], f2: [20, 20], f3: [40, 20], f4: [60, 20], ib: [80, 20], mix: [0, 100] };
+    const match = (f) => s.frac === 'Sve' || f.tags.includes(s.frac);
+    let sel = s.fsel ?? 0; if (!match(FR[sel])) sel = Math.max(0, FR.findIndex(match));
+    const fractions = FR.map((f, i) => {
+      const on = match(f), act = i === sel;
+      return { ...f, sel: act ? 'true' : 'false', op: on ? 1 : 0.32, rowBg: act ? '#0E0E0C' : 'transparent', rowFg: act ? '#F1EEE7' : '#0E0E0C', rowSub: act ? '#A3A097' : '#5C5850', rowLine: act ? 'rgba(241,238,231,.4)' : 'rgba(14,14,12,.22)', arrow: act ? 'none' : 'translateX(-6px)',
+        imgOp: act ? 1 : 0, imgVis: act ? 'visible' : 'hidden', slot: 'frakcija-' + f.d, ph: 'Fotografija iz blizine: ' + f.form,
+        choose: () => { if (s.fsel !== i) this.setState({ fsel: i }); } };
+    });
+    const C = FR[sel], cb = BAR[C.d];
+    const cur = { badge: C.badge, title: C.name + (C.unit === 'mm' ? ' ' + C.size + ' mm' : ''), use: C.use, tags: C.tags, short: C.form.split(' ')[0].toLowerCase(), hasRange: !!cb, left: cb ? cb[0] + '%' : '0%', width: cb ? cb[1] + '%' : '0%', order: () => this.toQuote(1, { 'a.fr': C.form }) };
+
+    const G = [
+      { cat: 'Beton', title: 'Pumpa 42 m', sub: 'Betoniranje ploče sa strelom u punom dometu.', ph: 'Fotografija: auto-beton pumpa 42 m' },
+      { cat: 'Podovi', title: 'Industrijski pod', sub: 'Beton sa čeličnim vlaknima, perdašenje i sečenje dilatacija.', ph: 'Fotografija: industrijski pod u hali' },
+      { cat: 'Agregati', title: 'Separacija Jarkovac', sub: 'Pranje i separisanje šljunka na kanalu DTD.', ph: 'Fotografija iz drona: separacija Jarkovac' },
+      { cat: 'Beton', title: 'Laboratorija', sub: 'Kontrola sirovina i svake ture betona, Padina.', ph: 'Fotografija: ispitivanje kocke u laboratoriji' },
+      { cat: 'Beton', title: 'Mikseri 9 i 10 m³', sub: 'Sopstveni auto-mikseri iz baze u Padini.', ph: 'Fotografija: mikseri u nizu' },
+      { cat: 'Stovarišta', title: 'Stovarište Samoš', sub: 'Građevinski materijal i ogrev.', ph: 'Fotografija: stovarište i kamion sa kranom' },
+      { cat: 'Otkup', title: 'Silos u žetvi', sub: 'Otkup žitarica po dnevnim cenama.', ph: 'Fotografija: silos i kolska vaga' },
+    ];
+    const gallery = G.map((g, i) => {
+      const on = s.gal === i, near = Math.abs(s.gal - i) === 1;
+      return { ...g, n: pad(i + 1), id: 'galerija-' + (i + 1), delay: i * 90, collapsed: !on,
+        flex: s.mobile ? (on ? '14 1 0%' : '1 1 0%') : on ? '7 1 0%' : near ? '1.5 1 0%' : '1 1 0%',
+        capOp: on ? 1 : 0, coverOp: on ? 0 : 0.9, capTf: on ? 'none' : 'translateY(18px)', vOp: on || s.mobile ? 0 : 1,
+        focus: () => { if (s.gal !== i) this.setState({ gal: i }); } };
+    });
+
+    const CROPS = [{ name: 'Kukuruz', price: '21,50' }, { name: 'Pšenica', price: '22,80' }, { name: 'Suncokret', price: '54,00' }];
+    const crops = CROPS.map((c, ci) => ({ ...c, chars: c.price.split('').map((ch, k) => {
+      const dg = /\d/.test(ch);
+      return { dg, nd: !dg, ch, tf: 'translateY(-' + (s.board && dg ? +ch * 10 : 0) + '%)', dl: ci * 160 + k * 90 + 'ms' };
+    }) }));
+
+    const mo = now.getMonth();
+    let season;
+    if (mo <= 1) season = { label: 'januar – februar', text: 'Planirate gradnju na proleće? Zatražite ponudu za beton i materijal već sada.', btn: 'Zatražite ponudu', tab: 0 };
+    else if (mo === 5 || mo === 6) season = { label: 'jun – jul', text: 'Žetva je počela – otkup pšenice svakog dana.', btn: 'Današnje cene', href: 'zito' };
+    else if (mo === 8 || mo === 9) season = { label: 'septembar – oktobar', text: 'Zima stiže – naručite ugalj i drva na vreme. Dostava našim vozilima.', btn: 'Naručite ogrev', tab: 3 };
+    else season = { label: 'sezona gradnje', text: 'Gradite ove sezone? Zakažite beton i pumpu na vreme.', btn: 'Zakažite beton', tab: 0 };
+
+    const RAIL = ['Separacija Jarkovac', 'Prane frakcije', 'Laboratorija', 'Fabrika betona Padina', 'Mikseri i pumpe', 'Vaš temelj'];
+    const rail = RAIL.map((name, i) => {
+      const k = i + 1, on = s.step === k, done = s.step > k;
+      return { n: pad(k), name, fg: on ? '#F1EEE7' : done ? '#A3A097' : 'rgba(241,238,231,.5)', dotBg: on || done ? '#E3A83F' : '#0E0E0C', dotLine: on || done ? '#E3A83F' : 'rgba(241,238,231,.4)' };
+    });
+
+    const LOCS = [
+      { name: 'Padina', addr: 'Save Kovačevića 93, 26215 Padina', what: 'Stovarište, betonska baza i laboratorija', tel: '063 667 570', href: 'tel:+38163667570', lat: 45.13238, lon: 20.731 },
+      { name: 'Samoš', addr: 'Samoš, opština Kovačica', what: 'Stovarište građevinskog materijala i ogreva', tel: '013 675 045', href: 'tel:+38113675045', lat: 45.2036, lon: 20.7781 },
+      { name: 'Jarkovac', addr: 'Jarkovac, kanal DTD', what: 'Šljunkara i separacija, preuzimanje agregata', tel: '063 667 570', href: 'tel:+38163667570', lat: 45.2667, lon: 20.7667 },
+    ];
+    const L = LOCS[s.loc];
+    const locations = LOCS.map((l, i) => {
+      const on = s.loc === i;
+      return { ...l, coords: l.lat.toFixed(2) + '°N / ' + l.lon.toFixed(2) + '°E', bg: on ? '#0E0E0C' : 'transparent', fg: on ? '#F1EEE7' : '#0E0E0C', sub: on ? '#A3A097' : '#5C5850', bd: on ? '#0E0E0C' : 'rgba(14,14,12,.16)', pick: () => this.setState({ loc: i }) };
+    });
+    const mapSrc = 'https://www.openstreetmap.org/export/embed.html?bbox=' + (L.lon - 0.05).toFixed(4) + '%2C' + (L.lat - 0.024).toFixed(4) + '%2C' + (L.lon + 0.05).toFixed(4) + '%2C' + (L.lat + 0.024).toFixed(4) + '&layer=mapnik&marker=' + L.lat + '%2C' + L.lon;
+
+    const TABS = [
+      { name: 'Beton i pumpa', key: 'b', fields: [
+        { k: 'adr', label: 'Adresa gradilišta', type: 'text' },
+        { k: 'kol', label: 'Količina (m³)', type: 'text' },
+        { k: 'kl', label: 'Klasa betona', type: 'select', options: ['Izaberite', 'MB10', 'MB15', 'MB20', 'MB30', 'MB40', 'MB50', 'Ne znam'] },
+        { k: 'sp', label: 'Specijalni beton', type: 'select', options: ['Ne', 'Vodonepropusni', 'Otporan na mraz', 'Otporan na mraz i so', 'Sulfatno-otporan', 'Sa vlaknima', 'Za industrijske podove'] },
+        { k: 'pumpa', label: 'Pumpa', type: 'chips', options: ['Ne', '28 m', '36 m', '42 m', 'Ne znam'], full: true },
+        { k: 'dat', label: 'Željeni datum', type: 'date' } ] },
+      { name: 'Agregati', key: 'a', fields: [
+        { k: 'fr', label: 'Frakcija', type: 'select', options: ['Izaberite', 'Pesak 0–4 mm', 'Šljunak 4–8 mm', 'Šljunak 8–16 mm', 'Šljunak 16–32 mm', 'Iberlauf', 'Prirodna mešavina', 'Drobljeni kamen'] },
+        { k: 'kol', label: 'Količina (t ili m³)', type: 'text' },
+        { k: 'dost', label: 'Preuzimanje ili dostava', type: 'chips', options: ['Preuzimam sam', 'Dostava na adresu'], full: true },
+        { k: 'dat', label: 'Željeni datum', type: 'date' } ] },
+      { name: 'Građevinski materijal', key: 'g', fields: [
+        { k: 'kat', label: 'Kategorija', type: 'select', options: ['Izaberite', 'Blokovi i opeka', 'Fert gredice', 'Armatura', 'Betonske cevi', 'Čelik, limovi i profili', 'Izolacija', 'Crep', 'Boje i lakovi'] },
+        { k: 'sp', label: 'Spisak materijala', type: 'text' },
+        { k: 'kran', label: 'Dostava kamionom sa kranom', type: 'chips', options: ['Da', 'Ne'], full: true } ] },
+      { name: 'Ogrev', key: 'o', fields: [
+        { k: 'pr', label: 'Proizvod', type: 'select', options: ['Izaberite', 'Ugalj', 'Drva – oblice', 'Drva – cepana', 'Pelet', 'Otpadno drvo u paletama'] },
+        { k: 'kol', label: 'Količina', type: 'text' },
+        { k: 'adr', label: 'Adresa dostave', type: 'text' },
+        { k: 'ter', label: 'Željeni termin', type: 'date' } ] },
+      { name: 'Gradnja i podovi', key: 'p', fields: [
+        { k: 'vr', label: 'Vrsta radova', type: 'select', options: ['Izaberite', 'Industrijski pod', 'Temelji i ploče', 'Gradnja ključ u ruke', 'Drugo'] },
+        { k: 'pov', label: 'Površina (m²)', type: 'text' },
+        { k: 'lok', label: 'Lokacija objekta', type: 'text' } ] },
+    ];
+    const T = TABS[s.tab];
+    const tabs = TABS.map((t, i) => {
+      const on = s.tab === i;
+      return { name: t.name, bg: on ? '#E3A83F' : 'transparent', fg: on ? '#0E0E0C' : '#F1EEE7', bd: on ? '#E3A83F' : 'rgba(241,238,231,.22)', pick: () => this.setState({ tab: i, sent: false }) };
+    });
+    const extras = T.fields.map((f) => {
+      const key = T.key + '.' + f.k;
+      const val = s.vals[key] ?? (f.type === 'select' ? f.options[0] : '');
+      const set = (v) => this.setState((st) => ({ vals: { ...st.vals, [key]: v } }));
+      return { label: f.label, isText: f.type === 'text', isSelect: f.type === 'select', isChips: f.type === 'chips', isDate: f.type === 'date', value: val, options: f.options || [], span: f.full ? '1 / -1' : 'auto', onChange: (e) => set(e.target.value),
+        chips: (f.type === 'chips' ? f.options : []).map((o) => { const on = val === o; return { o, bg: on ? '#F1EEE7' : 'transparent', fg: on ? '#0E0E0C' : '#F1EEE7', bd: on ? '#F1EEE7' : 'rgba(241,238,231,.22)', pick: () => set(o) }; }) };
+    });
+
+    const navLabels = sr ? ['Beton', 'Agregati', 'Materijal', 'Poljoprivreda', 'Ogrev'] : ['Betón', 'Kamenivo', 'Stavebný materiál', 'Poľnohospodárstvo', 'Palivo'];
+    const nav = navLabels.map((t, i) => ({ t, n: pad(i + 1), href: ['#beton', '#agregati', '#usluge', '#zito', '#ogrev'][i] }));
+
+    return {
+      svcCols: s.mobile ? '32px minmax(0,1fr) 44px' : '44px minmax(0,1fr) clamp(220px,20vw,300px)', svcInner: s.mobile ? 'minmax(0,1fr)' : 'minmax(0,5fr) minmax(0,6fr)',
+      topRef: this.topRef, stageRef: this.stageRef, stageDim: this.stageDim, endRef: this.endRef, wordRef: this.wordRef,
+      toTop: () => this.animTo(0), topBottom: s.mobile ? '84px' : '28px', topOp: s.past ? 1 : 0, topTf: s.past ? 'none' : 'translateY(16px) scale(.9)', topPe: s.past ? 'auto' : 'none',
+      rootRef: this.rootRef, canvasRef: this.canvasRef, labelsRef: this.labelsRef, chainRef: this.chainRef, heroInner: this.heroInner,
+      railRef: this.railRef, railFill: this.railFill, tickerRef: this.tickerRef, boardRef: this.boardRef, quoteRef: this.quoteRef, galRef: this.galRef,
+      step1: this.stepRefs[0], step2: this.stepRefs[1], step3: this.stepRefs[2], step4: this.stepRefs[3], step5: this.stepRefs[4], step6: this.stepRefs[5],
+      sr, sk: !sr, desktop: !s.mobile, mobile: s.mobile, nav,
+      hdrBg: s.scrolled || s.menu ? 'rgba(14,14,12,.94)' : 'rgba(14,14,12,0)', hdrBlur: 'none', hdrLine: s.scrolled ? 'rgba(241,238,231,.08)' : 'rgba(241,238,231,0)',
+      srBg: sr ? '#F1EEE7' : 'transparent', srFg: sr ? '#0E0E0C' : '#F1EEE7', skBg: sr ? 'transparent' : '#F1EEE7', skFg: sr ? '#F1EEE7' : '#0E0E0C',
+      setSr: () => this.setState({ lang: 'sr' }), setSk: () => this.setState({ lang: 'sk' }),
+      menuOpen: s.mobile && s.menu, menuLabel: s.menu ? 'Zatvori' : 'Meni', toggleMenu: () => this.setState({ menu: !s.menu }), closeMenu: () => this.setState({ menu: false }),
+      showHeroCard: !s.mobile && !!s.room && (this.props.heroPrices ?? true),
+      stepAlign: s.mobile ? 'flex-end' : 'center', stepPadB: s.mobile ? '150px' : '0px', railBottom: s.mobile ? '96px' : '36px', footPad: s.mobile ? '132px' : 'clamp(40px,7vh,80px)',
+      rail, services, calcRows, bars, pumps, tasks, fractions, cur, gallery, crops, locations, mapSrc, tabs, extras,
+      volStr: fmt(vol, 1), tripsStr: trips + ' ' + word(trips) + ' miksera',
+      calcQuote: () => this.toQuote(0, { 'b.kol': fmt(vol, 1), 'b.pumpa': s.pump }),
+      floorQuote: () => this.toQuote(4, { 'p.vr': 'Industrijski pod' }),
+      galNow: pad(s.gal + 1), galGap: s.mobile ? '6px' : '12px',
+      galPrev: () => this.setState({ gal: (s.gal + 6) % 7 }), galNext: () => this.setState({ gal: (s.gal + 1) % 7 }),
+      galEnter: () => { this.galHover = true; }, galLeave: () => { this.galHover = false; },
+      boardDate: pad(now.getDate()) + '.' + pad(now.getMonth() + 1) + '.' + now.getFullYear() + '.', boardTime: '07:30',
+      seasonLabel: season.label, seasonText: season.text, seasonBtn: season.btn,
+      seasonGo: () => {
+        if (season.href) { const el = document.getElementById(season.href); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 72, behavior: 'smooth' }); }
+        else this.toQuote(season.tab);
+      },
+      mapLabel: L.name + ' · ' + L.addr,
+      notSent: !s.sent, sent: s.sent,
+      submit: (e) => { e.preventDefault(); this.setState({ sent: true }); },
+      resetForm: () => this.setState({ sent: false }),
+      year: now.getFullYear(),
+    };
+  }
+}
+</script>
+</body>
+</html>
