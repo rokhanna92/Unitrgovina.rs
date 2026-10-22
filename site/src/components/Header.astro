@@ -1,0 +1,129 @@
+---
+import { getCopy, homePath, htmlLang, type Locale } from '../i18n';
+import { site } from '../site';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = getCopy(locale).header;
+const hrefs = ['#beton', '#agregati', '#usluge', '#zito', '#ogrev'];
+const nav = c.nav.map((t, i) => ({ t, href: hrefs[i], n: String(i + 1).padStart(2, '0') }));
+const langs = (['sr', 'sk'] as const).map((l) => ({ l, href: homePath[l], on: l === locale }));
+---
+
+<header class="hdr" data-header>
+  <a href="#top" aria-label={c.brandAria} class="brand"><span class="wordmark">UNITRGOVINA</span></a>
+  <nav class="nav">
+    {nav.map((n) => <a href={n.href}>{n.t}</a>)}
+  </nav>
+  <div class="right">
+    <a href={site.tel} class="phone">{site.phone}</a>
+    <div class="lang" role="group" aria-label={c.langAria}>
+      {
+        langs.map(({ l, href, on }) => (
+          <a href={href} hreflang={htmlLang[l]} lang={htmlLang[l]} class:list={['lang-btn', { on }]} aria-current={on ? 'page' : undefined}>
+            {l.toUpperCase()}
+          </a>
+        ))
+      }
+    </div>
+    <a href="#ponuda" class="pill cta">{c.cta}</a>
+    <button type="button" class="pill menu-btn" aria-expanded="false" aria-controls="menu" data-menu-toggle data-open={c.menu} data-close={c.close}>{c.menu}</button>
+  </div>
+</header>
+
+<div class="menu" id="menu" hidden data-menu>
+  {
+    nav.map((n) => (
+      <a href={n.href} class="menu-link">
+        <span class="menu-n">{n.n}</span>
+        <span class="menu-t">{n.t}</span>
+      </a>
+    ))
+  }
+  <a href={site.tel} class="menu-foot">{site.phone} · {c.hours}</a>
+</div>
+
+<style>
+  .hdr {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 0 var(--gutter);
+    background: rgba(14, 14, 12, 0);
+    border-bottom: 1px solid rgba(241, 238, 231, 0);
+    transition: background .5s, border-color .5s;
+  }
+  .hdr.is-scrolled { background: rgba(14, 14, 12, .94); border-bottom-color: rgba(241, 238, 231, .08); }
+  .hdr.is-menu { background: rgba(14, 14, 12, .94); }
+
+  .brand { display: flex; align-items: center; gap: 12px; flex: none; }
+  .wordmark { font-family: var(--f-display); font-weight: 700; font-stretch: 112%; letter-spacing: .18em; font-size: 15px; }
+
+  .nav { display: flex; align-items: center; gap: clamp(16px, 2.2vw, 34px); }
+  .nav a { display: flex; align-items: baseline; font-size: 14px; font-weight: 500; }
+
+  .right { display: flex; align-items: center; gap: 14px; flex: none; }
+  .phone { font-family: var(--f-mono); font-size: 12px; letter-spacing: .06em; }
+
+  .lang { display: flex; padding: 3px; border: 1px solid rgba(241, 238, 231, .18); border-radius: 999px; }
+  .lang-btn {
+    display: inline-flex;
+    align-items: center;
+    height: 28px;
+    padding: 0 10px;
+    border-radius: 999px;
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: .08em;
+    background: transparent;
+    color: var(--paper);
+    transition: background .3s;
+  }
+  .lang-btn:hover { opacity: 1; }
+  .lang-btn.on { background: var(--paper); color: var(--ink); }
+
+  .cta { height: 42px; padding: 0 20px; background: var(--amber); color: var(--ink); font-weight: 600; font-size: 14px; }
+  .menu-btn {
+    display: none;
+    height: 40px;
+    padding: 0 16px;
+    border: 1px solid rgba(241, 238, 231, .25);
+    background: transparent;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .menu {
+    position: fixed;
+    inset: 0;
+    z-index: 45;
+    background: var(--ink);
+    padding: 110px var(--gutter) 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow: auto;
+  }
+  .menu-link { display: flex; align-items: baseline; gap: 16px; padding: 14px 0; border-bottom: 1px solid rgba(241, 238, 231, .1); }
+  .menu-n { font-family: var(--f-mono); font-size: 11px; color: var(--amber); }
+  .menu-t { font-family: var(--f-display); font-weight: 800; font-stretch: 66%; text-transform: uppercase; font-size: 52px; line-height: .9; }
+  .menu-foot { margin-top: 28px; font-family: var(--f-mono); font-size: 14px; letter-spacing: .08em; color: var(--muted); }
+
+  @media (max-width: 899px) {
+    .nav, .phone, .cta { display: none; }
+    .menu-btn { display: inline-flex; }
+  }
+  @media (min-width: 900px) {
+    .menu { display: none !important; }
+  }
+</style>

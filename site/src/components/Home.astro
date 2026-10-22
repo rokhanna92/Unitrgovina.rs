@@ -1,0 +1,53 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import Chain from './Chain.astro';
+import Numbers from './Numbers.astro';
+import Services from './Services.astro';
+import Beton from './Beton.astro';
+import Agregati from './Agregati.astro';
+import Gallery from './Gallery.astro';
+import Zito from './Zito.astro';
+import Ogrev from './Ogrev.astro';
+import About from './About.astro';
+import Locations from './Locations.astro';
+import Quote from './Quote.astro';
+import Footer from './Footer.astro';
+import Floating from './Floating.astro';
+import type { Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+---
+
+<Base locale={locale}>
+  <div class="page">
+    <Header locale={locale} />
+    <main>
+      <Chain locale={locale} />
+      <div class="over">
+        <Numbers locale={locale} />
+        <Services locale={locale} />
+        <Beton locale={locale} />
+        <Agregati locale={locale} />
+        <Gallery locale={locale} />
+        <Zito locale={locale} />
+        <Ogrev locale={locale} />
+        <About locale={locale} />
+        <Locations locale={locale} />
+        <Quote locale={locale} />
+      </div>
+    </main>
+    <div class="over">
+      <Footer locale={locale} />
+    </div>
+    <Floating locale={locale} />
+  </div>
+</Base>
+
+<style>
+  /* everything after the chain slides over the sticky 3D stage */
+  .over { position: relative; z-index: 2; }
+</style>

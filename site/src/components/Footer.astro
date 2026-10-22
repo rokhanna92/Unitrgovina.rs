@@ -1,0 +1,145 @@
+---
+import Icon from './Icon.astro';
+import { getCopy, type Locale } from '../i18n';
+import { site } from '../site';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const copy = getCopy(locale);
+const c = copy.footer;
+---
+
+<footer class="footer" lang={locale === 'sk' ? 'sr-Latn' : undefined}>
+  <div class="wrap">
+    <div class="top">
+      <div class="claim">
+        <span class="kicker">{c.kicker}</span>
+        <span class="display caps title">{c.title[0]}<br />{c.title[1]}</span>
+        <span lang="sk" class="slovak">{c.slovak}</span>
+      </div>
+      <div class="callcard">
+        <span class="kicker light"><span>{c.call}</span><span class="amber">{copy.header.hours}</span></span>
+        <a href={site.tel} class="big-phone">{site.phone}</a>
+        <div class="btns">
+          <a href="#ponuda" class="pill btn amber-btn">{c.cta} <Icon name="arrow" /></a>
+          <a href={site.viber} class="pill btn line">Viber</a>
+          <a href={site.mailto} class="pill btn line">{c.email}</a>
+        </div>
+      </div>
+    </div>
+    <div class="cols">
+      <div class="col">
+        <span class="kicker col-label">{c.cols.services}</span>
+        {c.serviceLinks.map((l) => <a href={l.href}>{l.t}</a>)}
+      </div>
+      <div class="col locs">
+        <span class="kicker col-label">{c.cols.locations}</span>
+        {
+          c.locationLinks.map((l) => (
+            <a href={l.href} class="loc">
+              <span class="loc-name">{l.name}</span>
+              <span class="loc-sub">{l.sub}</span>
+            </a>
+          ))
+        }
+      </div>
+      <div class="col">
+        <span class="kicker col-label">{c.cols.useful}</span>
+        {c.usefulLinks.map((l) => <a href={l.href}>{l.t}</a>)}
+      </div>
+      <div class="col">
+        <span class="kicker col-label">{c.cols.contact}</span>
+        <a href={site.tel}>{site.phone}</a>
+        <a href={site.mailto}>{site.email}</a>
+        <a href={site.viber}>Viber</a>
+        <span class="muted">{copy.header.hours}</span>
+      </div>
+    </div>
+    <div class="bottom">
+      <span>© 1990–<span data-year>{new Date().getFullYear()}</span> {c.copyright}</span>
+      <span class="bottom-links"><a href="#">{c.privacy}</a><a href="#top" class="ink">{c.top}</a></span>
+    </div>
+  </div>
+</footer>
+<div class="end" aria-hidden="true" data-end>
+  <div class="word" data-word>{c.word}</div>
+</div>
+
+<style>
+  .footer {
+    position: relative;
+    background: var(--paper);
+    color: var(--ink);
+    margin-top: -1px;
+    padding: clamp(56px, 8vh, 96px) var(--gutter) clamp(28px, 4vh, 44px);
+    overflow: hidden;
+  }
+  .wrap { max-width: 1440px; margin: 0 auto; display: flex; flex-direction: column; gap: clamp(40px, 6vh, 72px); }
+  .top { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr)); gap: 40px clamp(32px, 6vw, 96px); align-items: end; }
+  .claim { display: flex; flex-direction: column; gap: 18px; }
+  .kicker { font-family: var(--f-mono); font-size: 10px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-light); }
+  .title { font-size: clamp(36px, min(4.6vw, 7.4vh), 80px); line-height: .88; }
+  .slovak { font-size: 15px; font-style: italic; color: var(--muted-light); }
+
+  .callcard { display: flex; flex-direction: column; gap: 20px; padding: clamp(24px, 3vw, 36px); border-radius: 24px; background: var(--ink); color: var(--paper); }
+  .kicker.light { display: flex; justify-content: space-between; gap: 12px; color: var(--muted); }
+  .amber { color: var(--amber); }
+  .big-phone { font-family: var(--f-display); font-weight: 800; font-stretch: 72%; font-size: clamp(34px, 3.2vw, 52px); line-height: .92; letter-spacing: -.005em; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; }
+  .btn { height: 50px; padding: 0 22px; font-size: 15px; }
+  .amber-btn { gap: 12px; background: var(--amber); color: var(--ink); font-weight: 600; }
+  .line { border: 1px solid rgba(241, 238, 231, .3); font-weight: 500; }
+
+  .cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
+    gap: 40px 32px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(14, 14, 12, .16);
+  }
+  .col { display: flex; flex-direction: column; gap: 12px; font-size: 15px; }
+  .col-label { margin-bottom: 4px; }
+  .locs { gap: 18px; }
+  .locs .col-label { margin-bottom: -2px; }
+  .loc { display: flex; flex-direction: column; gap: 3px; }
+  .loc-name { font-weight: 600; }
+  .loc-sub, .muted { color: var(--muted-light); }
+
+  .bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: .08em;
+    color: var(--muted-light);
+  }
+  .bottom-links { display: flex; gap: 24px; flex-wrap: wrap; }
+  .ink { color: var(--ink); }
+
+  .end { background: var(--ink); overflow: hidden; padding: clamp(28px, 5vh, 56px) 0 clamp(40px, 7vh, 80px); }
+  .word {
+    font-family: var(--f-display);
+    font-weight: 900;
+    font-stretch: 62%;
+    text-transform: uppercase;
+    font-size: 18.2vw;
+    line-height: .76;
+    letter-spacing: -.01em;
+    text-align: center;
+    color: var(--paper);
+    white-space: nowrap;
+    margin-bottom: -.04em;
+    will-change: transform, opacity;
+    user-select: none;
+  }
+  :global(html.js) .word { transform: translate3d(0, 70%, 0); opacity: 0; }
+
+  @media (max-width: 899px) {
+    .end { padding-bottom: 132px; }
+  }
+</style>

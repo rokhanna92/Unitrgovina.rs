@@ -1,0 +1,56 @@
+---
+import Photo from './Photo.astro';
+import { getCopy, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = getCopy(locale).about;
+---
+
+<section id="o-nama" class="about" lang={locale === 'sk' ? 'sr-Latn' : undefined}>
+  <div class="wrap">
+    <div class="stack-22" data-reveal="0">
+      <span class="eyebrow ink-2">{c.eyebrow}</span>
+      <h2 class="display caps title">{c.title}</h2>
+      <span lang="sk" class="slovak">{c.slovak}</span>
+    </div>
+    <div class="grid">
+      <div class="photo" data-reveal="0">
+        <Photo id="o-nama-tim" placeholder={c.photo} sizes="(max-width: 899px) 100vw, 45vw" />
+      </div>
+      <div class="text">
+        {c.paragraphs.map((p, i) => <p data-reveal={i * 60}>{p}</p>)}
+        <div class="timeline" data-reveal="240">
+          {
+            c.timeline.map((t, i) => (
+              <div class="when">
+                <span class:list={['display year', { now: i === c.timeline.length - 1 }]}>{t.year}</span>
+                <span class="what">{t.text}</span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about { background: var(--paper); color: var(--ink); padding: var(--section-pad); }
+  .wrap { max-width: 1440px; margin: 0 auto; display: flex; flex-direction: column; gap: clamp(28px, 4.4vh, 48px); }
+  .ink-2 { color: var(--muted-light); }
+  .title { margin: 0; font-size: clamp(40px, min(5.6vw, 8.8vh), 100px); line-height: .88; max-width: 1300px; }
+  .slovak { font-size: clamp(18px, 1.6vw, 24px); font-style: italic; color: var(--muted-light); }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 40px clamp(32px, 6vw, 96px); align-items: start; }
+  .photo { position: relative; aspect-ratio: 4 / 5; max-height: 72vh; width: 100%; border-radius: 20px; overflow: hidden; background: var(--linen); color: var(--muted-light); }
+  .text { display: flex; flex-direction: column; gap: 22px; font-size: clamp(16px, 1.25vw, 18px); line-height: 1.65; color: var(--ink-soft); }
+  .text p { margin: 0; }
+  .timeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: 0 24px; margin-top: 20px; }
+  .when { display: flex; flex-direction: column; gap: 10px; padding: 22px 0; border-top: 1px solid var(--ink); }
+  .year { font-size: clamp(40px, 3.4vw, 52px); line-height: .85; }
+  .year.now { color: var(--ink); }
+  .what { font-size: 14px; line-height: 1.5; color: var(--muted-light); }
+</style>

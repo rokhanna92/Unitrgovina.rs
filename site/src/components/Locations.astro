@@ -1,0 +1,116 @@
+---
+import Icon from './Icon.astro';
+import { getCopy, type Locale } from '../i18n';
+import { getContent, type Location } from '../content';
+import { site } from '../site';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = getCopy(locale).locations;
+const { locations } = getContent(locale);
+
+const mapSrc = (l: Location) =>
+  'https://www.openstreetmap.org/export/embed.html?bbox=' +
+  [l.lon - 0.05, l.lat - 0.024, l.lon + 0.05, l.lat + 0.024].map((n) => n.toFixed(4)).join('%2C') +
+  `&layer=mapnik&marker=${l.lat}%2C${l.lon}`;
+const coords = (l: Location) => `${l.lat.toFixed(2)}°N / ${l.lon.toFixed(2)}°E`;
+const first = locations[0];
+---
+
+<section id="lokacije" class="locations" lang={locale === 'sk' ? 'sr-Latn' : undefined} data-locations>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="stack-22" data-reveal="0">
+        <span class="eyebrow ink-2">{c.eyebrow}</span>
+        <h2 class="display caps h2">{c.title}</h2>
+      </div>
+      <div class="call" data-reveal="120">
+        <a href={site.tel} class="display phone">{site.phone}</a>
+        <span class="hours">{c.hours}</span>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="cards">
+        {
+          locations.map((l, i) => (
+            <div class:list={['card', { on: i === 0 }]} data-loc={i} data-map={mapSrc(l)} data-label={`${l.name} · ${l.addr}`}>
+              <div class="card-top">
+                <span class="display caps name">{l.name}</span>
+                <span class="coords">{coords(l)}</span>
+              </div>
+              <span class="addr">{l.addr}</span>
+              <span class="what">{l.what}</span>
+              <a href={l.href} class="tel">{l.tel} <Icon name="arrow" /></a>
+            </div>
+          ))
+        }
+      </div>
+      <div class="map" data-reveal="0">
+        <iframe title={c.mapTitle} src={mapSrc(first)} loading="lazy" tabindex="-1" aria-hidden="true" data-map-frame></iframe>
+        <span class="map-label" data-map-label>{first.name} · {first.addr}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .locations { background: var(--linen); color: var(--ink); padding: var(--section-pad); }
+  .wrap { max-width: 1440px; margin: 0 auto; display: flex; flex-direction: column; gap: clamp(28px, 5vh, 52px); }
+  .ink-2 { color: var(--muted-light); }
+  .call { display: flex; flex-direction: column; gap: 10px; }
+  .phone { font-size: clamp(36px, 3.6vw, 60px); line-height: .9; }
+  .hours { font-size: 16px; color: var(--muted-light); }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 16px; align-items: stretch; }
+  .cards { display: flex; flex-direction: column; gap: 12px; }
+  .card {
+    --sub: var(--muted-light);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: clamp(22px, 2.4vw, 32px);
+    border-radius: 20px;
+    border: 1px solid rgba(14, 14, 12, .16);
+    background: transparent;
+    color: var(--ink);
+    transition: background .5s, color .5s, border-color .5s;
+  }
+  .card.on { --sub: var(--muted); background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .card-top { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+  .name { font-size: clamp(30px, 2.6vw, 42px); line-height: .9; }
+  .coords { font-family: var(--f-mono); font-size: 10px; letter-spacing: .12em; color: var(--sub); }
+  .addr { font-size: 15px; font-weight: 500; }
+  .what { font-size: 14px; line-height: 1.5; color: var(--sub); }
+  .tel { display: inline-flex; align-items: center; gap: 8px; font-family: var(--f-mono); font-size: 13px; letter-spacing: .08em; }
+
+  .map { position: relative; min-height: 400px; border-radius: 20px; overflow: hidden; background: var(--sand); }
+  .map iframe {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    filter: grayscale(1) contrast(1.05) brightness(1.02);
+  }
+  .map-label {
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    height: 30px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--paper);
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+</style>

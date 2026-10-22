@@ -1,0 +1,68 @@
+---
+// Fixed controls: back-to-top button and the phone bottom bar (Pozovite · Viber · Ponuda).
+import Icon from './Icon.astro';
+import { getCopy, type Locale } from '../i18n';
+import { site } from '../site';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const copy = getCopy(locale);
+---
+
+<button type="button" class="to-top" aria-label={copy.toTop} data-to-top><Icon name="arrow-up" /></button>
+
+<nav class="bar" lang={locale === 'sk' ? 'sr-Latn' : undefined}>
+  <a href={site.tel}>{copy.bar.call}</a>
+  <a href={site.viber}>{copy.bar.viber}</a>
+  <a href="#ponuda" class="bar-quote">{copy.bar.quote}</a>
+</nav>
+
+<style>
+  .to-top {
+    position: fixed;
+    right: clamp(16px, 2vw, 28px);
+    bottom: 28px;
+    z-index: 56;
+    width: 52px;
+    height: 52px;
+    padding: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(241, 238, 231, .2);
+    background: var(--raised-2);
+    color: var(--paper);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(16px) scale(.9);
+    pointer-events: none;
+    transition: opacity .4s, transform .6s var(--ease-out), background .3s, color .3s;
+  }
+  .to-top.is-shown { opacity: 1; transform: none; pointer-events: auto; }
+  .to-top:hover { background: var(--amber); color: var(--ink); border-color: var(--amber); }
+
+  .bar { display: none; }
+
+  @media (max-width: 899px) {
+    .to-top { bottom: 84px; }
+    .bar {
+      position: fixed;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      z-index: 55;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.3fr;
+      gap: 6px;
+      padding: 6px;
+      border-radius: 999px;
+      background: rgba(23, 23, 20, .88);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(241, 238, 231, .12);
+    }
+    .bar a { height: 48px; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 500; }
+    .bar .bar-quote { font-weight: 600; background: var(--amber); color: var(--ink); }
+  }
+</style>

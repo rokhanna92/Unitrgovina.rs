@@ -1,0 +1,233 @@
+---
+import Icon from './Icon.astro';
+import Photo from './Photo.astro';
+import { getCopy, type Locale } from '../i18n';
+import { getContent, type Fraction } from '../content';
+import { site } from '../site';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = getCopy(locale).agregati;
+const { fractions, tasks } = getContent(locale);
+
+const title = (f: Fraction) => f.name + (f.unit === 'mm' ? ` ${f.size} mm` : '');
+const short = (f: Fraction) => f.form.split(' ')[0].toLowerCase();
+const cur = fractions[0];
+---
+
+<section id="agregati" class="agregati" lang={locale === 'sk' ? 'sr-Latn' : undefined} data-agregati>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="stack-22" data-reveal="0">
+        <span class="eyebrow ink-2">{c.eyebrow}</span>
+        <h2 class="display caps h2">{c.title}</h2>
+      </div>
+      <p class="lead ink-2 intro" data-reveal="120">{c.lead}</p>
+    </div>
+
+    <div class="tasks">
+      <span class="eyebrow ink-2">{c.tasksLabel}</span>
+      <div class="task-list">
+        {
+          tasks.map((t, i) => (
+            <button type="button" class:list={['pill task', { on: i === 0 }]} aria-pressed={i === 0 ? 'true' : 'false'} data-task={t}>
+              {t}
+            </button>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="pick">
+      <div role="listbox" aria-label={c.listAria} class="list">
+        {
+          fractions.map((f, i) => (
+            <button
+              type="button"
+              role="option"
+              aria-selected={i === 0 ? 'true' : 'false'}
+              class:list={['frow', { on: i === 0 }]}
+              data-frac={i}
+              data-tags={JSON.stringify(f.tags)}
+              data-title={title(f)}
+              data-use={f.use}
+              data-badge={f.badge}
+              data-short={short(f)}
+              data-form={f.form}
+              data-range={f.range ? f.range.join(',') : ''}>
+              <span class="size-wrap">
+                <span class="display caps size">{f.size}</span>
+                <span class="unit">{f.unit}</span>
+              </span>
+              <span class="desc">
+                <span class="name">{f.name}</span>
+                <span class="use">{f.use}</span>
+              </span>
+              <span aria-hidden="true" class="go">
+                <Icon name="arrow" />
+              </span>
+            </button>
+          ))
+        }
+      </div>
+
+      <div class="preview">
+        <div class="frame">
+          {
+            fractions.map((f, i) => (
+              <div class:list={['shot', { on: i === 0 }]} data-shot={i}>
+                <Photo id={`frakcija-${f.d}`} placeholder={c.photo + f.form} />
+              </div>
+            ))
+          }
+          <span class="badge" data-cur-badge>{cur.badge}</span>
+        </div>
+        <div class="cur-head">
+          <div class="cur-copy">
+            <span class="display caps cur-title" data-cur-title>{title(cur)}</span>
+            <span class="cur-use" data-cur-use>{cur.use}</span>
+          </div>
+        </div>
+        <div class="range" data-cur-range hidden={!cur.range}>
+          <span class="range-label">{c.rangeLabel}</span>
+          <div class="range-track">
+            <span class="range-fill" data-cur-fill style={`left:${cur.range?.[0] ?? 0}%;width:${cur.range?.[1] ?? 0}%`}></span>
+          </div>
+          <div class="scale">
+            <span>0</span><span>4</span><span>8</span><span>16</span><span class="scale-last">32<span>64+</span></span>
+          </div>
+        </div>
+        <div class="tags" data-cur-tags>
+          {cur.tags.map((t) => <span class="tag">{t}</span>)}
+        </div>
+        <div class="actions">
+          {/* the reference renders the fraction name as its own flex item, so the button's 12px gap separates the words */}
+          <button type="button" class="pill order" data-cur-order><span>{c.order}</span><span data-cur-short>{short(cur)}</span><Icon name="arrow" /></button>
+          <a href={site.tel} class="pill call">{c.call}</a>
+        </div>
+      </div>
+    </div>
+    <p class="note">{c.note}</p>
+  </div>
+</section>
+
+<style>
+  .agregati { background: var(--paper); color: var(--ink); padding: var(--section-pad); }
+  .wrap { max-width: 1440px; margin: 0 auto; display: flex; flex-direction: column; gap: clamp(28px, 4.4vh, 48px); }
+  .ink-2 { color: var(--muted-light); }
+  .intro { max-width: 560px; }
+
+  .tasks { display: flex; flex-direction: column; gap: 14px; }
+  .task-list { display: flex; flex-wrap: wrap; gap: 8px; }
+  .task {
+    height: 44px;
+    padding: 0 18px;
+    border: 1px solid rgba(14, 14, 12, .22);
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background .3s, color .3s, border-color .3s;
+  }
+  .task.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+  .pick { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); gap: clamp(28px, 4vw, 64px); align-items: start; }
+  .list { display: flex; flex-direction: column; border-top: 1px solid rgba(14, 14, 12, .16); }
+  .frow {
+    --sub: var(--muted-light);
+    display: grid;
+    grid-template-columns: minmax(118px, .9fr) minmax(0, 2fr) 36px;
+    gap: 20px;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+    padding: clamp(14px, 2vh, 20px) 20px;
+    margin: 0;
+    border: 0;
+    border-bottom: 1px solid rgba(14, 14, 12, .16);
+    border-radius: 0;
+    background: transparent;
+    color: var(--ink);
+    opacity: 1;
+    cursor: pointer;
+    transition: background .35s, color .35s, opacity .35s;
+  }
+  .frow.on { --sub: var(--muted); background: var(--ink); color: var(--paper); }
+  .frow.dim { opacity: .32; }
+  .size-wrap { display: flex; align-items: baseline; gap: 6px; white-space: nowrap; }
+  .size { font-size: clamp(28px, 2.4vw, 38px); line-height: .88; }
+  .unit { font-family: var(--f-mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--sub); }
+  .desc { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .name { font-size: 17px; font-weight: 600; }
+  .use { font-size: 14px; line-height: 1.45; color: var(--sub); text-wrap: pretty; }
+  .go {
+    flex: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(14, 14, 12, .22);
+    transform: translateX(-6px);
+    transition: transform .4s var(--ease-out), border-color .35s;
+  }
+  .frow.on .go { border-color: rgba(241, 238, 231, .4); transform: none; }
+
+  .preview { position: sticky; top: 96px; display: flex; flex-direction: column; gap: 22px; }
+  .frame { position: relative; aspect-ratio: 3 / 2; max-height: 46vh; width: 100%; border-radius: 24px; overflow: hidden; background: var(--linen); }
+  .shot { position: absolute; inset: 0; opacity: 0; visibility: hidden; transition: opacity .45s; }
+  .shot.on { opacity: 1; visibility: visible; }
+  .badge {
+    position: absolute;
+    left: 18px;
+    top: 18px;
+    height: 28px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: rgba(250, 248, 243, .9);
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+  .cur-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
+  .cur-copy { display: flex; flex-direction: column; gap: 6px; }
+  .cur-title { font-size: clamp(30px, 2.6vw, 42px); line-height: .9; }
+  .cur-use { font-size: 15px; line-height: 1.5; color: var(--muted-light); max-width: 440px; text-wrap: pretty; }
+
+  .range { display: flex; flex-direction: column; gap: 12px; }
+  .range-label { font-family: var(--f-mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted-light); }
+  .range-track { position: relative; height: 12px; border-radius: 999px; background: rgba(14, 14, 12, .08); overflow: hidden; }
+  .range-fill {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-radius: 999px;
+    background: var(--ink);
+    transition: left .5s var(--ease-out), width .5s var(--ease-out);
+  }
+  .scale { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); font-family: var(--f-mono); font-size: 11px; color: var(--muted-light); }
+  .scale-last { display: flex; justify-content: space-between; }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tags :global(.tag) {
+    height: 30px;
+    padding: 0 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(14, 14, 12, .2);
+    display: inline-flex;
+    align-items: center;
+    font-size: 13px;
+  }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; padding-top: 18px; border-top: 1px solid rgba(14, 14, 12, .14); }
+  .order { gap: 12px; height: 52px; padding: 0 24px; border: 0; background: var(--ink); color: var(--paper); font-weight: 600; font-size: 15px; cursor: pointer; }
+  .call { height: 52px; padding: 0 22px; border: 1px solid rgba(14, 14, 12, .25); font-weight: 500; font-size: 15px; }
+  .note { margin: 0; font-size: 15px; color: var(--muted-light); }
+</style>
