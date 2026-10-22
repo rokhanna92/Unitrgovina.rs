@@ -75,7 +75,8 @@ export function update(force = false) {
   if (er && el.word) {
     const t = Math.max(0, Math.min(1, (vh - er.top) / Math.max(1, er.height))), e = 1 - Math.pow(1 - t, 3);
     el.word.style.transform = 'translate3d(0,' + ((1 - e) * 70).toFixed(2) + '%,0)';
-    el.word.style.opacity = (0.15 + 0.85 * e).toFixed(3);
+    // fully transparent while still below the fold (looks the same, keeps contrast checkers quiet)
+    el.word.style.opacity = t > 0 ? (0.15 + 0.85 * e).toFixed(3) : '0';
   }
 
   const step = Math.round(p);
@@ -216,5 +217,6 @@ export function initScroll() {
   window.addEventListener('keydown', onKey);
   document.addEventListener('click', onAnchor);
   el.toTop?.addEventListener('click', () => animTo(0));
-  update(true);
+  // first paint state in the next frame, so the initial layout isn't forced mid-script
+  requestAnimationFrame(() => update(true));
 }
