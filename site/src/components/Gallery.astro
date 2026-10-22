@@ -42,7 +42,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
               <span class="cap-sub">{g.sub}</span>
             </div>
             <div class="vlabel" aria-hidden="true">
-              {pad(i + 1)} - {g.title}
+              <span>{pad(i + 1)}</span> - <span>{g.title}</span>
             </div>
             <button type="button" class="hit" aria-label={g.title} data-gal-hit />
           </div>
