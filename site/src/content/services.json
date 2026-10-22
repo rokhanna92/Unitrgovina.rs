@@ -1,0 +1,62 @@
+[
+  {
+    "title": "Beton",
+    "line": "Gotov beton MB10–MB50, specijalni betoni i pumpe sa strelom od 28, 36 i 42 m.",
+    "spec": "MB10–MB50",
+    "subs": ["Gotov beton", "Beton pumpa", "Specijalni betoni", "Industrijski podovi", "Laboratorija i atesti"],
+    "img": "svc-beton",
+    "ph": "Fotografija: fabrika betona u Padini",
+    "href": "#beton",
+    "cta": "Sve o betonu"
+  },
+  {
+    "title": "Agregati",
+    "line": "Prane frakcije od 0–4 do 16–32 mm, iberlauf, pesak i drobljeni kamen.",
+    "spec": "0–32 mm",
+    "subs": ["Pesak 0–4", "Šljunak 4–8", "Šljunak 8–16", "Šljunak 16–32", "Iberlauf", "Prirodna mešavina", "Drobljeni kamen"],
+    "img": "svc-agregati",
+    "ph": "Fotografija: frakcije šljunka izbliza, pored lenjira",
+    "href": "#agregati",
+    "cta": "Izaberite frakciju"
+  },
+  {
+    "title": "Građevinski materijal",
+    "line": "Sve od temelja do krova: blokovi, crep, armatura, izolacija, fert gredice.",
+    "spec": "Padina · Samoš",
+    "subs": ["Blokovi i opeka", "Fert gredice", "Armatura", "Betonske cevi", "Čelik, limovi i profili", "Izolacija", "Crep", "Boje i lakovi"],
+    "img": "svc-materijal",
+    "ph": "Fotografija: stovarište i kamion sa kranom",
+    "href": "#ponuda",
+    "cta": "Pošaljite spisak materijala"
+  },
+  {
+    "title": "Gradnja",
+    "line": "Izvođenje svih vrsta građevinskih radova po principu ključ u ruke.",
+    "spec": "Ključ u ruke",
+    "subs": ["Industrijski podovi", "Temelji i ploče", "Reference"],
+    "img": "svc-gradnja",
+    "ph": "Fotografija: završen objekat ili hala",
+    "href": "#galerija",
+    "cta": "Pogledajte radove"
+  },
+  {
+    "title": "Poljoprivreda",
+    "line": "Otkup žitarica po dnevnim cenama, seme, đubrivo i program Žito za zid.",
+    "spec": "Dnevne cene",
+    "subs": ["Otkup žitarica", "Žito za zid", "Seme i đubrivo"],
+    "img": "svc-poljoprivreda",
+    "ph": "Fotografija: silos u žetvi",
+    "href": "#zito",
+    "cta": "Današnje cene"
+  },
+  {
+    "title": "Ogrev",
+    "line": "Ugalj, drva i pelet sa dostavom na kućnu adresu.",
+    "spec": "Dostava",
+    "subs": ["Drva", "Ugalj", "Pelet"],
+    "img": "svc-ogrev",
+    "ph": "Fotografija: složena drva i ugalj",
+    "href": "#ogrev",
+    "cta": "Naručite ogrev"
+  }
+]

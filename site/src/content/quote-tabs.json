@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Beton i pumpa",
+    "key": "b",
+    "fields": [
+      { "k": "adr", "label": "Adresa gradilišta", "type": "text" },
+      { "k": "kol", "label": "Količina (m³)", "type": "text" },
+      { "k": "kl", "label": "Klasa betona", "type": "select", "options": ["Izaberite", "MB10", "MB15", "MB20", "MB30", "MB40", "MB50", "Ne znam"] },
+      { "k": "sp", "label": "Specijalni beton", "type": "select", "options": ["Ne", "Vodonepropusni", "Otporan na mraz", "Otporan na mraz i so", "Sulfatno-otporan", "Sa vlaknima", "Za industrijske podove"] },
+      { "k": "pumpa", "label": "Pumpa", "type": "chips", "options": ["Ne", "28 m", "36 m", "42 m", "Ne znam"], "full": true },
+      { "k": "dat", "label": "Željeni datum", "type": "date" }
+    ]
+  },
+  {
+    "name": "Agregati",
+    "key": "a",
+    "fields": [
+      { "k": "fr", "label": "Frakcija", "type": "select", "options": ["Izaberite", "Pesak 0–4 mm", "Šljunak 4–8 mm", "Šljunak 8–16 mm", "Šljunak 16–32 mm", "Iberlauf", "Prirodna mešavina", "Drobljeni kamen"] },
+      { "k": "kol", "label": "Količina (t ili m³)", "type": "text" },
+      { "k": "dost", "label": "Preuzimanje ili dostava", "type": "chips", "options": ["Preuzimam sam", "Dostava na adresu"], "full": true },
+      { "k": "dat", "label": "Željeni datum", "type": "date" }
+    ]
+  },
+  {
+    "name": "Građevinski materijal",
+    "key": "g",
+    "fields": [
+      { "k": "kat", "label": "Kategorija", "type": "select", "options": ["Izaberite", "Blokovi i opeka", "Fert gredice", "Armatura", "Betonske cevi", "Čelik, limovi i profili", "Izolacija", "Crep", "Boje i lakovi"] },
+      { "k": "sp", "label": "Spisak materijala", "type": "text" },
+      { "k": "kran", "label": "Dostava kamionom sa kranom", "type": "chips", "options": ["Da", "Ne"], "full": true }
+    ]
+  },
+  {
+    "name": "Ogrev",
+    "key": "o",
+    "fields": [
+      { "k": "pr", "label": "Proizvod", "type": "select", "options": ["Izaberite", "Ugalj", "Drva – oblice", "Drva – cepana", "Pelet", "Otpadno drvo u paletama"] },
+      { "k": "kol", "label": "Količina", "type": "text" },
+      { "k": "adr", "label": "Adresa dostave", "type": "text" },
+      { "k": "ter", "label": "Željeni termin", "type": "date" }
+    ]
+  },
+  {
+    "name": "Gradnja i podovi",
+    "key": "p",
+    "fields": [
+      { "k": "vr", "label": "Vrsta radova", "type": "select", "options": ["Izaberite", "Industrijski pod", "Temelji i ploče", "Gradnja ključ u ruke", "Drugo"] },
+      { "k": "pov", "label": "Površina (m²)", "type": "text" },
+      { "k": "lok", "label": "Lokacija objekta", "type": "text" }
+    ]
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "_todo": "POTVRDITI: placeholder prices from the design reference. Staff must confirm crops and update daily before launch.",
+  "time": "07:30",
+  "unit": "din/kg",
+  "crops": [
+    { "name": "Kukuruz", "price": "21,50" },
+    { "name": "Pšenica", "price": "22,80" },
+    { "name": "Suncokret", "price": "54,00" }
+  ]
+}

@@ -1,0 +1,9 @@
+[
+  { "size": "0–4", "unit": "mm", "badge": "Frakcija 1", "name": "Pesak", "use": "Spravljanje betona, malterisanje, cementne košuljice.", "tags": ["Beton", "Malter i košuljica"], "d": "f1", "form": "Pesak 0–4 mm", "range": [0, 20] },
+  { "size": "4–8", "unit": "mm", "badge": "Frakcija 2", "name": "Šljunak", "use": "Spravljanje betona, dekoracija dvorišta i parkova.", "tags": ["Beton", "Dvorište i staze"], "d": "f2", "form": "Šljunak 4–8 mm", "range": [20, 20] },
+  { "size": "8–16", "unit": "mm", "badge": "Frakcija 3", "name": "Šljunak", "use": "Spravljanje betona, dekoracija dvorišta i parkova.", "tags": ["Beton", "Dvorište i staze"], "d": "f3", "form": "Šljunak 8–16 mm", "range": [40, 20] },
+  { "size": "16–32", "unit": "mm", "badge": "Frakcija 4", "name": "Šljunak", "use": "Spravljanje betona, dekoracija dvorišta i parkova.", "tags": ["Beton", "Dvorište i staze"], "d": "f4", "form": "Šljunak 16–32 mm", "range": [60, 20] },
+  { "size": "32+", "unit": "mm", "badge": "Preko 32 mm", "name": "Iberlauf", "use": "Drenaža i nasipanje gde voda mora da prolazi u zemlju; nikako za beton.", "tags": ["Drenaža"], "d": "ib", "form": "Iberlauf", "range": [80, 20] },
+  { "size": "Mix", "unit": "", "badge": "Prirodna", "name": "Prirodna mešavina šljunka", "use": "Sirovina za separisani agregat; podloge u putogradnji.", "tags": ["Podloga za put"], "d": "mix", "form": "Prirodna mešavina", "range": [0, 100] },
+  { "size": "Kamen", "unit": "", "badge": "Drobljeni", "name": "Drobljeni kamen", "use": "Stabilizacija tla, spravljanje betona.", "tags": ["Stabilizacija tla", "Beton"], "d": "dk", "form": "Drobljeni kamen", "range": null }
+]
